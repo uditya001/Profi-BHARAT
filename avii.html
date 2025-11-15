@@ -1,11 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>WORK
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AeroMatrix Flight Analytics</title>
+<link rel="stylesheet" href="WORK.CSS">
+<style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0b1220, #101727, #182033);
+      color: white;
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      padding: 25px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    header h2 {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg,#00f8c2,#4cc9f0,#4361ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px rgba(0,255,200,0.5);
+      animation: fadeTitle 1s ease-out;
+    }
+
+    @keyframes fadeTitle {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .game-box {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .payment-box {
+      margin-top: 25px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .payment-box h3 {
+      margin-bottom: 15px;
+      font-size: 22px;
+    }
+
+    .payment-box select, .payment-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .pay-btn {
+      padding: 12px;
+      width: 100%;
+      background: linear-gradient(135deg,#00d084,#00b46f);
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .multiplier { font-size: 40px; font-weight: bold; }
+
+    .plane { position: absolute; bottom: 20px; width: 50px; transition: left 0.1s linear; }
+
+    .track {
+      position: relative;
+      height: 100px;
+      background: #222;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+</style>
+</head>
 <body>
-    
+<header>
+  <h2>AeroMatrix Flight Analytics</h2>
+</header>
+
+<div class="container">
+  <div class="game-box">
+    <div id="status">Ready for takeoff ✈️</div>
+    <div class="multiplier" id="multiplier">1.00x</div>
+
+    <div class="track">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23FFD166' d='M2 12l20-8-8 20-2-8-10-4z'/></svg>" class="plane" id="plane" />
+    </div>
+
+    <div class="controls" style="margin-top: 20px;">
+      <button id="start">Start Flight</button>
+      <button id="cashout">Cash Out</button>
+      <button id="reset">Reset</button>
+    </div>
+  </div>
+
+  <div class="payment-box">
+    <h3>💳 Add Balance</h3>
+
+    <label>Choose Payment Method:</label>
+    <select id="payMethod">
+      <option value="upi">UPI</option>
+      <option value="card">Debit/Credit Card</option>
+      <option value="wallet">Wallet</option>
+      <option value="crypto">Crypto (USDT)</option>
+    </select>
+
+    <label>Enter Amount (₹):</label>
+    <input type="number" id="amount" placeholder="Enter amount here" />
+
+    <button class="pay-btn" onclick="makePayment()">Proceed to Pay</button>
+
+    <p id="payStatus" style="margin-top:15px; font-size:18px;"></p>
+  </div>
+</div>
+
+<script>
+function makePayment() {
+  let method = document.getElementById("payMethod").value;
+  let amount = document.getElementById("amount").value;
+  let status = document.getElementById("payStatus");
+
+  if(amount === "" || amount <= 0) {
+    status.innerHTML = "❌ Enter a valid amount";
+    return;
+  }
+
+  status.innerHTML = `✔️ Payment initiated via <b>${method.toUpperCase()}</b> for <b>₹${amount}</b>.`;
+}
+</script>
+
 </body>
 </html>
