@@ -1,0 +1,90 @@
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ===== BANNER ===== */
+.banner {
+  /*background: linear-gradient(135deg, #0f766e, #1e3a8a, #14532d); */
+  background: linear-gradient(90deg, #000000, #7900dc);
+
+  color: white;
+  padding: 20px 40px 60px;
+  position: relative;
+}
+
+/* Peacock feather glow */
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255,215,0,0.18), transparent 60%);
+  pointer-events: none;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo */
+.logo img {
+  height: 100px;   /* reduce size */
+  width: auto;
+}
+
+/* Navigation buttons */
+.nav-links {
+  display: flex;
+  gap: 12px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  background: rgb(176, 7, 255);
+  color: #ffffff;
+  border-color: rgb(170, 0, 255);
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+  margin-top: 50px;
+  max-width: 620px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+}
