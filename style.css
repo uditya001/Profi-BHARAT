@@ -8,20 +8,19 @@
 
 /* ===== BANNER ===== */
 .banner {
-  /*background: linear-gradient(135deg, #0f766e, #1e3a8a, #14532d); */
   background: linear-gradient(90deg, #000000, #7900dc);
-
   color: white;
   padding: 16px 20px 50px;
   position: relative;
+  min-height: 100vh; /* Fix white gap */
 }
 
-/* Peacock feather glow */
+/* Soft glow */
 .banner::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top right, rgba(255,215,0,0.18), transparent 60%);
+  background: radial-gradient(circle at top right, rgba(255, 215, 0, 0.18), transparent 60%);
   pointer-events: none;
 }
 
@@ -34,22 +33,21 @@
 
 /* Logo */
 .logo img {
-  height: 90px;   /* reduce size */
+  height: 90px;
   width: auto;
 }
 
-/* Navigation buttons */
+/* Navigation */
 .nav-links {
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
+  display: flex;
+  gap: 12px;
 }
 
 .nav-links a {
   text-decoration: none;
   color: white;
-  font-size: 13px;
-  padding: 6px 12px;
+  font-size: 14px;
+  padding: 6px 14px;
   border: 1px solid rgba(255,255,255,0.5);
   border-radius: 20px;
   transition: all 0.3s ease;
@@ -63,36 +61,82 @@
 
 /* ===== HERO SECTION ===== */
 .hero {
-  margin-top: 35px;
-  max-width: 100%px;
-  text-align: centre;
+  margin-top: 50px;
+  max-width: 620px;
 }
 
 .hero h1 {
-  font-size: 30px;
+  font-size: 42px;
   margin-bottom: 12px;
 }
 
 .hero p {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.6;
   opacity: 0.95;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===================== */
+/* ===== RESPONSIVE ==== */
+/* ===================== */
+
+/* Tablets & Mobile */
 @media (max-width: 768px) {
+
   .navbar {
     flex-direction: column;
-    align-item: centre;
+    align-items: center;
     gap: 12px;
+  }
+
+  .logo img {
+    height: 60px;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 18px;
+  }
+
+  .hero {
+    margin-top: 50px;
+    max-width: 100%;
   }
 
   .hero h1 {
     font-size: 30px;
   }
 
-  .logo img {
-  height: 70px;
+  .hero p {
+    font-size: 15px;
   }
 }
+
+/* Small Phones */
+@media (max-width: 480px) {
+
+  .hero h1 {
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  .hero p {
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  .nav-links a {
+    padding: 5px 10px;
+    border-radius: 16px;
+  }
+}
+
+
 
