@@ -12,7 +12,7 @@
   background: linear-gradient(90deg, #000000, #7900dc);
 
   color: white;
-  padding: 20px 40px 60px;
+  padding: 16px 20px 50px;
   position: relative;
 }
 
@@ -34,21 +34,22 @@
 
 /* Logo */
 .logo img {
-  height: 100px;   /* reduce size */
+  height: 90px;   /* reduce size */
   width: auto;
 }
 
 /* Navigation buttons */
 .nav-links {
-  display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
 .nav-links a {
   text-decoration: none;
   color: white;
-  font-size: 14px;
-  padding: 6px 14px;
+  font-size: 13px;
+  padding: 6px 12px;
   border: 1px solid rgba(255,255,255,0.5);
   border-radius: 20px;
   transition: all 0.3s ease;
@@ -62,17 +63,18 @@
 
 /* ===== HERO SECTION ===== */
 .hero {
-  margin-top: 50px;
-  max-width: 620px;
+  margin-top: 35px;
+  max-width: 100%px;
+  text-align: centre;
 }
 
 .hero h1 {
-  font-size: 42px;
+  font-size: 30px;
   margin-bottom: 12px;
 }
 
 .hero p {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.6;
   opacity: 0.95;
 }
@@ -81,10 +83,16 @@
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
-    gap: 15px;
+    align-item: centre;
+    gap: 12px;
   }
 
   .hero h1 {
-    font-size: 32px;
+    font-size: 30px;
+  }
+
+  .logo img {
+  height: 70px;
   }
 }
+
