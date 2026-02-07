@@ -24,3 +24,15 @@ setInterval(nextSlide, 4000);
 
 /* Initial load */
 showSlide(currentSlide);
+/*-------------------------*/
+    let rotateVal = 0;
+    const carousel = document.querySelector('.carousel');
+
+    function autoRotate() {
+        rotateVal -= 90; // 4 cards hain isliye 90 degree (360/4)
+        carousel.style.transform = `rotateY(${rotateVal}deg)`;
+    }
+
+    // Har 3 second mein khud ghumega
+    setInterval(autoRotate, 3000);
+
