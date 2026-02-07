@@ -13,7 +13,6 @@
   background: linear-gradient(90deg, #000000, #7900dc);
   color: white;
   padding: 16px 20px 50px;
-  min-height: 100vh;
   position: relative;
 }
 
@@ -211,6 +210,7 @@
     padding: 6px 16px;
   }
 }
+
 
 
 
