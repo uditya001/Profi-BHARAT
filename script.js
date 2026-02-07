@@ -1,3 +1,25 @@
+   window.addEventListener('load', () => {
+        const loader = document.getElementById('ultimate-warp-loader');
+        
+        // Website reveal trigger (Total 3.5s of pure magic)
+        setTimeout(() => {
+            loader.classList.add('exit');
+            
+            setTimeout(() => {
+                loader.style.display = 'none';
+                // Your website content entry animation can trigger here
+            }, 1500);
+        }, 3500);
+    });
+
+
+
+
+
+
+
+
+
 const hamburger = document.getElementById("hamburger");
 const navMenu = document.getElementById("navMenu");
 
