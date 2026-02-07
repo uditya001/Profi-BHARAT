@@ -1,4 +1,95 @@
+ @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=Outfit:wght@300&display=swap');
 
+    #ultimate-warp-loader {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 9999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        perspective: 2000px;
+    }
+
+    .warp-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform-style: preserve-3d;
+    }
+
+    /* The Pulsing 3D Ring */
+    .cosmic-ring {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: transparent;
+        border: 2px solid #a855f7;
+        box-shadow: 0 0 50px #a855f7, inset 0 0 50px #a855f7;
+        animation: warpExpand 3s cubic-bezier(0.15, 0.83, 0.66, 1) forwards;
+    }
+
+    @keyframes warpExpand {
+        0% { transform: scale(0) translateZ(-1000px); opacity: 0; }
+        30% { opacity: 1; transform: scale(5) translateZ(-500px); }
+        100% { transform: scale(50) translateZ(500px); opacity: 0; }
+    }
+
+    /* Logo Entrance */
+    .warp-logo-wrap {
+        text-align: center;
+        opacity: 0;
+        transform: translateZ(-200px) scale(0.5);
+        animation: logoReveal 2.5s cubic-bezier(0.19, 1, 0.22, 1) forwards 0.5s;
+    }
+
+    .warp-logo {
+        font-family: 'Unbounded', sans-serif;
+        font-size: 5rem;
+        color: #fff;
+        margin: 0;
+        letter-spacing: -2px;
+        line-height: 1;
+    }
+
+    .highlight {
+        color: #a855f7;
+        text-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+    }
+
+    .warp-sub {
+        font-family: 'Outfit', sans-serif;
+        color: #666;
+        letter-spacing: 15px;
+        font-size: 0.9rem;
+        margin-top: 20px;
+        text-transform: uppercase;
+    }
+
+    @keyframes logoReveal {
+        0% { opacity: 0; transform: translateZ(-500px) scale(0.5); filter: blur(20px); }
+        100% { opacity: 1; transform: translateZ(0) scale(1); filter: blur(0); }
+    }
+
+    /* The Exit "Warp" (Sabse Fadu Part) */
+    #ultimate-warp-loader.exit {
+        animation: finalBlast 1.5s cubic-bezier(1, 0, 0, 1) forwards;
+    }
+
+    @keyframes finalBlast {
+        0% { transform: scale(1); filter: brightness(1); }
+        40% { transform: scale(0.9); filter: brightness(2); }
+        100% { transform: scale(10); opacity: 0; filter: brightness(10) blur(50px); }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 480px) {
+        .warp-logo { font-size: 2.5rem; letter-spacing: -1px; }
+        .warp-sub { letter-spacing: 5px; font-size: 0.7rem; }
+    }
 
 /* ===== RESET ===== */
 * {
@@ -396,6 +487,7 @@
     height: 20px;
     width: auto;
   }
+
 
 
 
