@@ -237,6 +237,11 @@
   font-size: 14px;
 }
 
+.social-icons {
+  height: 20px;
+  width: auto
+}
+
 .social-icons a {
   color: #ffffff;
   font-size: 20px;
@@ -273,6 +278,7 @@
 .scroll-top:hover {
   background: #9f67ff;
 }
+
 
 
 
