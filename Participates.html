@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Contests | Profi-Bharat</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Pehle wala exact background aur magenta gradient */
+            --bg-deep: #0f0f23; 
+            --magenta-glow: #d946ef; 
+            --purple-accent: #a855f7;
+            --gradient-90: linear-gradient(90deg, #d946ef 0%, #a855f7 100%);
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- Centered Header Section --- */
+        .hero-section {
+            padding: 80px 20px 40px 20px;
+            text-align: center; /* Pura header center */
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .hero-underline {
+            width: 120px;
+            height: 5px;
+            background: var(--gradient-90);
+            margin: 15px auto; /* Line center mein */
+            border-radius: 10px;
+        }
+
+        .hero-sub {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        .explore-label {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 40px 0;
+            opacity: 0.9;
+        }
+
+        /* --- Contest Grid --- */
+        .contest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 0 20px 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contest-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(217, 70, 239, 0.2);
+            border-radius: 35px;
+            padding: 40px 25px;
+            position: relative;
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: 0.4s ease;
+        }
+
+        .contest-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--magenta-glow);
+            box-shadow: 0 20px 40px rgba(217, 70, 239, 0.25);
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-90);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(217, 70, 239, 0.4);
+        }
+
+        .live-tag {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--magenta-glow);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse { 50% { opacity: 0.3; } }
+
+        h3 { font-size: 1.6rem; margin-bottom: 12px; font-weight: 700; }
+        p { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 40px; }
+
+        /* --- Centered Magenta Button --- */
+        .btn-join {
+            background: var(--gradient-90);
+            color: white;
+            text-decoration: none;
+            padding: 16px 50px;
+            border-radius: 100px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 10px 25px rgba(217, 70, 239, 0.5);
+            transition: 0.3s;
+            border: none;
+            display: inline-block;
+        }
+
+        .btn-join:active {
+            transform: scale(0.95);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="hero-section" data-aos="zoom-in">
+        <h1 class="hero-title">Active Contests</h1>
+        <div class="hero-underline"></div>
+        <p class="hero-sub">Ready to participate on Profi-Bharat?</p>
+    </header>
+
+    <div class="explore-label" data-aos="fade-up">Explore Profi-Bharat</div>
+
+    <div class="contest-grid">
+        
+        <div class="contest-card" data-aos="fade-up">
+            <div class="live-tag"><div class="live-dot"></div> LIVE</div>
+            <div class="icon-box">💻</div>
+            <h3>Web Building Contest</h3>
+            <p>Code the next-gen web experience. Show your skills & win big.</p>
+            <a href="#" class="btn-join">Join Contest</a>
+        </div>
+
+        <div class="contest-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="live-tag"><div class="live-dot"></div> LIVE</div>
+            <div class="icon-box">🎬</div>
+            <h3>Reel Editing Contest</h3>
+            <p>Visual storytelling at its best. Show your cinematic magic.</p>
+            <a href="#" class="btn-join">Join Contest</a>
+        </div>
+
+        <div class="contest-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="live-tag"><div class="live-dot"></div> LIVE</div>
+            <div class="icon-box">🎨</div>
+            <h3>Graphic Designing Contest</h3>
+            <p>Design brand identities for Bharat's top labels and startups.</p>
+            <a href="#" class="btn-join">Join Contest</a>
+        </div>
+
+        <div class="contest-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="live-tag"><div class="live-dot"></div> LIVE</div>
+            <div class="icon-box">📸</div>
+            <h3>Photo Shoot Contest</h3>
+            <p>Capture Bharat through your creative lens. Best shots win prizes.</p>
+            <a href="#" class="btn-join">Join Contest</a>
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>
