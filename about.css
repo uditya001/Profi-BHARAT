@@ -112,3 +112,11 @@ body {
     padding: 20px;
     font-size: 16px;
 }
+
+.about-footer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255,215,0,0.18), transparent 60%);
+  pointer-events: none;
+}
