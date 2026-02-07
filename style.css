@@ -148,7 +148,7 @@
   }
 }
 
-/* ===== SLIDER SECTION ===== */
+/* ===== SLIDER SECTION ===== 
 .slider-section {
   padding: 50px 20px;
   background: #0b0016;
@@ -161,7 +161,7 @@
   margin-bottom: 20px;
 }
 
-/* Slider container */
+/* Slider container 
 .slider {
   position: relative;
   max-width: 90%;
@@ -170,7 +170,7 @@
   border-radius: 16px;
 }
 
-/* Individual slide */
+/* Individual slide 
 .slide {
   display: none;
   position: relative;
@@ -187,7 +187,7 @@
   border-radius: 16px;
 }
 
-/* Caption */
+/* Caption 
 .caption {
   position: absolute;
   bottom: 15px;
@@ -199,7 +199,7 @@
   font-size: 16px;
 }
 
-/* Mobile tweaks */
+/* Mobile tweaks 
 @media (max-width: 768px) {
   .slider-section h2 {
     font-size: 22px;
@@ -210,6 +210,118 @@
     padding: 6px 16px;
   }
 }
+*/
+    :root {
+        --p-color: #a855f7;
+    }
+
+    .profi-minimal-slider {
+        background:radial-gradient( #48015b, #000);
+        padding: 80px 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .glow-spot {
+        position: absolute;
+        width: 300px; height: 300px;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+        filter: blur(50px);
+        z-index: 0;
+    }
+
+    .minimal-title {
+        color: white;
+        font-size: 1.5rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        margin-bottom: 60px;
+        opacity: 0.8;
+        z-index: 1;
+    }
+
+    /* 3D Carousel Logic */
+    .scene {
+        position: relative;
+        width: 280px;
+        height: 380px;
+        perspective: 1000px;
+        z-index: 1;
+    }
+
+    .carousel {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        transform-style: preserve-3d;
+        transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .carousel__cell {
+        position: absolute;
+        width: 260px;
+        height: 360px;
+        left: 10px;
+        top: 10px;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 1s, opacity 1s;
+        background: rgba(20, 20, 20, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* Card Positioning - Carousel of 4 */
+    .carousel__cell:nth-child(1) { transform: rotateY(0deg) translateZ(200px); }
+    .carousel__cell:nth-child(2) { transform: rotateY(90deg) translateZ(200px); }
+    .carousel__cell:nth-child(3) { transform: rotateY(180deg) translateZ(200px); }
+    .carousel__cell:nth-child(4) { transform: rotateY(270deg) translateZ(200px); }
+
+    .card-content {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .card-icon {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 0 10px var(--p-color));
+    }
+
+    .card-content h3 {
+        color: white;
+        font-size: 1.6rem;
+        margin: 10px 0;
+        background: linear-gradient(to bottom, #fff, #888);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .card-content p {
+        color: var(--p-color);
+        font-size: 0.9rem;
+        font-weight: 500;
+        letter-spacing: 1px;
+    }
+
+    /* Mobile Fixes */
+    @media (max-width: 480px) {
+        .scene { width: 220px; height: 320px; }
+        .carousel__cell { width: 200px; height: 300px; }
+        .carousel__cell:nth-child(1) { transform: rotateY(0deg) translateZ(150px); }
+        .carousel__cell:nth-child(2) { transform: rotateY(90deg) translateZ(150px); }
+        .carousel__cell:nth-child(3) { transform: rotateY(180deg) translateZ(150px); }
+        .carousel__cell:nth-child(4) { transform: rotateY(270deg) translateZ(150px); }
+    }
+
+
 
 .footer {
   background: linear-gradient(135deg, #0b0614, #1a0f2e, #0b0614);
@@ -284,6 +396,7 @@
     height: 20px;
     width: auto;
   }
+
 
 
 
