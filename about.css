@@ -26,6 +26,15 @@ body {
     text-align: center;
 }
 
+/* Glow */
+.about-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255,215,0,0.18), transparent 60%);
+  pointer-events: none;
+}
+
 .about-hero h1 {
     font-size: 42px;
     margin-bottom: 10px;
