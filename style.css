@@ -1,3 +1,5 @@
+
+
 /* ===== RESET ===== */
 * {
   margin: 0;
@@ -11,16 +13,16 @@
   background: linear-gradient(90deg, #000000, #7900dc);
   color: white;
   padding: 16px 20px 50px;
+  min-height: 100vh;
   position: relative;
-  min-height: 100vh; /* Fix white gap */
 }
 
-/* Soft glow */
+/* Glow */
 .banner::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top right, rgba(255, 215, 0, 0.18), transparent 60%);
+  background: radial-gradient(circle at top right, rgba(255,215,0,0.18), transparent 60%);
   pointer-events: none;
 }
 
@@ -29,15 +31,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 /* Logo */
 .logo img {
   height: 90px;
-  width: auto;
 }
 
-/* Navigation */
+/* Nav links (desktop) */
 .nav-links {
   display: flex;
   gap: 12px;
@@ -50,18 +52,32 @@
   padding: 6px 14px;
   border: 1px solid rgba(255,255,255,0.5);
   border-radius: 20px;
-  transition: all 0.3s ease;
+  transition: 0.3s;
 }
 
 .nav-links a:hover {
-  background: rgb(176, 7, 255);
-  color: #ffffff;
-  border-color: rgb(170, 0, 255);
+  background: #b007ff;
+  border-color: #aa00ff;
 }
 
-/* ===== HERO SECTION ===== */
+/* ===== HAMBURGER ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 26px;
+  height: 3px;
+  background: white;
+  border-radius: 2px;
+}
+
+/* ===== HERO ===== */
 .hero {
-  margin-top: 50px;
+  margin-top: 60px;
   max-width: 620px;
 }
 
@@ -73,41 +89,48 @@
 .hero p {
   font-size: 16px;
   line-height: 1.6;
-  opacity: 0.95;
 }
 
-/* ===================== */
-/* ===== RESPONSIVE ==== */
-/* ===================== */
-
-/* Tablets & Mobile */
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
-
-  .navbar {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
 
   .logo img {
     height: 60px;
   }
 
+  .hamburger {
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 20px;
+    z-index: 1001;
+  }
+
   .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    position: absolute;
+    top: 80px;
+    right: 0;
+    background: rgba(0,0,0,0.85);
+    padding: 16px;
+    border-radius: 14px;
+    width: 170px;
   }
 
   .nav-links a {
-    font-size: 13px;
-    padding: 6px 12px;
-    border-radius: 18px;
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .nav-links.show {
+    display: flex;
   }
 
   .hero {
-    margin-top: 50px;
-    max-width: 100%;
+    margin-top: 70px;
   }
 
   .hero h1 {
@@ -121,20 +144,8 @@
 
 /* Small Phones */
 @media (max-width: 480px) {
-
   .hero h1 {
-    font-size: 28px;
-    line-height: 1.25;
-  }
-
-  .hero p {
-    font-size: 14.5px;
-    line-height: 1.6;
-  }
-
-  .nav-links a {
-    padding: 5px 10px;
-    border-radius: 16px;
+    font-size: 26px;
   }
 }
 
