@@ -1,3 +1,5 @@
+
+/*
 * {
     margin: 0;
     padding: 0;
@@ -11,14 +13,14 @@ body {
     line-height: 1.7;
 }
 
-/* Containers */
+/* Containers 
 .container {
     width: 90%;
     max-width: 1100px;
     margin: auto;
 }
 
-/* Hero Section */
+/* Hero Section 
 .about-hero {
     background: linear-gradient(90deg, #000000, #7900dc);
     color: #fff;
@@ -26,7 +28,7 @@ body {
     text-align: center;
 }
 
-/* Glow */
+/* Glow 
 .about-hero::after {
   content: "";
   position: absolute;
@@ -45,7 +47,7 @@ body {
     opacity: 0.9;
 }
 
-/* About Content */
+/* About Content 
 .about-content {
     padding: 60px 0;
     background: #fff;
@@ -80,7 +82,7 @@ body {
     margin-bottom: 8px;
 }
 
-/* Features */
+/* Features 
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -104,7 +106,7 @@ body {
     transform: translateY(-5px);
 }
 
-/* Footer */
+/* Footer 
 .about-footer {
     background:linear-gradient(90deg, #000000, #7900dc);
     color: #fff;
@@ -120,3 +122,111 @@ body {
   background: radial-gradient(circle at top right, rgba(255,215,0,0.18), transparent 60%);
   pointer-events: none;
 }
+*/
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;900&family=Outfit:wght@300;600;800&display=swap');
+
+    .metamorphic-about {
+        background: #020202; color: #fff; font-family: 'Outfit', sans-serif;
+        padding: 100px 8%; position: relative; overflow: hidden;
+    }
+
+    /* Background Energy Blobs */
+    .energy-blob, .energy-blob-2 {
+        position: absolute; width: 500px; height: 500px;
+        background: radial-gradient(circle, rgba(126, 24, 222, 0.12) 0%, transparent 70%);
+        border-radius: 50%; filter: blur(80px); z-index: 0; animation: drift 15s infinite alternate;
+    }
+    .energy-blob-2 { right: -50px; bottom: 0; background: rgba(99, 102, 241, 0.08); }
+    @keyframes drift { to { transform: translate(50px, 50px); } }
+
+    /* Header Styling Unified */
+    .meta-header { text-align: center; margin-bottom: 150px; position: relative; z-index: 10; }
+    .pro-text-top { font-size: 2.2rem; font-weight: 300; margin-bottom: 10px; opacity: 0.6; }
+    .bharat-ultra {
+        font-family: 'Unbounded', sans-serif; font-size: 5.5rem; font-weight: 900;
+        margin: 0; background: linear-gradient(180deg, #5a0055, #911efd);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        letter-spacing: -3px; filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.4));
+    }
+    .hero-sub { margin-top: 20px; font-size: 1.2rem; opacity: 0.8; letter-spacing: 1px; }
+
+    /* Giant Heading Upgrade */
+    .giant-heading {
+        font-family: 'Unbounded', sans-serif; font-size: 4.5rem; font-weight: 900;
+        line-height: 1; margin-bottom: 25px; letter-spacing: -2px;
+    }
+    .giant-heading.center { text-align: center; }
+
+    /* Layout Rows */
+    .meta-row { display: flex; align-items: center; gap: 80px; margin-bottom: 200px; z-index: 10; position: relative; }
+    .meta-row.reverse { flex-direction: row-reverse; }
+
+    /* Visual Side */
+    .meta-visual { flex: 1; perspective: 1200px; display: flex; justify-content: center; }
+    .glass-stack { position: relative; width: 380px; height: 260px; transform-style: preserve-3d; transform: rotateX(15deg) rotateY(-10deg); transition: 0.8s ease; }
+    .glass-stack:hover { transform: rotateX(0) rotateY(0) scale(1.05); }
+    .layer { position: absolute; inset: 0; border-radius: 20px; border: 1px solid rgba(168, 85, 247, 0.2); }
+    .l1 { transform: translateZ(-30px); background: rgba(168, 85, 247, 0.05); }
+    .l2 { transform: translateZ(-60px); background: rgba(168, 85, 247, 0.02); }
+    .l-main img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
+
+    /* Quantum Sphere */
+    .quantum-sphere { width: 300px; height: 300px; position: relative; animation: float 6s infinite ease-in-out; }
+    .core-globe { width: 100%; height: 100%; border-radius: 50%; background: radial-gradient(circle, #a855f722, #000); box-shadow: inset 0 0 40px rgba(168, 85, 247, 0.3); }
+    .ring { position: absolute; border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .r-alpha { width: 110%; height: 35%; transform: translate(-50%, -50%) rotateX(75deg); animation: rotateR 8s linear infinite; }
+
+    /* Hyper Cards */
+    .offer-v5 { text-align: center; margin-bottom: 200px; }
+    .hyper-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; margin-top: 60px; }
+    .h-card {
+        background: #0a0a0a; padding: 60px 25px; border-radius: 20px;
+        position: relative; overflow: hidden; cursor: pointer;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .h-card:hover { transform: translateY(-10px) scale(1.02); background: #0f001a; }
+    .card-content { position: relative; z-index: 2; font-weight: 700; font-size: 1.2rem; color: #eee; }
+    
+    .h-card::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 200%; height: 200%;
+        background: conic-gradient(transparent, transparent, transparent, #a855f7);
+        animation: rotateGlow 4s linear infinite; opacity: 0; transition: 0.3s;
+    }
+    .h-card:hover::before { opacity: 1; }
+    .h-card::after { content: ''; position: absolute; inset: 2px; background: #0a0a0a; border-radius: 18px; z-index: 1; }
+
+    @keyframes rotateGlow { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+    /* Final Branding */
+    .infinity-card {
+        background: linear-gradient(135deg, #0a0a0a, #000); border: 1px solid #1a1a1a;
+        padding: 80px 40px; border-radius: 40px; text-align: center;
+    }
+    .final-banner { margin-top: 40px; font-family: 'Unbounded', sans-serif; font-weight: 900; color: #a855f7; letter-spacing: 3px; }
+
+    /* SCROLL ANIMATION */
+    .scroll-reveal {
+        opacity: 0; transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    .scroll-reveal.visible {
+        opacity: 1; transform: translateY(0);
+    }
+
+    /* Helpers */
+    .purple-glow { color: #a855f7; text-shadow: 0 0 25px rgba(168, 85, 247, 0.4); }
+    .pro-list { list-style: none; padding: 0; }
+    .pro-list li { margin-bottom: 20px; font-size: 1.2rem; color: #ccc; display: flex; gap: 15px; }
+    .p-icon { width: 10px; height: 10px; background: #8923e9; border-radius: 2px; transform: rotate(45deg); margin-top: 8px; box-shadow: 0 0 10px #a855f7; }
+
+    @keyframes rotateR { to { transform: translate(-50%, -50%) rotate(360deg); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+    @media (max-width: 900px) {
+        .meta-row, .meta-row.reverse { flex-direction: column; text-align: center; }
+        .giant-heading { font-size: 2.5rem; }
+        .bharat-ultra { font-size: 3rem; }
+    }
