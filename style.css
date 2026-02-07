@@ -149,6 +149,72 @@
   }
 }
 
+/* ===== SLIDER SECTION ===== */
+.slider-section {
+  padding: 50px 20px;
+  background: #0b0016;
+  color: white;
+  text-align: center;
+}
+
+.slider-section h2 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+/* Slider container */
+.slider {
+  position: relative;
+  max-width: 90%;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+/* Individual slide */
+.slide {
+  display: none;
+  position: relative;
+  cursor: pointer;
+}
+
+.slide.active {
+  display: block;
+}
+
+.slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+}
+
+/* Caption */
+.caption {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.6);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .slider-section h2 {
+    font-size: 22px;
+  }
+
+  .caption {
+    font-size: 14px;
+    padding: 6px 16px;
+  }
+}
+
+
+
+
 
 
 
