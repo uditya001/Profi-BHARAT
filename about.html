@@ -1,164 +1,244 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profi-BHARAT | About</title>
-  <link rel="stylesheet" href="about.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profi-BHARAT | About</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:#000;
+  font-family:'Segoe UI',sans-serif;
+  color:#e8d6ff;
+  overflow-x:hidden;
+}
+
+/* SECTION */
+.about{
+  padding:90px 20px;
+  background:radial-gradient(circle at top,#2a0038,#000 60%);
+}
+
+/* HEADER */
+.about-header{
+  text-align:center;
+  margin-bottom:90px;
+}
+
+.about-header h1{
+  font-size:clamp(34px,6vw,48px);
+  font-weight:800;
+  letter-spacing:3px;
+  background:linear-gradient(90deg,#b86bff,#ff6dfc);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:glowText 3s ease-in-out infinite alternate;
+}
+
+.about-header p{
+  margin-top:15px;
+  color:#b7a9d6;
+}
+
+@keyframes glowText{
+  from{ text-shadow:0 0 10px #7a2cff; }
+  to{ text-shadow:0 0 25px #d26bff; }
+}
+
+/* ROWS */
+.about-row{
+  max-width:1100px;
+  margin:0 auto 120px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+.about-row.reverse{
+  direction:rtl;
+}
+.about-row.reverse > *{
+  direction:ltr;
+}
+
+/* CARD */
+.about-card{
+  background:linear-gradient(160deg,#0e0e18,#07070c);
+  border-radius:26px;
+  padding:40px;
+  box-shadow:inset 0 0 0 1px rgba(168,85,247,.2);
+  animation:fadeUp .8s ease both;
+}
+
+.about-card:hover{
+  box-shadow:0 0 30px rgba(168,85,247,.6);
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* IMAGE */
+.about-image img{
+  width:100%;
+  border-radius:22px;
+  box-shadow:0 0 25px rgba(168,85,247,.4);
+}
+
+/* HEADINGS */
+.about-card h3{
+  font-size:clamp(22px,4vw,36px);
+  margin-bottom:18px;
+}
+
+.purple{
+  color:#a855f7;
+}
+
+/* LIST */
+.about-card ul{
+  list-style:none;
+}
+
+.about-card li{
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#b7a9d6;
+}
+
+.about-card li::before{
+  content:"◆";
+  color:#a855f7;
+}
+
+/* OFFER GRID */
+.offer{
+  max-width:1100px;
+  margin:auto;
+  text-align:center;
+}
+
+.offer-grid{
+  margin-top:50px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:30px;
+}
+
+.offer-card{
+  background:linear-gradient(160deg,#0e0e18,#07070c);
+  padding:40px 20px;
+  border-radius:22px;
+  box-shadow:inset 0 0 0 1px rgba(168,85,247,.2);
+  transition:.4s;
+}
+
+.offer-card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 0 30px rgba(168,85,247,.7);
+}
+
+/* FINAL */
+.final{
+  max-width:900px;
+  margin:140px auto 0;
+  text-align:center;
+}
+
+.final-card{
+  background:linear-gradient(160deg,#0e0e18,#07070c);
+  padding:70px 30px;
+  border-radius:32px;
+  box-shadow:0 0 40px rgba(168,85,247,.5);
+}
+
+.final-banner{
+  margin-top:30px;
+  font-weight:700;
+  letter-spacing:2px;
+  color:#a855f7;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .about-row{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<section class="metamorphic-about">
+<section class="about">
 
-  <!-- Background blobs -->
-  <div class="energy-blob"></div>
-  <div class="energy-blob-2"></div>
-
-  <!-- Header -->
-  <div class="meta-header scroll-reveal">
-    <h1 class="pro-text-top">About</h1>
-    <h2 class="bharat-ultra">Profi-BHARAT</h2>
-    <p class="hero-sub">Empowering Skills, Building Bharat 🇮🇳</p>
+  <!-- HEADER -->
+  <div class="about-header">
+    <h1>ABOUT PROFI-BHARAT</h1>
+    <p>Empowering Skills • Building Bharat 🇮🇳</p>
   </div>
 
-  <!-- Row 1 -->
-  <div class="meta-row scroll-reveal">
-    <div class="meta-visual">
-      <div class="glass-stack">
-        <div class="layer l1"></div>
-        <div class="layer l2"></div>
-        <div class="layer l-main">
-          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=500" alt="Team">
-        </div>
-      </div>
+  <!-- WHO WE ARE -->
+  <div class="about-row">
+    <div class="about-image">
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=600">
     </div>
-
-    <div class="meta-content">
-      <h3 class="giant-heading">Who <span class="purple-glow">We Are</span></h3>
+    <div class="about-card">
+      <h3>Who <span class="purple">We Are</span></h3>
       <p>
-        <strong>Profi-BHARAT</strong> is a national-level skill and talent development platform
-        empowering India’s youth by connecting skills with real-world opportunities.
+        <strong>Profi-BHARAT</strong> is a national-level skill and talent
+        development platform connecting India’s youth with real-world
+        opportunities.
       </p>
     </div>
   </div>
 
-  <!-- Row 2 -->
-  <div class="meta-row reverse scroll-reveal">
-    <div class="meta-visual">
-      <div class="quantum-sphere">
-        <div class="core-globe"></div>
-        <div class="ring r-alpha"></div>
-      </div>
+  <!-- MISSION -->
+  <div class="about-row reverse">
+    <div class="about-image">
+      <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=600">
     </div>
-
-    <div class="meta-content">
-      <h3 class="giant-heading">Our <span class="purple-glow">Mission</span></h3>
-      <ul class="pro-list">
-        <li><span class="p-icon"></span> Promote skill development</li>
-        <li><span class="p-icon"></span> Showcase talent nationally</li>
-        <li><span class="p-icon"></span> Connect with opportunities</li>
-        <li><span class="p-icon"></span> Support self-reliant India</li>
+    <div class="about-card">
+      <h3>Our <span class="purple">Mission</span></h3>
+      <ul>
+        <li>Promote skill development</li>
+        <li>Showcase talent nationally</li>
+        <li>Connect with opportunities</li>
+        <li>Support self-reliant India</li>
       </ul>
     </div>
   </div>
 
-  <!-- Offer -->
-  <div class="offer-v5 scroll-reveal">
-    <h3 class="giant-heading center">What <span class="purple-glow">We Offer</span></h3>
+  <!-- OFFER -->
+  <div class="offer">
+    <h3 class="about-header">What <span class="purple">We Offer</span></h3>
 
-    <div class="hyper-grid">
-      <div class="h-card"><div class="card-content">Skill Development</div></div>
-      <div class="h-card"><div class="card-content">Talent Showcase</div></div>
-      <div class="h-card"><div class="card-content">Competitions</div></div>
-      <div class="h-card"><div class="card-content">Recognition</div></div>
+    <div class="offer-grid">
+      <div class="offer-card">Skill Development</div>
+      <div class="offer-card">Talent Showcase</div>
+      <div class="offer-card">Competitions</div>
+      <div class="offer-card">Recognition</div>
     </div>
   </div>
 
-  <!-- Final -->
-  <div class="infinity-section scroll-reveal">
-    <div class="infinity-card">
-      <h3 class="giant-heading center">Why <span class="purple-glow">Profi-BHARAT?</span></h3>
-      <p>Built for learners, innovators, and professionals of India.</p>
+  <!-- FINAL -->
+  <div class="final">
+    <div class="final-card">
+      <h3>Why <span class="purple">Profi-BHARAT?</span></h3>
+      <p>Built for learners, innovators & professionals of India.</p>
       <div class="final-banner">EMPOWERING SKILLS • BUILDING BHARAT</div>
     </div>
   </div>
 
 </section>
 
-<script>
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add("visible");
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll(".scroll-reveal")
-    .forEach(el => observer.observe(el));
-</script>
-
 </body>
 </html>
 
-    
-    
-     <!-- 
-    
-    <body>
-
-     About Hero Section
-    <section class="about-hero">
-        <div class="container">
-            <h1>About Profi-BHARAT</h1>
-            <p>Empowering Skills, Building Bharat 🇮🇳 </p>
-            <img class="flag" src="https://s.yimg.com/zb/imgv1/16676c2c-38d4-3f0a-8ddd-4a2ff804ed60/t_500x300" alt="About Hero Image">
-        </div>
-    </section>
-
-    
-    <section class="about-content">
-        <div class="container">
-            <h2>Who We Are</h2>
-            <p>
-                <strong>Profi-BHARAT</strong> is a national-level skill and talent development platform
-                dedicated to empowering India’s youth and building a future-ready Bharat.
-                We bridge the gap between talent, skills, and real-world opportunities.
-            </p>
-
-            <h2>Our Vision</h2>
-            <p>
-                To create a skilled, confident, and self-reliant Bharat by enabling youth
-                to discover their strengths and transform them into impactful skills.
-            </p>
-
-            <h2>Our Mission</h2>
-            <ul>
-                <li>Promote skill development and practical learning</li>
-                <li>Provide a platform for talent showcasing and recognition</li>
-                <li>Connect individuals with opportunities and challenges</li>
-                <li>Support innovation and self-reliance in India</li>
-            </ul>
-
-            <h2>What We Offer</h2>
-            <div class="features">
-                <div class="feature-box">Skill Development Programs</div>
-                <div class="feature-box">Talent Showcase</div>
-                <div class="feature-box">Participation Opportunities</div>
-                <div class="feature-box">Results & Recognition</div>
-            </div>
-
-            <h2>Why Profi-BHARAT?</h2>
-            <p>
-                Profi-BHARAT is built for India’s youth, learners, and professionals.
-                We focus on growth, opportunity, and national development.
-            </p>
-        </div>
-    </section>
-
-  
-    <section class="about-footer">
-        <p>Empowering Skills. Building Bharat.</p>
-    </section>
-
-</body>
-    -->
