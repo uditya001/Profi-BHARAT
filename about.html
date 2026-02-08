@@ -1,15 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>About Us | Profi-BHARAT</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Google Font -->
-    <link href="https://uditya001.github.io/Profi-BHARAT/" rel="stylesheet">
-
-    <link rel="stylesheet" href="about.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profi-BHARAT | About</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
+<body>
+
+<section class="metamorphic-about">
+
+  <!-- Background blobs -->
+  <div class="energy-blob"></div>
+  <div class="energy-blob-2"></div>
+
+  <!-- Header -->
+  <div class="meta-header scroll-reveal">
+    <h1 class="pro-text-top">About</h1>
+    <h2 class="bharat-ultra">Profi-BHARAT</h2>
+    <p class="hero-sub">Empowering Skills, Building Bharat 🇮🇳</p>
+  </div>
+
+  <!-- Row 1 -->
+  <div class="meta-row scroll-reveal">
+    <div class="meta-visual">
+      <div class="glass-stack">
+        <div class="layer l1"></div>
+        <div class="layer l2"></div>
+        <div class="layer l-main">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=500" alt="Team">
+        </div>
+      </div>
+    </div>
+
+    <div class="meta-content">
+      <h3 class="giant-heading">Who <span class="purple-glow">We Are</span></h3>
+      <p>
+        <strong>Profi-BHARAT</strong> is a national-level skill and talent development platform
+        empowering India’s youth by connecting skills with real-world opportunities.
+      </p>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="meta-row reverse scroll-reveal">
+    <div class="meta-visual">
+      <div class="quantum-sphere">
+        <div class="core-globe"></div>
+        <div class="ring r-alpha"></div>
+      </div>
+    </div>
+
+    <div class="meta-content">
+      <h3 class="giant-heading">Our <span class="purple-glow">Mission</span></h3>
+      <ul class="pro-list">
+        <li><span class="p-icon"></span> Promote skill development</li>
+        <li><span class="p-icon"></span> Showcase talent nationally</li>
+        <li><span class="p-icon"></span> Connect with opportunities</li>
+        <li><span class="p-icon"></span> Support self-reliant India</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Offer -->
+  <div class="offer-v5 scroll-reveal">
+    <h3 class="giant-heading center">What <span class="purple-glow">We Offer</span></h3>
+
+    <div class="hyper-grid">
+      <div class="h-card"><div class="card-content">Skill Development</div></div>
+      <div class="h-card"><div class="card-content">Talent Showcase</div></div>
+      <div class="h-card"><div class="card-content">Competitions</div></div>
+      <div class="h-card"><div class="card-content">Recognition</div></div>
+    </div>
+  </div>
+
+  <!-- Final -->
+  <div class="infinity-section scroll-reveal">
+    <div class="infinity-card">
+      <h3 class="giant-heading center">Why <span class="purple-glow">Profi-BHARAT?</span></h3>
+      <p>Built for learners, innovators, and professionals of India.</p>
+      <div class="final-banner">EMPOWERING SKILLS • BUILDING BHARAT</div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".scroll-reveal")
+    .forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
 
     
     
@@ -73,101 +162,3 @@
 
 </body>
     -->
-<body>
-
-    <section class="metamorphic-about">
-    <div class="energy-blob"></div>
-    <div class="energy-blob-2"></div>
-
-    <div class="meta-header scroll-reveal">
-        <h1 class="pro-text-top">About</h1>
-        <div class="bharat-canvas">
-            <h2 class="bharat-ultra" data-text="Profi-BHARAT">Profi-BHARAT</h2>
-        </div>
-        <p class="hero-sub">Empowering Skills, Building Bharat 🇮🇳</p>
-    </div>
-
-    <div class="meta-row scroll-reveal">
-        <div class="meta-visual">
-            <div class="glass-stack">
-                <div class="layer l1"></div>
-                <div class="layer l2"></div>
-                <div class="layer l-main">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=400" alt="Team">
-                </div>
-            </div>
-        </div>
-        <div class="meta-content">
-            <h3 class="giant-heading">Who <span class="purple-glow">We Are</span></h3>
-            <p><strong>Profi-BHARAT</strong> is a national-level skill and talent development platform dedicated to empowering India's youth and building a future-ready Bharat. We bridge the gap between talent, skills, and real-world opportunities.</p>
-        </div>
-    </div>
-
-    <div class="meta-row reverse scroll-reveal">
-        <div class="meta-visual">
-            <div class="quantum-sphere">
-                <div class="core-globe"></div>
-                <div class="ring r-alpha"></div>
-                <div class="ring r-beta"></div>
-                <div class="data-node n1">✉️</div>
-                <div class="data-node n2">🎧</div>
-            </div>
-        </div>
-        <div class="meta-content">
-            <h3 class="giant-heading">Our <span class="purple-glow">Mission</span></h3>
-            <ul class="pro-list">
-                <li><i class="p-icon"></i> Promote skill development and practical learning</li>
-                <li><i class="p-icon"></i> Provide a platform for talent showcasing and recognition</li>
-                <li><i class="p-icon"></i> Connect individuals with opportunities and challenges</li>
-                <li><i class="p-icon"></i> Support innovation and self-reliance in India</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="offer-v5 scroll-reveal">
-        <h3 class="giant-heading center">What <span class="purple-glow">We Offer</span></h3>
-        <div class="hyper-grid">
-            <div class="h-card">
-                <div class="card-content">Skill Development Programs</div>
-                <div class="glow-trace"></div>
-            </div>
-            <div class="h-card">
-                <div class="card-content">Talent Showcase</div>
-                <div class="glow-trace"></div>
-            </div>
-            <div class="h-card">
-                <div class="card-content">Participation Opportunities</div>
-                <div class="glow-trace"></div>
-            </div>
-            <div class="h-card">
-                <div class="card-content">Results & Recognition</div>
-                <div class="glow-trace"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="infinity-section scroll-reveal">
-        <div class="infinity-card">
-            <h3 class="giant-heading center">Why <span class="purple-glow">Profi-BHARAT?</span></h3>
-            <p>Profi-BHARAT is built for India’s youth, learners, and professionals. We focus on growth, opportunity, and national development.</p>
-            <div class="final-banner">EMPOWERING SKILLS. BUILDING BHARAT.</div>
-        </div>
-    </div>
-</section>
-    
-<script>
-    const observerOptions = { threshold: 0.1 };
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
-</script>
-
-    </body>
-</html>
-
