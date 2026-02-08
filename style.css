@@ -1,96 +1,5 @@
- @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=Outfit:wght@300&display=swap');
 
-    #ultimate-warp-loader {
-        position: fixed;
-        inset: 0;
-        background: #000;
-        z-index: 9999999;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        perspective: 2000px;
-    }
-
-    .warp-container {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transform-style: preserve-3d;
-    }
-
-    /* The Pulsing 3D Ring */
-    .cosmic-ring {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: transparent;
-        border: 2px solid #a855f7;
-        box-shadow: 0 0 50px #a855f7, inset 0 0 50px #a855f7;
-        animation: warpExpand 3s cubic-bezier(0.15, 0.83, 0.66, 1) forwards;
-    }
-
-    @keyframes warpExpand {
-        0% { transform: scale(0) translateZ(-1000px); opacity: 0; }
-        30% { opacity: 1; transform: scale(5) translateZ(-500px); }
-        100% { transform: scale(50) translateZ(500px); opacity: 0; }
-    }
-
-    /* Logo Entrance */
-    .warp-logo-wrap {
-        text-align: center;
-        opacity: 0;
-        transform: translateZ(-200px) scale(0.5);
-        animation: logoReveal 2.5s cubic-bezier(0.19, 1, 0.22, 1) forwards 0.5s;
-    }
-
-    .warp-logo {
-        font-family: 'Unbounded', sans-serif;
-        font-size: 5rem;
-        color: #fff;
-        margin: 0;
-        letter-spacing: -2px;
-        line-height: 1;
-    }
-
-    .highlight {
-        color: #a855f7;
-        text-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
-    }
-
-    .warp-sub {
-        font-family: 'Outfit', sans-serif;
-        color: #666;
-        letter-spacing: 15px;
-        font-size: 0.9rem;
-        margin-top: 20px;
-        text-transform: uppercase;
-    }
-
-    @keyframes logoReveal {
-        0% { opacity: 0; transform: translateZ(-500px) scale(0.5); filter: blur(20px); }
-        100% { opacity: 1; transform: translateZ(0) scale(1); filter: blur(0); }
-    }
-
-    /* The Exit "Warp" (Sabse Fadu Part) */
-    #ultimate-warp-loader.exit {
-        animation: finalBlast 1.5s cubic-bezier(1, 0, 0, 1) forwards;
-    }
-
-    @keyframes finalBlast {
-        0% { transform: scale(1); filter: brightness(1); }
-        40% { transform: scale(0.9); filter: brightness(2); }
-        100% { transform: scale(10); opacity: 0; filter: brightness(10) blur(50px); }
-    }
-
-    /* Mobile Responsive */
-    @media (max-width: 480px) {
-        .warp-logo { font-size: 2.5rem; letter-spacing: -1px; }
-        .warp-sub { letter-spacing: 5px; font-size: 0.7rem; }
-    }
-
+/* --------------------------------------------------------------------------------------------------------------
 /* ===== RESET ===== */
 * {
   margin: 0;
@@ -412,7 +321,7 @@
         .carousel__cell:nth-child(4) { transform: rotateY(270deg) translateZ(150px); }
     }
 
-
+/*
 
 .footer {
   background: linear-gradient(135deg, #0b0614, #1a0f2e, #0b0614);
@@ -464,7 +373,7 @@
   color: #aaa;
 }
 
-/* Scroll to top */
+/* Scroll to top
 .scroll-top {
   position: absolute;
   right: 20px;
@@ -486,8 +395,98 @@
   .social-icons {
     height: 20px;
     width: auto;
-  }
+  }  
+ */
 
+ @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Outfit:wght@300;500&display=swap');
+
+    .fadu-footer {
+        background: #05010a;
+        padding: 80px 20px 40px;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        font-family: 'Outfit', sans-serif;
+        border-top: 1px solid rgba(168, 85, 247, 0.1);
+    }
+
+    /* 🌌 Background Particle Effect */
+    .footer-bg-animation {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .footer-container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 10; }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+    }
+
+    /* 🏎️ Section Titles & Glow */
+    .section-title {
+        font-family: 'Unbounded'; font-size: 1.8rem; margin-bottom: 25px;
+        letter-spacing: 2px;
+    }
+    .purple-glow { color: #a855f7; text-shadow: 0 0 15px rgba(168, 85, 247, 0.6); }
+    .cyan-glow { color: #05f2c7; text-shadow: 0 0 15px rgba(5, 242, 199, 0.6); }
+
+    /* 🔗 Social Media Icons */
+    .social-icons { display: flex; gap: 30px; margin-bottom: 20px; }
+    .social-link {
+        font-size: 2rem; color: #fff; text-decoration: none;
+        position: relative; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .social-link:hover { transform: translateY(-10px) scale(1.2); color: #a855f7; }
+    .hover-text {
+        position: absolute; bottom: -20px; left: 0; font-size: 0.6rem;
+        opacity: 0; transition: 0.3s; color: #a855f7; font-weight: bold;
+    }
+    .social-link:hover .hover-text { opacity: 1; bottom: -25px; }
+
+    /* ✉️ Contact Items */
+    .contact-details { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
+    .contact-item { display: flex; align-items: center; gap: 20px; }
+    .c-icon { font-size: 1.5rem; opacity: 0.8; }
+    .c-text p { font-size: 1.1rem; font-weight: 500; margin: 2px 0; transition: 0.3s; }
+    .c-text:hover p { color: #05f2c7; }
+
+    /* ⚡ Underline Animation (Like Pic 3) */
+    .underline-cyan {
+        width: 40px; height: 2px; background: #05f2c7;
+        margin-top: 5px; transition: 0.5s ease;
+        box-shadow: 0 0 10px #05f2c7;
+    }
+    .contact-item:hover .underline-cyan { width: 100%; }
+
+    .glitch-line {
+        width: 150px; height: 3px; background: linear-gradient(90deg, #05f2c7, transparent);
+        margin-bottom: 20px; border-radius: 10px;
+    }
+
+    /* ⬆️ Scroll to Top Button */
+    .scroll-top-btn {
+        position: absolute; right: 0; top: -110px;
+        width: 60px; height: 60px; background: #a855f7;
+        border: none; border-radius: 50%; color: #fff; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        transition: 0.4s;
+    }
+    .scroll-top-btn:hover { transform: scale(1.1) rotate(-10deg); box-shadow: 0 0 40px #a855f7; }
+    .arrow { font-size: 1.5rem; font-weight: bold; }
+
+    .copyright { opacity: 0.4; font-size: 0.8rem; margin-top: 40px; }
+
+    @media (max-width: 768px) {
+        .footer-grid { grid-template-columns: 1fr; text-align: left; }
+        .scroll-top-btn { top: -80px; right: 20px; width: 50px; height: 50px; }
+        .section-title { font-size: 1.5rem; }
+    }
+
+/* ------------------------------------------------------------------------------------------------*/
 
 
 
