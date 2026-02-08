@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources | Profi-BHARAT</title>
+
+<style>
+/* ===== GLOBAL ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #14001f, #000);
+  color: #fff;
+  line-height: 1.6;
+}
+
+/* ===== HEADER ===== */
+.resources-hero {
+  padding: 90px 8% 70px;
+  text-align: center;
+}
+
+.resources-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+}
+
+.resources-hero h1 span {
+  color: #a855f7;
+  text-shadow: 0 0 20px rgba(168,85,247,0.7);
+}
+
+.resources-hero p {
+  margin-top: 12px;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* ===== CONTAINER ===== */
+.resources-container {
+  padding: 0 8% 100px;
+  display: grid;
+  gap: 40px;
+}
+
+/* ===== RESOURCE CARD ===== */
+.resource-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(168,85,247,0.25);
+  border-radius: 28px;
+  padding: 40px;
+  backdrop-filter: blur(14px);
+  animation: fadeUp 0.9s ease forwards;
+  transition: all 0.4s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 45px rgba(168,85,247,0.4);
+  border-color: #a855f7;
+}
+
+/* ===== CARD HEADER ===== */
+.resource-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.resource-icon {
+  font-size: 2.8rem;
+  filter: drop-shadow(0 0 12px rgba(168,85,247,0.8));
+}
+
+.resource-header h2 {
+  font-size: 1.8rem;
+}
+
+/* ===== TEXT ===== */
+.resource-card p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-bottom: 25px;
+}
+
+/* ===== FEATURES LIST ===== */
+.resource-list {
+  margin-bottom: 30px;
+}
+
+.resource-list li {
+  list-style: none;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.resource-list li::before {
+  content: "✔";
+  color: #a855f7;
+  margin-right: 10px;
+}
+
+/* ===== DOWNLOAD BUTTON ===== */
+.download-btn {
+  display: inline-block;
+  padding: 14px 34px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #a855f7, #6d28d9);
+  box-shadow: 0 0 25px rgba(168,85,247,0.6);
+  transition: all 0.35s ease;
+}
+
+.download-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 40px rgba(168,85,247,0.9);
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .resources-hero h1 {
+    font-size: 2.1rem;
+  }
+
+  .resource-card {
+    padding: 30px 25px;
+  }
+
+  .resource-header h2 {
+    font-size: 1.5rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== HERO ===== -->
+<section class="resources-hero">
+  <h1>Learning <span>Resources</span></h1>
+  <p>Curated materials to help you practice, revise, and excel 🚀</p>
+</section>
+
+<!-- ===== CONTENT ===== -->
+<section class="resources-container">
+
+  <!-- CodeTantra Solutions -->
+  <div class="resource-card">
+    <div class="resource-header">
+      <div class="resource-icon">💻</div>
+      <h2>CodeTantra Solutions</h2>
+    </div>
+
+    <p>
+      Get well-structured and verified solutions for CodeTantra
+      programming problems. These solutions are designed to help
+      you understand logic, syntax, and best practices.
+    </p>
+
+    <ul class="resource-list">
+      <li>Step-by-step explanations</li>
+      <li>Beginner-friendly approach</li>
+      <li>Covers C, Java & Python basics</li>
+      <li>Useful for lab exams & practice</li>
+    </ul>
+
+    <!-- Replace # with your actual file link -->
+    <a href="#" class="download-btn" download>
+      Download Solutions
+    </a>
+  </div>
+
+</section>
+
+</body>
+</html>
