@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProfiBHARAT | Skills Elite</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=Outfit:wght@300;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: #000; font-family: 'Outfit', sans-serif; color: #fff; padding: 15px; overflow-x: hidden; min-height: 100vh; }
+
+        /* Title with Gradient Text */
+        .title-box { text-align: center; margin: 40px 0; }
+        .title-box h1 { 
+            font-family: 'Unbounded'; 
+            font-size: 2.2rem; 
+            background: linear-gradient(135deg, #fff 30%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px; 
+        }
+
+        /* Gradient Tabs */
+        .fadu-tabs {
+            display: flex; gap: 12px; overflow-x: auto; padding: 10px;
+            scrollbar-width: none; margin-bottom: 30px;
+        }
+        .fadu-tabs::-webkit-scrollbar { display: none; }
+
+        .fadu-item {
+            background: linear-gradient(145deg, #0f0719, #05010a);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            padding: 14px 22px; border-radius: 12px; font-family: 'Unbounded'; font-size: 0.6rem;
+            color: #888; white-space: nowrap; transition: 0.5s;
+        }
+
+        .fadu-item.active {
+            color: #fff; 
+            border-color: #a855f7;
+            background: linear-gradient(135deg, #6b21a8, #000); /* Black-Violet Gradient */
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* The Grid System */
+        .skill-container { display: none; grid-template-columns: repeat(2, 1fr); gap: 20px; perspective: 1500px; }
+        .skill-container.active { display: grid; }
+
+        /* Burst Animation */
+        .skill-container.active .fadu-card {
+            animation: burstIn 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes burstIn {
+            0% { opacity: 0; transform: translateZ(-1000px) scale(0); filter: brightness(5) blur(10px); }
+            100% { opacity: 1; transform: translateZ(0) scale(1); filter: brightness(1) blur(0); }
+        }
+
+        /* Black-Violet Gradient Cards */
+        .fadu-card {
+            background: linear-gradient(145deg, #1a0b2e, #05010a); /* Black-Violet Gradient */
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 30px; padding: 30px 15px; text-align: center;
+            position: relative; transition: 0.4s; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .play-sphere {
+            width: 60px; height: 60px; background: #fff; border-radius: 50%;
+            margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); transition: 0.5s;
+        }
+
+        .play-sphere svg { width: 24px; fill: #000; }
+
+        .fadu-card:active { transform: scale(1.05) rotate(3deg); border-color: #fff; }
+        .fadu-card:active .play-sphere { background: #a855f7; box-shadow: 0 0 40px #a855f7; }
+
+        .fadu-card h3 { font-family: 'Unbounded'; font-size: 0.7rem; color: #fff; text-transform: uppercase; margin-top: 10px; }
+        .fadu-card p { font-size: 0.6rem; color: #aaa; margin-top: 5px; letter-spacing: 1px; }
+
+        /* Delay */
+        .fadu-card:nth-child(1) { animation-delay: 0.1s; }
+        .fadu-card:nth-child(2) { animation-delay: 0.2s; }
+
+        /* SweetPlayer */
+        .swal-fadu { border-radius: 40px !important; background: #000 !important; border: 1px solid #a855f7 !important; }
+        video { width: 100%; border-radius: 25px; }
+    </style>
+</head>
+<body>
+
+    <div class="title-box">
+        <h1 class="animate__animated animate__zoomIn">SKILLS</h1>
+    </div>
+
+    <div class="fadu-tabs">
+        <div class="fadu-item active" onclick="warp('tech', this)">TECHNICAL</div>
+        <div class="fadu-item" onclick="warp('comm', this)">COMMUNICATION</div>
+        <div class="fadu-item" onclick="warp('leader', this)">LEADERSHIP</div>
+        <div class="fadu-item" onclick="warp('market', this)">MARKETING</div>
+    </div>
+
+    <div id="tech" class="skill-container active">
+        <div class="fadu-card" onclick="openVid('Web Development', 'v1.mp4')">
+            <div class="play-sphere"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <h3>WEB DEVELOPMENT</h3><p>Next Gen UI</p>
+        </div>
+        <div class="fadu-card" onclick="openVid('Security', 'v2.mp4')">
+            <div class="play-sphere"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <h3>DESIGN & TOOLS</h3><p>UI/UX Design</p>
+        </div>
+    </div>
+
+    <div id="comm" class="skill-container">
+        <div class="fadu-card" onclick="openVid('Speaking', 'v3.mp4')">
+            <div class="play-sphere"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <h3>PRESENTATION SKILL </h3><p>Impactful Storytelling </p>
+        </div>
+        <div class="fadu-card" onclick="openVid('Writing', 'v4.mp4')">
+            <div class="play-sphere"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <h3>IDEA PITCHING SKILL</h3><p>Clear & Persuasive Proposals</p>
+        </div>
+    </div>
+
+    <div id="leader" class="skill-container">
+        <div class="fadu-card" onclick="openVid('Management', 'v5.mp4')">
+            <div class="play-sphere"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <h3>TEAM LEADERSHIP </h3><p>Effective Coordination</p>
+        </div>
+        <div class="fadu-card" onclick="openVid('Strategy', 'v6.mp4')">
+            <div class="play-sphere"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <h3>INITIATIVE & INNOVATION </h3><p>Taking Action Beyond Limits </p>
+        </div>
+    </div>
+
+    <div id="market" class="skill-container">
+        <div class="fadu-card" onclick="openVid('Meta Ads', 'v7.mp4')">
+            <div class="play-sphere"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <h3>MARKET STRATEGY</h3><p>From Idea to Audience</p>
+        </div>
+        <div class="fadu-card" onclick="openVid('SEO', 'v8.mp4')">
+            <div class="play-sphere"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <h3>BRAND BUILDING </h3><p>Identity & Visibility </p>
+        </div>
+    </div>
+
+<script>
+    function warp(id, el) {
+        document.querySelectorAll('.fadu-item').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+        document.querySelectorAll('.skill-container').forEach(g => g.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function openVid(title, url) {
+        Swal.fire({
+            title: `<span style="font-family:'Unbounded'; font-size:0.9rem; color:#fff;">${title}</span>`,
+            html: `
+                <video controls autoplay class="animate__animated animate__zoomInDown">
+                    <source src="${url}" type="video/mp4">
+                </video>
+            `,
+            background: '#000',
+            showConfirmButton: false,
+            showCloseButton: true,
+            customClass: { popup: 'swal-fadu' }
+        });
+    }
+</script>
+</body>
+</html>
