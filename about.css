@@ -1,4 +1,4 @@
-
+ 
 /*
 * {
     margin: 0;
@@ -173,7 +173,7 @@ body {
 .bharat-ultra {
   font-family: 'Unbounded', sans-serif;
   font-size: clamp(2.5rem, 8vw, 5.5rem);
-  background: linear-gradient(180deg, #5a0055, #911efd);
+  background: linear-gradient(135deg, #d92eff, #d000ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
