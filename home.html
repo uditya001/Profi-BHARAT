@@ -416,8 +416,397 @@
 
 
 <script src="script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* --- CSS DESIGN (Advanced Black & Violet Theme) --- */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+    :root {
+        --primary-gradient: linear-gradient(135deg, #1a1a1a, #8A2BE2);
+        --chat-bg: #121212;
+        --chat-panel: #1f1f1f;
+        --violet-accent: #8A2BE2;
+        --violet-glow: rgba(138, 43, 226, 0.6);
+        --user-msg-bg: linear-gradient(135deg, #8A2BE2, #9d4edd);
+    }
+
+    /* 1. THE CUTE AVATAR BUTTON */
+    .pb-chat-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        width: 70px;
+        height: 70px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: float-avatar 3s ease-in-out infinite;
+    }
+
+    .pb-chat-btn img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 3px solid #8A2BE2;
+        box-shadow: 0 0 20px var(--violet-glow);
+        object-fit: cover;
+        background: #000;
+    }
+    
+    /* Fallback Icon */
+    .pb-chat-btn i {
+        font-size: 30px;
+        color: white;
+        background: var(--primary-gradient);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 3px solid #8A2BE2;
+        box-shadow: 0 0 20px var(--violet-glow);
+    }
+
+    .pb-chat-btn::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px solid #8A2BE2;
+        opacity: 0;
+        z-index: -1;
+        animation: pulse-ring 2s infinite;
+    }
+
+    .pb-chat-btn:hover { transform: scale(1.1); animation-play-state: paused; }
+
+    /* 2. GREETING BUBBLE */
+    .pb-greeting-bubble {
+        position: fixed;
+        bottom: 105px;
+        right: 30px;
+        background: white;
+        color: #333;
+        padding: 10px 18px;
+        border-radius: 20px 20px 2px 20px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        z-index: 9998;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transform-origin: bottom right;
+        animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    .bubble-close { color: #aaa; cursor: pointer; font-size: 16px; margin-left: 5px; }
+
+    /* 3. CHAT WINDOW */
+    .pb-chat-window {
+        display: none;
+        position: fixed;
+        bottom: 110px;
+        right: 25px;
+        width: 380px;
+        max-width: 90%;
+        height: 650px;
+        max-height: 80vh;
+        background-color: var(--chat-bg);
+        border-radius: 25px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        z-index: 9999;
+        flex-direction: column;
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif;
+        border: 1px solid #333;
+        animation: zoom-open 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .chat-header {
+        background: rgba(20, 20, 20, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 18px 20px;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #333;
+    }
+    .chat-header h3 { margin: 0; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+    .header-avatar { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #8A2BE2; }
+    .close-btn { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; transition: 0.3s; }
+    .close-btn:hover { transform: rotate(90deg); color: #ff4d4d; }
+
+    .chat-body {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        background: #121212;
+        scroll-behavior: smooth;
+    }
+
+    .message {
+        max-width: 85%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 13px;
+        line-height: 1.5;
+        position: relative;
+        word-wrap: break-word;
+        animation: msg-pop 0.3s ease-out forwards;
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    
+    .bot-msg { 
+        background-color: var(--chat-panel); 
+        color: #e0e0e0; 
+        align-self: flex-start; 
+        border-bottom-left-radius: 4px;
+        border: 1px solid #333;
+    }
+    
+    .user-msg { 
+        background: var(--user-msg-bg); 
+        color: white; 
+        align-self: flex-end; 
+        border-bottom-right-radius: 4px;
+        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+    }
+
+    .suggestion-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .suggestion-chip {
+        background: rgba(138, 43, 226, 0.1);
+        border: 1px solid var(--violet-accent);
+        color: var(--violet-accent);
+        padding: 8px 14px;
+        border-radius: 25px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: 500;
+    }
+    .suggestion-chip:hover { background: var(--violet-accent); color: white; transform: translateY(-2px); }
+
+    .typing-indicator { font-size: 12px; color: #888; margin-left: 20px; display: none; }
+    .typing-indicator span {
+        display: inline-block;
+        width: 5px; height: 5px; background: #888; border-radius: 50%;
+        animation: bounce 1s infinite;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+    .chat-footer {
+        padding: 15px;
+        background-color: var(--chat-panel);
+        display: flex;
+        gap: 10px;
+        border-top: 1px solid #333;
+    }
+    .chat-footer input {
+        flex: 1;
+        background-color: #000;
+        border: 1px solid #444;
+        border-radius: 30px;
+        padding: 14px 20px;
+        color: white;
+        outline: none;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    .chat-footer input:focus { border-color: #8A2BE2; }
+    
+    .chat-footer button {
+        background: var(--violet-accent);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        color: white;
+        cursor: pointer;
+        font-size: 18px;
+        transition: 0.3s;
+        box-shadow: 0 4px 10px rgba(138, 43, 226, 0.4);
+    }
+    .chat-footer button:hover { transform: scale(1.1); background: #9d4edd; }
+    
+    .chat-link { color: #d0bfff; font-weight: bold; text-decoration: underline; cursor:pointer;}
+
+    @keyframes float-avatar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
+    @keyframes zoom-open { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes msg-pop { to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+    @media (max-width: 480px) {
+        .pb-chat-window {
+            width: 92%;
+            right: 4%; left: 4%; bottom: 100px; height: 70vh;
+        }
+        .pb-greeting-bubble { right: 80px; bottom: 35px; }
+    }
+</style>
+
+<div class="pb-chat-widget">
+    
+    <div class="pb-greeting-bubble" id="greetingBubble" onclick="toggleChat()">
+        Hi! Need Help? 👋
+        <span class="bubble-close" onclick="closeBubble(event)">×</span>
+    </div>
+
+    <button class="pb-chat-btn" onclick="toggleChat()">
+        <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" 
+             alt="AI Avatar"
+             onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-robot\'></i>'"> 
+    </button>
+
+    <div class="pb-chat-window" id="chatWindow">
+        <div class="chat-header">
+            <h3>
+                <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" class="header-avatar">
+                Profi-BHARAT AI
+            </h3>
+            <button class="close-btn" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="chat-body" id="chatBody">
+            <div class="message bot-msg">
+                Hello! I am your <b>AI Assistant</b>. 🤖✨<br>
+                Welcome to <b>Profi-BHARAT</b>!<br><br>
+                How can I help you today?
+                <div class="suggestion-container">
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Active Contests')">🏆 Active Contests</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Contest Topics')">💡 Contest Topics</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Previous Winners')">🏅 Previous Winners</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('How to Win?')">🎯 How to Win?</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Will I get Prize?')">💸 Will I get Prize?</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Get Certificate')">📜 Get Certificate</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Refund Policy')">🔄 Refund Policy</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Is this safe?')">🛡️ Is this Safe?</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('About Team')">👥 About Team</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Refer & Earn')">📢 Refer & Earn</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('Report an Issue')">⚠️ Report an Issue</span>
+                    <span class="suggestion-chip" onclick="sendQuickMsg('24x7 Support')">📞 24x7 Support</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="typing">
+            AI is typing <span></span><span></span><span></span>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Type a message..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const knowledgeBase = {
+        contests: `<b>🔥 Active Contests:</b><br><br>1️⃣ <b>Photo Shoot Contest</b> 📸<br>2️⃣ <b>Reel Editing Contest</b> 🎬<br>3️⃣ <b>Graphic Designing</b> 🎨<br>4️⃣ <b>Web Building Contest</b> 💻<br><br><i>Join now and showcase your skills!</i>`,
+        
+        howToWin: `<b>🎯 How to Win?</b><br>Here are the judging criteria:<br>1. <b>Originality:</b> Content must be unique.<br>2. <b>Creativity:</b> Show us something new.<br>3. <b>Quality:</b> High-resolution photo/video.<br><br><i>Tip: Give your best shot, don't copy!</i>`,
+
+        previousWinners: `<b>🏆 Hall of Fame (Last Month):</b><br><br>1️⃣ <b>Aryan Sharma</b> (Web Dev)<br>&nbsp;&nbsp;&nbsp;&nbsp;💰 Prize: <b>₹300</b><br><br>2️⃣ <b>Nidhi Sinha</b> (Photography)<br>&nbsp;&nbsp;&nbsp;&nbsp;💰 Prize: <b>₹300</b><br><br>3️⃣ <b>Rahul Verma</b> (Editing)<br>&nbsp;&nbsp;&nbsp;&nbsp;💰 Prize: <b>₹200</b><br><br>4️⃣ <b>Priya Singh</b> (Design)<br>&nbsp;&nbsp;&nbsp;&nbsp;💰 Prize: <b>₹100</b><br><br><i>Next winner could be YOU! 🫵</i>`,
+
+        getPrize: `<b>💸 Prize Money Guarantee:</b><br><b>YES, Absolutely!</b><br>Winners receive their prize money <b>instantly</b> via UPI (GPay/PhonePe) or Bank Transfer.<br><br>Payment is processed within <b>24 hours</b> of the result announcement. Trust is our priority! 🤝`,
+
+        certificate: `<b>📜 Certificate of Excellence:</b><br>Yes! Everyone gets a certificate.<br><br>✅ <b>Participants:</b> Get a Certificate of Participation.<br>🏆 <b>Winners:</b> Get a Merit Certificate + Cash Prize.<br><br><i>Great for your resume and portfolio!</i>`,
+
+        topics: `<b>💡 Contest Topics / Themes:</b><br><br>📸 <b>Photo:</b> Nature, Street, or Portrait.<br>🎬 <b>Reel:</b> Creative Transitions or Storytelling.<br>🎨 <b>Design:</b> Poster for a Music Event.<br>💻 <b>Web:</b> Personal Portfolio Website.<br><br><i>Choose your category and start creating!</i>`,
+
+        refundPolicy: `<b>🔄 Refund Policy:</b><br>We value your trust!<br>✅ Your Entry Fee (₹29) is <b>100% Refundable</b> if:<br>1. The contest gets cancelled.<br>2. There is a technical error in payment.<br><br><i>Your money is always safe with Profi-BHARAT.</i>`,
+
+        safetyInfo: `<b>🛡️ 100% Safe & Trusted:</b><br>✅ <b>Legitimate Platform:</b> Run by a professional team.<br>✅ <b>Secure Payments:</b> We use standard UPI gateways.<br>✅ <b>Transparent Results:</b> Winners are announced publicly.<br>✅ <b>Direct Support:</b> You can call us anytime.<br><br><i>Join without fear! Hundreds of students have participated.</i>`,
+
+        aboutTeam: `<b>👥 About Our Team:</b><br>Profi-BHARAT is created and managed by a dedicated <b>Team of 4 Members</b>.<br><br><b>👨‍💻 Lead Developer:</b> Uditya<br><b>🎨 Design & Management:</b> Our core team handles UI/UX, Contest Management, and Community Support.<br><br><i>We are working together to build the best platform for you!</i>`,
+
+        contact: `<b>📞 24x7 Live Support:</b><br>We are here to help you anytime!<br><br>• <b>WhatsApp:</b> +91 98765 43210<br>• <b>Email:</b> profibharat@gmail.com<br>• <b>Phone:</b> +91 98765 43210<br><br><i>Feel free to message us on WhatsApp for instant reply!</i>`,
+
+        referEarn: `<b>📢 Refer & Earn:</b><br>Bring your friends to Profi-BHARAT!<br>If you refer <b>3 friends</b>, you get:<br>✅ <b>Free Entry to 1 Contest!</b><br><br><i>Contact support to claim your bonus after referring.</i>`,
+
+        reportIssue: `<b>⚠️ Report an Issue:</b><br>Facing problems with the website or payment?<br><br>Please describe your issue here or <b>WhatsApp us immediately</b> at +91 98765 43210.<br><i>We will resolve it within 2 hours.</i>`
+    };
+
+    function toggleChat() {
+        const win = document.getElementById("chatWindow");
+        const bubble = document.getElementById("greetingBubble");
+        if(win.style.display === "none" || win.style.display === "") {
+            win.style.display = "flex"; bubble.style.display = "none";
+            document.getElementById("userInput").focus();
+        } else { win.style.display = "none"; bubble.style.display = "flex"; }
+    }
+
+    function closeBubble(event) { event.stopPropagation(); document.getElementById("greetingBubble").style.display = "none"; }
+    function handleEnter(e) { if (e.key === "Enter") sendMessage(); }
+    function sendQuickMsg(text) { document.getElementById("userInput").value = text; sendMessage(); }
+
+    function sendMessage() {
+        const inputField = document.getElementById("userInput");
+        const userText = inputField.value.trim();
+        if (userText === "") return;
+
+        appendMessage(userText, "user-msg");
+        inputField.value = "";
+
+        const typing = document.getElementById("typing");
+        const chatBody = document.getElementById("chatBody");
+        typing.style.display = "block";
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        setTimeout(() => {
+            typing.style.display = "none";
+            const reply = getSmartReply(userText);
+            appendMessage(reply, "bot-msg");
+        }, 800);
+    }
+
+    function appendMessage(html, className) {
+        const body = document.getElementById("chatBody");
+        const div = document.createElement("div");
+        div.className = `message ${className}`;
+        div.innerHTML = html;
+        body.appendChild(div);
+        body.scrollTop = body.scrollHeight;
+    }
+
+    function getSmartReply(text) {
+        text = text.toLowerCase();
+        if (text.includes("topic") || text.includes("theme")) { return knowledgeBase.topics; }
+        else if (text.includes("contest") || text.includes("active")) { return knowledgeBase.contests; }
+        else if (text.includes("previous") || text.includes("winner")) { return knowledgeBase.previousWinners; }
+        else if (text.includes("how to win") || text.includes("criteria")) { return knowledgeBase.howToWin; }
+        else if (text.includes("get prize") || text.includes("will i")) { return knowledgeBase.getPrize; }
+        else if (text.includes("certificate")) { return knowledgeBase.certificate; }
+        else if (text.includes("refund")) { return knowledgeBase.refundPolicy; }
+        else if (text.includes("prize") || text.includes("fee")) { return knowledgeBase.prizes; } // Note: "Prizes" basic info missing in JS map but covered by getPrize logic partially. Adding basic prize info back if generic ask.
+        else if (text.includes("register") || text.includes("join")) { return "<b>📝 To Register:</b><br>Go to the Participate section, click Join Contest, and fill the form."; }
+        else if (text.includes("safe") || text.includes("secure")) { return knowledgeBase.safetyInfo; }
+        else if (text.includes("refer")) { return knowledgeBase.referEarn; }
+        else if (text.includes("report") || text.includes("issue")) { return knowledgeBase.reportIssue; }
+        else if (text.includes("team") || text.includes("owner")) { return knowledgeBase.aboutTeam; }
+        else if (text.includes("contact") || text.includes("support")) { return knowledgeBase.contact; }
+        else if (text.includes("hi") || text.includes("hello")) { return "Hello! I am your 24x7 Assistant. How can I help you win today?"; }
+        else { return `I'm not sure about that. Try selecting an option from above.`; }
+    }
+</script>
 </body>
 </html>
+
 
 
 
