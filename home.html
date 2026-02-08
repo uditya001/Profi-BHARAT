@@ -267,7 +267,7 @@
         Evaluate your skills with quizzes, tasks,
         and challenges curated by experts.
       </p>
-      <a href="#" class="explore-link">Take a Test →</a>
+      <a href="javascript:void(0)" class="explore-link" onclick="openQuiz()">Take a Test ➝</a>
     </div>
 
     <div class="explore-card">
@@ -804,8 +804,246 @@
         else { return `I'm not sure about that. Try selecting an option from above.`; }
     }
 </script>
+  <style>
+    /* --- QUIZ CSS (Dark & Violet Theme) --- */
+    .quiz-overlay {
+        display: none; /* Hidden by default */
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 11000; /* Chatbot se upar */
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .quiz-box {
+        background: #121212;
+        width: 90%; max-width: 500px;
+        padding: 30px;
+        border-radius: 20px;
+        border: 1px solid #333;
+        box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+        text-align: center;
+        position: relative;
+        animation: slideUp 0.5s ease;
+    }
+
+    /* Start Screen Styles */
+    .start-icon { font-size: 60px; margin-bottom: 20px; display: block; animation: bounce 2s infinite; }
+    .rules-list { text-align: left; background: #1a1a1a; padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px solid #333; }
+    .rules-list p { margin: 8px 0; color: #ccc; font-size: 14px; }
+    
+    .question-text { font-size: 19px; color: white; margin-bottom: 25px; font-weight: 600; }
+    
+    .option-btn {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        margin: 10px 0;
+        background: #1f1f1f;
+        border: 1px solid #444;
+        border-radius: 12px;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        text-align: left;
+        font-size: 15px;
+    }
+
+    .option-btn:hover { border-color: #8A2BE2; background: #2a2a2a; }
+    .option-btn.correct { background: #00c851 !important; border-color: #00c851; color: black; font-weight: bold; }
+    .option-btn.wrong { background: #ff4444 !important; border-color: #ff4444; color: white; }
+    .option-btn.disabled { pointer-events: none; opacity: 0.7; }
+
+    .quiz-footer { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #333; padding-top: 15px; }
+
+    .next-btn {
+        background: linear-gradient(135deg, #8A2BE2, #6a0dad);
+        border: none; padding: 12px 30px; color: white; border-radius: 25px;
+        cursor: pointer; font-weight: bold; font-size: 16px;
+        box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+    }
+    
+    .close-quiz { position: absolute; top: 15px; right: 20px; color: #fff; font-size: 28px; cursor: pointer; z-index: 10; }
+
+    /* Leaderboard */
+    .leaderboard-list { list-style: none; padding: 0; text-align: left; margin-top: 20px; max-height: 200px; overflow-y: auto; }
+    .lb-item { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; color: #ccc; }
+    .lb-item.user-rank { background: rgba(138, 43, 226, 0.2); border-radius: 8px; color: white; font-weight: bold; border: 1px solid #8A2BE2; }
+    .score-circle { width: 100px; height: 100px; border-radius: 50%; border: 4px solid #8A2BE2; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 24px; font-weight: bold; color: white; background: #000; }
+
+    @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+</style>
+
+<div class="quiz-overlay" id="quizModal">
+    <div class="quiz-box">
+        <span class="close-quiz" onclick="closeQuiz()">&times;</span>
+        
+        <div id="quizStart">
+            <span class="start-icon">🧠</span>
+            <h2 style="color:white; margin-bottom:5px;">Ready to Test Yourself?</h2>
+            <p style="color:#aaa; font-size:14px;">Profi-BHARAT Skill Assessment</p>
+            
+            <div class="rules-list">
+                <p>📝 <b>Questions:</b> 20 (Tech & Design)</p>
+                <p>✅ <b>Correct:</b> +2 Marks</p>
+                <p>🏆 <b>Pass Marks:</b> 20 Points</p>
+            </div>
+
+            <button class="next-btn" style="width:100%" onclick="startQuiz()">Start Quiz Now 🚀</button>
+        </div>
+
+        <div id="quizGame" style="display:none;">
+            <div style="display:flex; justify-content:space-between; color:#8A2BE2; margin-bottom:15px; font-weight:bold;">
+                <span id="qCount">Q: 1/20</span>
+                <span id="currentScore">Score: 0</span>
+            </div>
+            
+            <div style="width:100%; height:5px; background:#333; margin-bottom:20px; border-radius:3px;">
+                <div id="progressBar" style="width:0%; height:100%; background:#8A2BE2; border-radius:3px; transition:0.3s;"></div>
+            </div>
+
+            <div class="question-text" id="questionText">Loading...</div>
+            <div id="optionsContainer"></div>
+
+            <div class="quiz-footer">
+                <button class="next-btn" id="nextQBtn" style="display:none; margin-left:auto;" onclick="nextQuestion()">Next &rarr;</button>
+            </div>
+        </div>
+
+        <div id="quizResult" style="display:none;">
+            <h2 style="color:white;">🎉 Quiz Finished!</h2>
+            <div class="score-circle" id="finalScoreDisplay">0/40</div>
+            
+            <h4 style="color:#8A2BE2; text-align:left;">🏆 Leaderboard</h4>
+            <ul class="leaderboard-list" id="lbList"></ul>
+
+            <button class="next-btn" style="width:100%; margin-top:20px;" onclick="closeQuiz()">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        { q: "Full form of HTML?", options: ["Hyper Text Markup Language", "High Text Make Language", "Hyper Links and Text", "Home Tool Markup"], a: 0 },
+        { q: "Which tool is best for Video Editing?", options: ["MS Paint", "Adobe Premiere Pro", "Notepad", "Excel"], a: 1 },
+        { q: "What does CSS stand for?", options: ["Creative Style Sheets", "Cascading Style Sheets", "Computer Style Sheets", "Colorful Style Sheets"], a: 1 },
+        { q: "Color mode used for Printing?", options: ["RGB", "CMYK", "HEX", "HSL"], a: 1 },
+        { q: "Which language is used for Web Logic?", options: ["HTML", "CSS", "JavaScript", "SQL"], a: 2 },
+        { q: "Short cut for 'Undo' in most apps?", options: ["Ctrl + C", "Ctrl + V", "Ctrl + Z", "Ctrl + X"], a: 2 },
+        { q: "Best software for Vector Graphics?", options: ["Photoshop", "Illustrator", "After Effects", "Premiere"], a: 1 },
+        { q: "What is 1080p resolution?", options: ["1280x720", "1920x1080", "3840x2160", "720x480"], a: 1 },
+        { q: "Tag used for Image in HTML?", options: ["<img>", "<image>", "<pic>", "<src>"], a: 0 },
+        { q: "Which one is a JavaScript Framework?", options: ["Laravel", "React", "Django", "Flask"], a: 1 },
+        { q: "FPS stands for?", options: ["Frames Per Second", "First Person Shooter", "Frames Play Speed", "File Play System"], a: 0 },
+        { q: "Extension for Photoshop file?", options: [".ai", ".psd", ".indd", ".cdr"], a: 1 },
+        { q: "Which tag makes text bold in HTML?", options: ["<b>", "<bold>", "<bb>", "<dark>"], a: 0 },
+        { q: "Primary colors of Light (Screen)?", options: ["RYB", "CMYK", "RGB", "B&W"], a: 2 },
+        { q: "Software used for 3D Modeling?", options: ["Blender", "Figma", "Canva", "Word"], a: 0 },
+        { q: "To declare a variable in JS?", options: ["dim", "var / let", "int", "string"], a: 1 },
+        { q: "Aspect ratio for Instagram Reels?", options: ["16:9", "4:3", "9:16", "1:1"], a: 2 },
+        { q: "Correct syntax for ID selector in CSS?", options: [".classname", "#idname", "@idname", "*idname"], a: 1 },
+        { q: "Tool used to cut video clips?", options: ["Razor Tool", "Brush Tool", "Pen Tool", "Clone Tool"], a: 0 },
+        { q: "Who is the owner of Profi-BHARAT?", options: ["A Team", "Rahul", "Amit", "Sandeep"], a: 0 }
+    ];
+
+    let currentQIndex = 0;
+    let score = 0;
+
+    // --- AUTO OPEN LOGIC ---
+    window.onload = function() {
+        // Website load hone ke 2 second baad Quiz khul jayega
+        setTimeout(openQuiz, 2000);
+    };
+
+    function openQuiz() {
+        document.getElementById("quizModal").style.display = "flex";
+        document.getElementById("quizStart").style.display = "block";
+        document.getElementById("quizGame").style.display = "none";
+        document.getElementById("quizResult").style.display = "none";
+        currentQIndex = 0; score = 0;
+    }
+
+    function closeQuiz() { document.getElementById("quizModal").style.display = "none"; }
+
+    function startQuiz() {
+        document.getElementById("quizStart").style.display = "none";
+        document.getElementById("quizGame").style.display = "block";
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const qData = quizData[currentQIndex];
+        document.getElementById("qCount").innerText = `Q: ${currentQIndex + 1}/${quizData.length}`;
+        document.getElementById("questionText").innerText = qData.q;
+        document.getElementById("nextQBtn").style.display = "none";
+
+        const progress = ((currentQIndex + 1) / quizData.length) * 100;
+        document.getElementById("progressBar").style.width = `${progress}%`;
+
+        const optsDiv = document.getElementById("optionsContainer");
+        optsDiv.innerHTML = "";
+
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt;
+            btn.onclick = () => checkAnswer(index, btn);
+            optsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(selectedIndex, btn) {
+        const correctIndex = quizData[currentQIndex].a;
+        const allBtns = document.querySelectorAll(".option-btn");
+        allBtns.forEach(b => b.classList.add("disabled"));
+
+        if(selectedIndex === correctIndex) {
+            btn.classList.add("correct"); score += 2;
+            document.getElementById("currentScore").innerText = `Score: ${score}`;
+        } else {
+            btn.classList.add("wrong");
+            allBtns[correctIndex].classList.add("correct");
+        }
+        document.getElementById("nextQBtn").style.display = "block";
+    }
+
+    function nextQuestion() {
+        currentQIndex++;
+        if(currentQIndex < quizData.length) loadQuestion();
+        else showResults();
+    }
+
+    function showResults() {
+        document.getElementById("quizGame").style.display = "none";
+        document.getElementById("quizResult").style.display = "block";
+        document.getElementById("finalScoreDisplay").innerText = `${score}/40`;
+        
+        const list = document.getElementById("lbList");
+        list.innerHTML = "";
+        const dummyScores = [
+            { name: "Sanya Gupta", s: 38 },
+            { name: "Rahul Verma", s: 36 },
+            { name: "YOU", s: score, isUser: true },
+            { name: "Amit Kumar", s: Math.max(0, score - 2) },
+            { name: "Priya Singh", s: Math.max(0, score - 6) }
+        ];
+        dummyScores.sort((a, b) => b.s - a.s);
+        dummyScores.forEach((p, i) => {
+            const li = document.createElement("li");
+            li.className = `lb-item ${p.isUser ? 'user-rank' : ''}`;
+            li.innerHTML = `<span>#${i+1} ${p.name}</span> <span>${p.s} pts</span>`;
+            list.appendChild(li);
+        });
+    }
+</script>
 </body>
 </html>
+
 
 
 
