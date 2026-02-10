@@ -152,7 +152,7 @@ form.addEventListener("submit", async function(e){
         if(!doc.exists) return;
 
         const status = doc.data().status;
-
+console.log("STATUS RECEIVED:", status);
         if(status === "approved"){
           window.location.href = "success.html?id=" + paymentId;
         }
