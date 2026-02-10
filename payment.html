@@ -5,100 +5,171 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QR Payment</title>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<!-- Firebase COMPAT SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
-  background:#0b0615;color:#fff;font-family:Segoe UI,sans-serif;
-  display:flex;align-items:center;justify-content:center;min-height:100vh
+  font-family:Segoe UI,sans-serif;
+  background:#0b0615;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .container{
-  width:420px;background:#140c24;padding:30px;border-radius:16px
+  width:420px;
+  background:#140c24;
+  padding:30px;
+  border-radius:18px;
+  color:#fff;
+  box-shadow:0 0 30px rgba(138,43,226,.5);
 }
-.status{display:none;text-align:center;padding:20px;border-radius:12px;margin-top:15px}
+h2{text-align:center;color:#c77dff}
+.amount{text-align:center;color:#2aff9d;font-size:22px;margin:10px 0}
+.qr{
+  text-align:center;
+  border:2px dashed #8a2be2;
+  padding:20px;
+  border-radius:14px;
+  margin-bottom:20px;
+}
+.qr img{width:160px}
+input,button{
+  width:100%;
+  padding:12px;
+  margin-top:12px;
+  border-radius:10px;
+  border:none;
+}
+input{background:#1f1633;color:#fff}
+button{
+  background:linear-gradient(135deg,#8a2be2,#4b0082);
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+.status{
+  display:none;
+  text-align:center;
+  padding:16px;
+  border-radius:12px;
+  margin-top:15px;
+}
 .pending{background:#2a1f00;color:#ffcc00}
+.rejected{background:#3d0f1c;color:#ff4d6d}
 </style>
 </head>
 
 <body>
+
 <div class="container">
+  <h2>QR Payment</h2>
+  <div class="amount">₹500</div>
 
-<h2>QR Payment</h2>
+  <div class="qr">
+    <img src="qr.jpeg" alt="QR">
+    <p>UPI: <b>profibharat@paytm</b></p>
+  </div>
 
-<form id="paymentForm">
-  <input id="name" placeholder="Name" required>
-  <input id="utr" placeholder="UTR" required>
-  <input type="file" id="screenshot" accept="image/*" required>
-  <button type="submit">Submit</button>
-</form>
+  <form id="paymentForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="text" id="utr" placeholder="UTR / Transaction ID" required>
+    <input type="file" id="screenshot" accept="image/*" required>
+    <button type="submit">Submit Payment</button>
+  </form>
 
-<div id="waitUI" class="status pending">
-⏳ Payment submitted, waiting for approval...
-</div>
+  <div id="pending" class="status pending">
+    ⏳ Payment submitted.<br>Waiting for approval...
+  </div>
 
+  <div id="rejected" class="status rejected">
+    ❌ Payment rejected.<br>Contact support.
+  </div>
 </div>
 
 <script>
+/* 🔥 FIREBASE CONFIG */
 firebase.initializeApp({
-  apiKey: "AIzaSyD5yA9_Ieu05rC4qYVuokI04MZ5ggLpAms",
-  authDomain: "profibharat-system.firebaseapp.com",
-  projectId: "profibharat-system",
-  storageBucket: "profibharat-system.appspot.com",
-  messagingSenderId: "737868719964",
-  appId: "1:737868719964:web:adc1abebd762431b418399"
+  apiKey: "AIzaSyCJLEOfZb3h5ZzGlAu1g0j-bZz9aXNPXW4",
+  authDomain: "profipayment-system.firebaseapp.com",
+  projectId: "profipayment-system",
+  storageBucket: "profipayment-system.firebasestorage.app",
+  messagingSenderId: "542760709053",
+  appId: "1:542760709053:web:c41ca6265a364792b140d4"
 });
 
 const db = firebase.firestore();
 const storage = firebase.storage();
+
+const form = document.getElementById("paymentForm");
+const pendingUI = document.getElementById("pending");
+const rejectedUI = document.getElementById("rejected");
+
 let paymentId = null;
 
-document.getElementById("paymentForm").addEventListener("submit", async e=>{
+form.addEventListener("submit", async function(e){
   e.preventDefault();
 
-  const file = screenshot.files[0];
+  // ✅ FIXED VARIABLES (THIS WAS THE BUG)
+  const nameVal = document.getElementById("name").value;
+  const utrVal = document.getElementById("utr").value;
+  const file = document.getElementById("screenshot").files[0];
 
-  document.getElementById("paymentForm").style.display="none";
-  document.getElementById("waitUI").style.display="block";
-
-  const docRef = await db.collection("qrpayment").add({
-    name: name.value,
-    utr: utr.value,
-    status: "pending",
-    time: firebase.firestore.FieldValue.serverTimestamp()
-  });
-
-  paymentId = docRef.id;
-  localStorage.setItem("paymentId", paymentId);
-
-  const ref = storage.ref("payments/"+paymentId+".jpg");
-  await ref.put(file);
-  const url = await ref.getDownloadURL();
-
-  await docRef.update({ screenshot: url });
-
-  listenStatus();
-});
-
-function listenStatus(){
-  db.collection("qrpayment").doc(paymentId)
-  .onSnapshot(doc=>{
-    if(doc.data().status === "approved"){
-      // 🔥 REDIRECT
-      window.location.href = "success.html?id=" + paymentId;
-    }
-  });
-}
-
-// reload support
-window.onload = ()=>{
-  const id = localStorage.getItem("paymentId");
-  if(id){
-    paymentId = id;
-    listenStatus();
+  if(!nameVal || !utrVal || !file){
+    alert("All fields required");
+    return;
   }
-};
+
+  form.style.display = "none";
+  pendingUI.style.display = "block";
+
+  try{
+    // 1️⃣ Firestore document
+    const docRef = await db.collection("qrpayment").add({
+      name: nameVal,
+      utr: utrVal,
+      amount: 500,
+      status: "pending",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    paymentId = docRef.id;
+
+    // 2️⃣ Upload screenshot
+    const imgRef = storage.ref("payments/" + paymentId + ".jpg");
+    await imgRef.put(file);
+    const url = await imgRef.getDownloadURL();
+
+    await docRef.update({ screenshot: url });
+
+    // 3️⃣ Listen for admin approval
+    db.collection("qrpayment").doc(paymentId)
+      .onSnapshot(doc=>{
+        if(!doc.exists) return;
+
+        const status = doc.data().status;
+
+        if(status === "approved"){
+          window.location.href = "success.html?id=" + paymentId;
+        }
+
+        if(status === "rejected"){
+          pendingUI.style.display = "none";
+          rejectedUI.style.display = "block";
+        }
+      });
+
+  }catch(err){
+    alert("Error: " + err.message);
+    console.error(err);
+  }
+});
 </script>
+
 </body>
 </html>
+
