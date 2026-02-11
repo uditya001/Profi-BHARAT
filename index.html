@@ -3,55 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProfiBHARAT | Secure Access</title>
+    <title>ProfiBHARAT | Elite Access</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@600;900&family=Outfit:wght@300;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&family=Syncopate:wght@700&family=Unbounded:wght@900&display=swap');
+        
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { background: #030005; height: 100dvh; display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; color: #fff; overflow: hidden; }
-        .hologram-grid { position: absolute; width: 200%; height: 200%; background-image: linear-gradient(rgba(168, 85, 247, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.08) 1px, transparent 1px); background-size: 50px 50px; transform: perspective(500px) rotateX(60deg); z-index: 1; animation: gridMove 10s linear infinite; }
-        @keyframes gridMove { from { transform: translateY(0); } to { transform: translateY(50px); } }
-        .auth-card { position: relative; z-index: 10; background: rgba(8, 4, 10, 0.9); padding: 30px 25px; border-radius: 24px; border: 1px solid rgba(168, 85, 247, 0.3); width: 92%; max-width: 370px; backdrop-filter: blur(15px); text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
-        .cyber-title { font-family: 'Unbounded'; font-size: 1.25rem; margin-bottom: 25px; color: #a855f7; text-shadow: 0 0 10px #a855f7; }
-        .form-wrapper { display: none; }
-        .form-wrapper.active { display: block; animation: zoomIn 0.3s ease; }
-        .input-box { margin-bottom: 12px; text-align: left; }
-        .input-box input, .input-box select { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: #fff; font-size: 0.95rem; }
-        .input-box select option { background: #08040a; color: #fff; }
-        .hint-text { font-size: 10px; color: #a855f7; margin-top: 4px; margin-left: 5px; opacity: 0.8; }
-        .cyber-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; background: linear-gradient(90deg, #a855f7, #6b21a8); color: #fff; font-family: 'Unbounded'; font-size: 0.85rem; cursor: pointer; font-weight: 900; margin-top: 10px; }
-        .switch-text { margin-top: 15px; font-size: 0.85rem; color: #888; }
-        .switch-text span { color: #a855f7; cursor: pointer; font-weight: bold; padding: 5px; }
+        
+        body { 
+            background: radial-gradient(circle at top right, #1a0b2e, #05010a 60%, #000);
+            height: 100dvh; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            font-family: 'Outfit', sans-serif; 
+            overflow: hidden; 
+        }
+
+        /* --- BRANDING ANIMATION --- */
+        .brand-container {
+            margin-bottom: 20px;
+            text-align: center;
+            z-index: 20;
+            animation: fadeInDown 1s ease;
+        }
+
+        .main-logo {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #fff, #a855f7, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite, floatLogo 4s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* --- BACKGROUND EFFECTS --- */
+        .glow-overlay {
+            position: absolute; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.1; z-index: 1;
+        }
+        .violet-light {
+            position: absolute; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.2) 0%, transparent 70%);
+            border-radius: 50%; animation: pulseLight 10s infinite alternate; z-index: 2;
+        }
+        @keyframes pulseLight { from { transform: translate(-20%, -20%) scale(1); } to { transform: translate(20%, 20%) scale(1.3); } }
+
+        /* --- PREMIUM CARD --- */
+        .auth-card {
+            position: relative; z-index: 10;
+            background: rgba(10, 5, 20, 0.7);
+            padding: 35px 25px;
+            border-radius: 40px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            width: 90%; max-width: 370px;
+            backdrop-filter: blur(30px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            animation: cardIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        @keyframes cardIn { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        .header-title { 
+            font-family: 'Syncopate', sans-serif; font-size: 1.1rem; 
+            margin-bottom: 30px; text-align: center; color: rgba(255,255,255,0.6);
+            letter-spacing: 4px; text-transform: uppercase;
+        }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 16px 20px; border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            color: #fff; font-size: 1rem; transition: 0.4s;
+        }
+        .input-group select option { background: #120524; color: #fff; }
+        .input-group input:focus, .input-group select:focus {
+            border-color: #a855f7;
+            background: rgba(168, 85, 247, 0.08);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-action {
+            width: 100%; padding: 18px; border-radius: 22px; border: none;
+            background: linear-gradient(135deg, #a855f7 0%, #6b21a8 100%);
+            color: #fff; font-family: 'Syncopate'; font-size: 0.85rem;
+            font-weight: 700; cursor: pointer; margin-top: 15px;
+            box-shadow: 0 10px 25px rgba(107, 33, 168, 0.4);
+            transition: 0.3s;
+        }
+        .btn-action:active { transform: scale(0.94); }
+
+        .footer-text { margin-top: 25px; font-size: 0.9rem; color: #666; text-align: center; }
+        .footer-text span { color: #fff; font-weight: 700; cursor: pointer; border-bottom: 1px solid #a855f7; }
+
+        .form-panel { display: none; }
+        .form-panel.active { display: block; animation: fadeIn 0.5s; }
+
+        .toast-elite { 
+            width: auto !important; padding: 10px 20px !important; 
+            border-radius: 50px !important; background: #fff !important; 
+            color: #000 !important; font-weight: 700 !important;
+            font-size: 0.8rem !important;
+        }
     </style>
 </head>
 <body>
-<div class="hologram-grid"></div>
-<div class="auth-card animate__animated" id="main-card">
-    <h2 class="cyber-title" id="form-title">LOGIN</h2>
-    <div id="login-section" class="form-wrapper active">
-        <div class="input-box"><input type="email" id="logEmail" placeholder="Email Address"></div>
-        <div class="input-box"><input type="password" id="logPass" placeholder="Password"></div>
-        <button class="cyber-btn" id="loginBtn">LOGIN</button>
-        <p class="switch-text">New here? <span onclick="switchForm('signup')">Create Account</span></p>
+
+<div class="glow-overlay"></div>
+<div class="violet-light"></div>
+
+<div class="brand-container">
+    <h1 class="main-logo">Profi-BHARAT</h1>
+</div>
+
+<div class="auth-card" id="main-card">
+    <h2 class="header-title" id="display-label">LOGIN</h2>
+
+    <div id="login-panel" class="form-panel active">
+        <div class="input-group"><input type="email" id="logEmail" placeholder="EMAIL"></div>
+        <div class="input-group"><input type="password" id="logPass" placeholder="PASSWORD"></div>
+        <button class="btn-action" id="loginBtn">LOG IN</button>
+        <p class="footer-text">New Operative? <span onclick="switchUI('signup')">REGISTER</span></p>
     </div>
-    <div id="signup-section" class="form-wrapper">
-        <div class="input-box"><input type="text" id="sigName" placeholder="Full Name"></div>
-        <div class="input-box"><input type="email" id="sigEmail" placeholder="Email Address"><p class="hint-text">Original email only</p></div>
-        <div class="input-box"><input type="number" id="sigMobile" placeholder="Mobile Number"></div>
-        <div class="input-box"><select id="sigGender"><option value="" disabled selected>Select Gender</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
-        <div class="input-box"><select id="sigQual"><option value="" disabled selected>Qualification</option><option value="10th">10th Pass</option><option value="12th">12th Pass</option><option value="Undergraduate">Undergraduate (UG)</option><option value="Postgraduate">Postgraduate (PG)</option><option value="Other">Other</option></select></div>
-        <div class="input-box"><input type="password" id="sigPass" placeholder="Set Password"><p class="hint-text">Min 6 chars + 1 special symbol</p></div>
-        <button class="cyber-btn" id="signupBtn">REGISTER</button>
-        <p class="switch-text">Have account? <span onclick="switchForm('login')">Login Now</span></p>
+
+    <div id="signup-panel" class="form-panel">
+        <div class="input-group"><input type="text" id="sigName" placeholder="FULL NAME"></div>
+        <div class="input-group"><input type="email" id="sigEmail" placeholder="EMAIL ADDRESS"></div>
+        <div class="input-group"><input type="number" id="sigMobile" placeholder="MOBILE NO"></div>
+        
+        <div class="input-group">
+            <select id="sigGender">
+                <option value="" disabled selected>GENDER</option>
+                <option value="Male">MALE</option>
+                <option value="Female">FEMALE</option>
+                <option value="Other">OTHER</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <select id="sigQual">
+                <option value="" disabled selected>QUALIFICATION</option>
+                <option value="10th">10TH GRADE</option>
+                <option value="12th">12TH GRADE</option>
+                <option value="Undergraduate">UNDERGRADUATE</option>
+                <option value="Postgraduate">POSTGRADUATE</option>
+                <option value="Other">OTHER</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="sigPass" placeholder="PASSWORD">
+        </div>
+        <button class="btn-action" id="signupBtn">REGISTER</button>
+        <p class="footer-text">Registered? <span onclick="switchUI('login')">LOGIN</span></p>
     </div>
 </div>
 
 <script>
-    function switchForm(t) {
-        document.getElementById('login-section').classList.toggle('active', t==='login');
-        document.getElementById('signup-section').classList.toggle('active', t==='signup');
-        document.getElementById('form-title').innerText = t.toUpperCase();
+    function switchUI(t) {
+        document.getElementById('login-panel').classList.toggle('active', t==='login');
+        document.getElementById('signup-panel').classList.toggle('active', t==='signup');
+        document.getElementById('display-label').innerText = t.toUpperCase();
     }
 </script>
 
@@ -71,50 +199,59 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const showPop = (t, m, i) => Swal.fire({title:t, text:m, icon:i, background:'#0f0a14', color:'#fff', confirmButtonColor:'#a855f7', timer:2000, showConfirmButton:false});
-    const validEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
-    const validPass = (p) => p.length >= 6 && /[!@#$%^&*(),.?":{}|<>]/.test(p);
-
-    // LOGIN LOGIC
-    document.getElementById('loginBtn').onclick = async () => {
-        const email = document.getElementById('logEmail').value.trim().toLowerCase();
-        const pass = document.getElementById('logPass').value;
-        if(!validEmail(email)) return showPop('Error', 'Invalid Email Format', 'error');
-
-        const q = query(collection(db, "users"), where("email", "==", email));
-        const snap = await getDocs(q);
-        let user = null;
-        snap.forEach(doc => { if(doc.data().pass === pass) user = doc.data(); });
-
-        if(user) {
-            localStorage.setItem('profiUser', JSON.stringify(user));
-            showPop('Welcome!', 'Login Successful', 'success');
-            setTimeout(() => window.location.href = "home.html", 1500);
-        } else { showPop('Error', 'Wrong Email or Password', 'error'); }
+    const toast = (m, i) => {
+        const T = Swal.mixin({
+            toast: true, position: 'top', showConfirmButton: false, timer: 2000,
+            customClass: { popup: 'toast-elite' }
+        });
+        T.fire({ icon: i, title: m });
     };
 
-    // SIGNUP LOGIC
+    const isMail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+    document.getElementById('loginBtn').onclick = async () => {
+        const email = document.getElementById('logEmail').value.trim();
+        const pass = document.getElementById('logPass').value;
+        if(!isMail(email)) return toast('Invalid Email Protocol', 'error');
+
+        try {
+            const q = query(collection(db, "users"), where("email", "==", email));
+            const snap = await getDocs(q);
+            let user = null;
+            snap.forEach(doc => { if(doc.data().pass === pass) user = doc.data(); });
+
+            if(user) {
+                localStorage.setItem('profiUser', JSON.stringify(user));
+                toast('Access Authorized', 'success');
+                setTimeout(() => window.location.href="home.html", 1500);
+            } else {
+                toast('Access Denied', 'error');
+            }
+        } catch(e) { toast('Network Error', 'error'); }
+    };
+
     document.getElementById('signupBtn').onclick = async () => {
         const d = {
-            name: document.getElementById('sigName').value.trim(),
+            name: document.getElementById('sigName').value,
             email: document.getElementById('sigEmail').value.trim().toLowerCase(),
-            mobile: document.getElementById('sigMobile').value.trim(),
+            mobile: document.getElementById('sigMobile').value,
             gender: document.getElementById('sigGender').value,
             qualification: document.getElementById('sigQual').value,
             pass: document.getElementById('sigPass').value
         };
 
-        if(!d.name || !d.email || !d.mobile || !d.gender || !d.qualification || !d.pass) return showPop('Wait', 'Fill all fields', 'warning');
-        if(!validEmail(d.email)) return showPop('Error', 'Use real email address', 'error');
-        if(!validPass(d.pass)) return showPop('Weak', 'Min 6 chars + 1 special symbol (@, #, $)', 'error');
+        if(!d.name || !d.email || !d.mobile || !d.gender || !d.pass) return toast('All Fields Required', 'warning');
+        if(!isMail(d.email)) return toast('Enter Original Email', 'error');
 
-        const q = query(collection(db, "users"), where("email", "==", d.email));
-        const snap = await getDocs(q);
-        if(!snap.empty) return showPop('Error', 'Email already used', 'warning');
+        try {
+            const q = query(collection(db, "users"), where("email", "==", d.email));
+            const snap = await getDocs(q);
+            if(!snap.empty) return toast('User Already Exists', 'warning');
 
-        await addDoc(collection(db, "users"), d);
-        showPop('Success!', 'Registered! Please Login now.', 'success');
-        setTimeout(() => { switchForm('login'); document.getElementById('logEmail').value = d.email; }, 2000);
+            await addDoc(collection(db, "users"), d);
+            toast('Profile Initialized', 'success');
+            setTimeout(() => { switchUI('login'); document.getElementById('logEmail').value = d.email; }, 2000);
+        } catch(e) { toast('Error saving data', 'error'); }
     };
 </script>
 </body>
