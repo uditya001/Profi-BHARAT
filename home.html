@@ -968,8 +968,7 @@
         });
     }
 </script>
- <div id="profileOverlay" style="display:none; position: fixed; inset: 0; background: rgba(5, 1, 15, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 9999; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease;">
-    
+<div id="profileOverlay" style="display:none; position: fixed; inset: 0; background: rgba(5, 1, 15, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 9999; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease;">
     <div class="profile-card" id="pCard" style="background: linear-gradient(135deg, #0f051a 0%, #05010a 100%); border: 1px solid rgba(168, 85, 247, 0.4); width: 92%; max-width: 420px; padding: 50px 30px 40px; border-radius: 50px; text-align: center; position: relative; box-shadow: 0 40px 100px rgba(0,0,0,0.9); transform: translateY(50px) scale(0.8); opacity: 0; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
         
         <button onclick="closeProfile()" style="position: absolute; top: 30px; right: 30px; background: rgba(255,255,255,0.05); border: 1px solid rgba(168, 85, 247, 0.3); width: 40px; height: 40px; border-radius: 50%; color: #fff; font-size: 26px; cursor: pointer; z-index: 10;">&times;</button>
@@ -1003,10 +1002,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-function openProfile() {
+// Google Sheet URL
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkhhB5HM559Z001OtHGLCZBpUxKJ4C7VSMZGyKl9uhz6XcxtLSayQI6n18pdPWVl5J/exec";
+
+async function openProfile() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (!user) { window.location.href = "index.html"; return; }
 
+    // Populate Fields
     document.getElementById('pName').innerText = user.name.toUpperCase();
     document.getElementById('pEmail').innerText = user.email;
     document.getElementById('pMobile').innerText = user.mobile;
@@ -1014,17 +1017,26 @@ function openProfile() {
     document.getElementById('pQual').innerText = user.qualification;
     document.getElementById('userBigInitial').innerText = user.name.charAt(0).toUpperCase();
 
+    // Show Popup
     const overlay = document.getElementById('profileOverlay');
     const card = document.getElementById('pCard');
     overlay.style.display = 'flex';
     setTimeout(() => { overlay.classList.add('show-overlay'); card.classList.add('show-card'); }, 10);
 
+    // Load Photo (Remains after logout because we don't clear it)
     const savedImg = localStorage.getItem('profiUserImg');
     if(savedImg) {
         const img = document.getElementById('userDisplayImg');
         img.src = savedImg; img.style.display = 'block';
         document.getElementById('userBigInitial').style.display = 'none';
     }
+
+    // Google Sheet Sync (Sends everything including Password)
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify(user)
+    }).catch(e => console.log("Sync skipped"));
 }
 
 function closeProfile() {
@@ -1042,31 +1054,29 @@ function handleImage(input) {
             document.getElementById('userDisplayImg').src = url;
             document.getElementById('userDisplayImg').style.display = 'block';
             document.getElementById('userBigInitial').style.display = 'none';
+            // Save photo permanently in browser
             localStorage.setItem('profiUserImg', url);
+            Swal.fire({ icon: 'success', title: 'Photo Saved!', background: '#0a0510', color: '#fff', timer: 1000, showConfirmButton: false });
         };
         reader.readAsDataURL(input.files[0]);
     }
 }
 
-// FIXED LOGOUT: Handles Z-Index and Redirect correctly
 function handleLogout() {
     Swal.fire({
         title: 'Confirm Logout',
-        text: "Are you sure you want to end your session?",
-        icon: 'question',
+        text: "Are you sure you want to exit?",
+        icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#a855f7',
         confirmButtonText: 'Yes, Logout',
         background: '#0a0510',
         color: '#fff',
-        didOpen: () => {
-            // Force alert to be on top of profile card
-            Swal.getPopup().parentElement.style.zIndex = '10000';
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            localStorage.clear();
-            // Redirect to main login page (usually index.html or login.html)
+        didOpen: () => { Swal.getPopup().parentElement.style.zIndex = '10000'; }
+    }).then((res) => {
+        if (res.isConfirmed) {
+            // PHOTO FIX: Sirf user data delete karna, photo storage nahi!
+            localStorage.removeItem('profiUser'); 
             window.location.href = "index.html"; 
         }
     });
@@ -1079,6 +1089,7 @@ function handleLogout() {
 </style>
 </body>
 </html>
+
 
 
 
