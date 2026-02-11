@@ -13,53 +13,134 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:Segoe UI,sans-serif;
-  background:#0b0615;
+  background:radial-gradient(circle at top,#12002b,#05010d 70%);
   min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
+  color:#fff;
 }
+
+/* 🔮 Premium Glass Container */
 .container{
   width:420px;
-  background:#140c24;
-  padding:30px;
-  border-radius:18px;
-  color:#fff;
-  box-shadow:0 0 30px rgba(138,43,226,.5);
+  padding:32px;
+  border-radius:20px;
+  background:rgba(20,12,36,0.75);
+  backdrop-filter: blur(14px);
+  border:1px solid rgba(138,43,226,0.4);
+  box-shadow:
+    0 0 25px rgba(138,43,226,.5),
+    inset 0 0 20px rgba(138,43,226,.15);
+  animation: fadeUp .8s ease;
 }
-h2{text-align:center;color:#c77dff}
-.amount{text-align:center;color:#2aff9d;font-size:22px;margin:10px 0}
+
+/* ✨ Heading */
+h2{
+  text-align:center;
+  color:#d8b4fe;
+  letter-spacing:1px;
+  margin-bottom:8px;
+}
+
+/* 💰 Amount Glow */
+.amount{
+  text-align:center;
+  font-size:26px;
+  font-weight:600;
+  color:#2aff9d;
+  text-shadow:0 0 12px rgba(42,255,157,.8);
+  margin-bottom:18px;
+}
+
+/* 🟣 QR Box */
 .qr{
   text-align:center;
+  padding:22px;
+  border-radius:16px;
+  background:linear-gradient(145deg,#1a0d2e,#0e061a);
   border:2px dashed #8a2be2;
-  padding:20px;
-  border-radius:14px;
-  margin-bottom:20px;
+  box-shadow:0 0 18px rgba(138,43,226,.6);
+  animation: float 3s ease-in-out infinite;
 }
-.qr img{width:160px}
-input,button{
+.qr img{
+  width:160px;
+  filter:drop-shadow(0 0 10px rgba(138,43,226,.8));
+}
+.qr p{
+  margin-top:10px;
+  color:#c084fc;
+}
+
+/* ✍️ Inputs */
+input{
   width:100%;
-  padding:12px;
-  margin-top:12px;
-  border-radius:10px;
-  border:none;
-}
-input{background:#1f1633;color:#fff}
-button{
-  background:linear-gradient(135deg,#8a2be2,#4b0082);
+  padding:13px;
+  margin-top:14px;
+  border-radius:12px;
+  border:1px solid rgba(138,43,226,.4);
+  background:#0f0720;
   color:#fff;
-  font-size:16px;
-  cursor:pointer;
+  outline:none;
+  transition:.3s;
 }
+input:focus{
+  border-color:#a855f7;
+  box-shadow:0 0 12px rgba(168,85,247,.7);
+}
+
+/* 🚀 Button */
+button{
+  width:100%;
+  padding:14px;
+  margin-top:18px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:600;
+  color:#fff;
+  background:linear-gradient(135deg,#8a2be2,#4b0082);
+  box-shadow:0 0 18px rgba(138,43,226,.8);
+  transition:.3s;
+}
+button:hover{
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 0 28px rgba(168,85,247,1);
+}
+button:active{
+  transform:scale(.96);
+}
+
+/* 🔔 Status */
 .status{
   display:none;
   text-align:center;
   padding:16px;
-  border-radius:12px;
-  margin-top:15px;
+  border-radius:14px;
+  margin-top:18px;
+  animation: fadeUp .5s ease;
 }
-.pending{background:#2a1f00;color:#ffcc00}
-.rejected{background:#3d0f1c;color:#ff4d6d}
+.pending{
+  background:rgba(42,31,0,.6);
+  color:#ffcc00;
+  box-shadow:0 0 15px rgba(255,204,0,.6);
+}
+.rejected{
+  background:rgba(61,15,28,.6);
+  color:#ff4d6d;
+  box-shadow:0 0 15px rgba(255,77,109,.6);
+}
+
+/* 🎬 Animations */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
 </style>
 </head>
 
@@ -67,11 +148,11 @@ button{
 
 <div class="container">
   <h2>QR Payment</h2>
-  <div class="amount">₹500</div>
+  <div class="amount">₹29</div>
 
   <div class="qr">
     <img src="qr.jpeg" alt="QR">
-    <p>UPI: <b>profibharat@paytm</b></p>
+    <p>UPI: <b>aviateraj6565@fam</b></p>
   </div>
 
   <form id="paymentForm">
@@ -123,30 +204,25 @@ form.addEventListener("submit", async function(e){
   pendingUI.style.display = "block";
 
   try{
-    // 1️⃣ Create Firestore document
     const docRef = await db.collection("qrpayment").add({
       name: nameVal,
       utr: utrVal,
-      amount: 500,
+      amount: 29,
       status: "pending",
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     paymentId = docRef.id;
-    console.log("PAYMENT ID:", paymentId);
 
-    // 2️⃣ Listen for admin approval (IMMEDIATE)
     db.collection("qrpayment").doc(paymentId)
       .onSnapshot(doc => {
         if (!doc.exists) return;
 
         const status = doc.data().status?.toLowerCase();
-        console.log("LIVE STATUS:", status);
 
         if (status === "approved") {
           window.location.href = "success.html?id=" + paymentId;
         }
-
         if (status === "rejected") {
           pendingUI.style.display = "none";
           rejectedUI.style.display = "block";
@@ -155,7 +231,6 @@ form.addEventListener("submit", async function(e){
 
   }catch(err){
     alert("Error: " + err.message);
-    console.error(err);
   }
 });
 </script>
