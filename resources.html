@@ -199,7 +199,6 @@ body {
 
   <!-- CodeTantra Solutions -->
 <div class="resource-card" id="premiumContainer">
-    
     <div id="paymentArea">
       <div class="resource-header">
         <div class="resource-icon">💻</div>
@@ -212,10 +211,10 @@ body {
       <ul class="resource-list">
         <li>Step-by-step explanations</li>
         <li>Beginner-friendly approach</li>
-        <li>Only in Rs.29</li>
+        <li>Only in Rs.29 (Testing: ₹1)</li>
         <li>Instant & Lifetime Access</li>
       </ul>
-      <button onclick="payNow()" class="download-btn white-btn" style="background: #fff; color: #000; border: none; font-weight: 700;">PROCEED PAYMENT</button>
+      <button onclick="payNow()" class="download-btn white-btn" style="background: #fff; color: #000; border: none; font-weight: 700; cursor: pointer;">PROCEED PAYMENT</button>
     </div>
 
     <div id="premiumContent" style="display: none;">
@@ -224,22 +223,21 @@ body {
         <h2>Access Unlocked</h2>
       </div>
       <p>Aapka premium access active hai. Niche click karke solutions open karein.</p>
-      <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn" style="text-decoration: none; display: inline-block; text-align: center;">OPEN PDF SOLUTIONS</a>
+      <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn" style="text-decoration: none; display: inline-block; text-align: center; background: #a855f7; color: white;">OPEN PDF SOLUTIONS</a>
     </div>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Firebase Sync: Har bar check karega ki user paid hai ya nahi
+// Har baar page khulne par check karega ki user ne pay kiya hai ya nahi
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
-        // Realtime Database check
+        // Firebase se status check
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
             if (data && data.isPaid === true) {
-                // Agar paid hai, toh payment hide karo aur solution dikhao
                 document.getElementById('paymentArea').style.display = 'none';
                 document.getElementById('premiumContent').style.display = 'block';
             }
@@ -252,26 +250,26 @@ function payNow() {
     if(!user) { alert("Please login first!"); return; }
 
     const options = {
-        "key": "rzp_test_STmxoXXJHqZTnR", // LIVE API KEY
-        "amount": "2900", // ₹29
+        "key": "rzp_test_STmxoXXJHqZTnR", // TEST KEY
+        "amount": "100", // ₹1 for Test
         "currency": "INR",
         "name": "Profi-BHARAT",
-        "description": "Unlock CodeTantra PDF Solutions",
+        "description": "Unlock CodeTantra PDF",
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
-            // Firebase update (Permanent Save)
+            // Database mein update kar rahe hain
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
-                paymentID: response.razorpay_payment_id
+                paymentID: "TEST_" + response.razorpay_payment_id
             }).then(() => { 
+                // Jaise hi database update ho, button change ho jayega
+                alert("Payment Success! PDF Unlocked.");
                 location.reload(); 
+            }).catch((err) => {
+                alert("Database Update Error: " + err.message);
             });
         },
-        "prefill": { 
-            "name": user.name, 
-            "email": user.email,
-            "contact": user.mobile 
-        },
+        "prefill": { "name": user.name, "email": user.email },
         "theme": { "color": "#a855f7" }
     };
     const rzp = new Razorpay(options);
