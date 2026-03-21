@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Viewer | Profi-BHARAT</title>
+
+<!-- PDF.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #14001f, #000);
+  color: white;
+  overflow: hidden;
+}
+
+/* HEADER */
+.header {
+  padding: 15px 20px;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(168,85,247,0.3);
+}
+
+.title {
+  font-size: 1.1rem;
+}
+
+/* CANVAS */
+#pdf-render {
+  display: block;
+  margin: 20px auto;
+  box-shadow: 0 0 20px rgba(168,85,247,0.5);
+}
+
+/* WATERMARK */
+.watermark {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 40px;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* CONTROLS */
+.controls {
+  position: fixed;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(135deg, #a855f7, #6d28d9);
+  color: white;
+  cursor: pointer;
+}
+
+</style>
+</head>
+
+<body oncontextmenu="return false;">
+
+<div class="header">
+  <div class="title">Profi-BHARAT Secure Viewer</div>
+</div>
+
+<canvas id="pdf-render"></canvas>
+
+<div class="watermark" id="watermark">Profi-Bharat User</div>
+
+<div class="controls">
+  <button class="btn" onclick="prevPage()">Prev</button>
+  <button class="btn" onclick="nextPage()">Next</button>
+</div>
+
+<script>
+
+// ===== GET PDF FROM URL =====
+const urlParams = new URLSearchParams(window.location.search);
+const pdfUrl = urlParams.get("file");
+
+// ===== PDF SETUP =====
+let pdfDoc = null,
+    pageNum = 1,
+    canvas = document.getElementById("pdf-render"),
+    ctx = canvas.getContext("2d");
+
+pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+  pdfDoc = pdf;
+  renderPage(pageNum);
+});
+
+function renderPage(num) {
+  pdfDoc.getPage(num).then(page => {
+    const viewport = page.getViewport({ scale: 1.5 });
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    const renderContext = {
+      canvasContext: ctx,
+      viewport: viewport
+    };
+
+    page.render(renderContext);
+  });
+}
+
+function nextPage() {
+  if (pageNum < pdfDoc.numPages) {
+    pageNum++;
+    renderPage(pageNum);
+  }
+}
+
+function prevPage() {
+  if (pageNum > 1) {
+    pageNum--;
+    renderPage(pageNum);
+  }
+}
+
+// ===== BASIC PROTECTION =====
+document.addEventListener("keydown", function(e) {
+  if (e.ctrlKey && (e.key === 's' || e.key === 'p')) {
+    e.preventDefault();
+  }
+});
+
+// ===== DYNAMIC WATERMARK (OPTIONAL USER EMAIL) =====
+// Replace with Firebase user later
+const user = "User@profi";
+document.getElementById("watermark").innerText = user;
+
+</script>
+
+</body>
+</html>
