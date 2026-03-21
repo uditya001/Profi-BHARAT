@@ -198,77 +198,67 @@ body {
 <section class="resources-container">
 
   <!-- CodeTantra Solutions -->
-<div id="paymentArea" style="background: linear-gradient(135deg, #0f051a 0%, #05010a 100%); border: 1px solid rgba(168, 85, 247, 0.4); padding: 35px; border-radius: 35px; text-align: center; box-shadow: 0 0 45px rgba(168, 85, 247, 0.2); margin: 20px auto; max-width: 450px; font-family: sans-serif;">
-    <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" style="width: 50px; margin-bottom: 15px;">
-    <h2 style="font-family: 'Syncopate'; color: #fff; font-size: 1.1rem; margin-bottom: 15px;">CodeTantra Solutions</h2>
-    <p style="color: #ccc; font-size: 13px; line-height: 1.6; text-align: left; margin-bottom: 20px;">
-        Get permanent access to all programming solutions. One-time payment, lifetime validity.
+<div class="resource-card" id="paymentArea" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(168, 85, 247, 0.2); padding: 25px; border-radius: 25px; backdrop-filter: blur(10px); text-align: center; margin: 20px auto; max-width: 400px;">
+    <div class="resource-icon" style="margin-bottom: 15px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" style="width: 45px; filter: drop-shadow(0 0 10px #a855f7);">
+    </div>
+    <h3 style="font-family: 'Syncopate'; color: #fff; font-size: 1rem; margin-bottom: 12px;">CodeTantra Solutions</h3>
+    <p style="color: #ccc; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">
+        Access all verified programming solutions and lab notes instantly.
     </p>
-    <ul style="text-align: left; color: #a855f7; font-size: 12px; list-style: none; padding: 0; margin-bottom: 25px; line-height: 2;">
-        <li>✔ Verified Step-by-step Logic</li>
-        <li>✔ All Lab Programs Included</li>
-        <li>✔ One-time Fee: ₹29 Only</li>
-    </ul>
-
-    <button onclick="payNow('upi')" style="width: 100%; padding: 14px; border-radius: 15px; border: 2px solid #00d2ff; background: rgba(0, 210, 255, 0.1); color: #00d2ff; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; font-family: 'Syncopate'; font-size: 9px;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" style="width: 35px; filter: brightness(10);">
-        PAY VIA UPI (GPay/PhonePe)
-    </button>
-
-    <button onclick="payNow('all')" style="width: 100%; padding: 16px; border-radius: 20px; border: none; background: linear-gradient(135deg, #a855f7, #6b21a8); color: #fff; font-family: 'Syncopate'; font-weight: 700; cursor: pointer; box-shadow: 0 8px 15px rgba(168, 85, 247, 0.3);">
-        ALL PAYMENT METHODS
+    
+    <button onclick="payNow()" style="width: 100%; padding: 14px; border-radius: 15px; border: none; background: linear-gradient(135deg, #a855f7, #6b21a8); color: white; font-family: 'Syncopate'; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);">
+        PROCEED PAYMENT
     </button>
 </div>
 
-<div id="premiumContent" style="display: none; text-align: center; padding: 50px; border: 2px dashed #a855f7; border-radius: 40px; background: rgba(168, 85, 247, 0.05);">
-    <h2 style="color: #a855f7; font-family: 'Syncopate';">ACCESS UNLOCKED ✅</h2>
-    <p style="color: #fff;">Premium solutions are now available for your account.</p>
+<div id="premiumContent" style="display: none; text-align: center; padding: 30px; border: 1px solid #00ff88; border-radius: 20px; background: rgba(0, 255, 136, 0.05);">
+    <h3 style="color: #00ff88; font-family: 'Syncopate';">ACCESS GRANTED ✅</h3>
+    <p style="color: #fff; font-size: 14px;">Premium solutions are now unlocked.</p>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Check Access on Load
+// Firebase se paid status check karne ke liye (Page load par)
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
-    if (!user) return;
-    const uKey = user.email.replace(/[.$#[\]]/g, "_");
-    
-    // Check Firebase for Paid Status
-    firebase.database().ref('users/' + uKey).on('value', (snap) => {
-        const data = snap.val();
-        if (data && data.isPaid === true) {
-            document.getElementById('paymentArea').style.display = 'none';
-            document.getElementById('premiumContent').style.display = 'block';
-        }
-    });
+    if (user) {
+        const uKey = user.email.replace(/[.$#[\]]/g, "_");
+        firebase.database().ref('users/' + uKey).on('value', (snap) => {
+            const data = snap.val();
+            if (data && data.isPaid === true) {
+                document.getElementById('paymentArea').style.display = 'none';
+                document.getElementById('premiumContent').style.display = 'block';
+            }
+        });
+    }
 });
 
-function payNow(type) {
+function payNow() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
-    if(!user) { alert("Please login first!"); return; }
+    if(!user) { alert("Please Login First"); return; }
 
     const options = {
-        "key": "rzp_live_STmjNlPVfKrT1b", // Live Key
-        "amount": "2900", // ₹29
+        "key": "rzp_live_STmjNlPVfKrT1b", // Teri Live Key
+        "amount": "2900", // ₹29.00
         "currency": "INR",
         "name": "Profi-BHARAT",
-        "description": "Unlock Premium Access",
+        "description": "Premium Access",
+        "image": "https://cdn-icons-png.flaticon.com/512/685/685655.png",
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
                 paymentID: response.razorpay_payment_id
-            }).then(() => {
-                alert("Success! Access Granted.");
             });
         },
-        "prefill": { "name": user.name, "email": user.email, "contact": user.mobile },
-        "theme": { "color": type === 'upi' ? "#00d2ff" : "#a855f7" }
+        "prefill": {
+            "name": user.name,
+            "email": user.email,
+            "contact": user.mobile
+        },
+        "theme": { "color": "#a855f7" }
     };
-
-    if(type === 'upi') {
-        options.config = { display: { blocks: { upi: { name: "UPI Apps", instruments: [{"method": "upi"}] } }, sequence: ["block.upi"] } };
-    }
     new Razorpay(options).open();
 }
 </script>
