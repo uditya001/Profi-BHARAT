@@ -208,7 +208,7 @@ body {
     </div>
 
     <p style="color: rgba(255, 255, 255, 0.8); font-size: 14px; line-height: 1.6; margin-bottom: 20px; font-weight: 400;">
-        Get well-structured and verified solutions for CodeTantra programming problems. These solutions are designed to help you understand logic, syntax, and best practices.
+        Get well-structured and verified solutions for CodeTantra programming problems. Access is permanent once unlocked.
     </p>
 
     <div style="margin-bottom: 30px;">
@@ -231,7 +231,8 @@ body {
 
     <div id="premiumContent" style="display: none; text-align: left;">
         <h2 style="color: #00ff88; font-weight: 800; font-size: 1.6rem; margin-bottom: 15px;">ACCESS UNLOCKED ✅</h2>
-        <p style="color: #fff; font-size: 14px; margin-bottom: 25px;">Premium access active. Click below to view the solutions.</p>
+        <p style="color: #fff; font-size: 14px; margin-bottom: 25px;">Premium solutions are now available. Click below to view the solutions.</p>
+        
         <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" style="display: inline-block; background: #a855f7; color: #fff; padding: 14px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); text-transform: uppercase;">
             OPEN PDF SOLUTIONS
         </a>
@@ -240,11 +241,12 @@ body {
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Firebase Sync
+// Check Access on Load (Logout-Proof)
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
+        // Firebase database se paid status check karo
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
             if (data && data.isPaid === true) {
@@ -260,32 +262,27 @@ function payNow() {
     if(!user) { alert("Please login first!"); return; }
 
     const options = {
-        "key": "rzp_test_p0y08NnS9DIm3N", // Your Test Key
-        "amount": "100", // ₹1 for Test
+        "key": "rzp_test_p0y08NnS9DIm3N", // TEST KEY
+        "amount": "100", // ₹1 for Test Mode
         "currency": "INR",
-        "name": "Profi-BHARAT",
-        "description": "Unlock CodeTantra PDF",
+        "name": "Profi-BHARAT (Test Mode)",
+        "description": "Unlock CodeTantra PDF Solutions",
+        "image": "https://cdn-icons-png.flaticon.com/512/685/685655.png",
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
+            // Database update
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
-                paymentID: "TEST_" + response.razorpay_payment_id
+                paymentID: "TEST_" + response.razorpay_payment_id,
+                paidAt: new Date().toLocaleString()
             }).then(() => {
-                location.reload(); 
+                location.reload(); // Reload to show unlocked PDF
             });
         },
-        "prefill": { "name": user.name, "email": user.email },
+        "prefill": { "name": user.name, "email": user.email, "contact": user.mobile },
         "theme": { "color": "#a855f7" }
     };
-    const rzp = new Razorpay(options);
-    
-    // ERROR FIX: Isse gateway error nahi aayega
-    rzp.on('payment.failed', function (response){
-        console.log(response.error.description);
-        alert("Payment Failed: Choose 'Card' or 'Netbanking' in Test Mode.");
-    });
-    
-    rzp.open();
+    new Razorpay(options).open();
 }
 </script>
 </section>
