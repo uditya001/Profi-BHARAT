@@ -239,22 +239,32 @@ body {
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Ye function card ko change karega
+// Function jo turant UI change karegi
 function showPaidState() {
     document.getElementById('paymentArea').style.display = 'none';
     document.getElementById('premiumContent').style.display = 'block';
 }
 
-// Page Load check (Logout/Login Fix)
+// 1. Page Load hote hi check karo (REFRESH FIX)
 window.addEventListener('load', function() {
+    // Pehle browser ki memory se check karo (Instantly kaam karega)
+    if (localStorage.getItem('profi_paid_status') === 'true') {
+        showPaidState();
+    }
+
+    // Fir Firebase se confirm karo (Background mein check karega)
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
-        // Firebase se status check karo
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
             if (data && data.isPaid === true) {
+                // Agar paid hai to memory update karo aur UI badlo
+                localStorage.setItem('profi_paid_status', 'true');
                 showPaidState();
+            } else {
+                // Agar kisi wajah se paid nahi hai (logout etc), to hide karo
+                localStorage.removeItem('profi_paid_status');
             }
         });
     }
@@ -273,18 +283,17 @@ function payNow() {
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
             
-            // 1. Pehle UI badlo taaki user ko turant dikhe
+            // 1. Turant memory mein save karo aur UI badlo
+            localStorage.setItem('profi_paid_status', 'true');
             showPaidState();
 
-            // 2. Firebase mein permanent save karo
+            // 2. Firebase Database update
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
                 paymentID: response.razorpay_payment_id,
                 paidDate: new Date().toLocaleString()
             }).then(() => { 
                 alert("Payment Successful! PDF is now unlocked.");
-            }).catch((error) => {
-                console.error("Database Error: ", error);
             });
         },
         "prefill": { "name": user.name, "email": user.email, "contact": user.mobile },
