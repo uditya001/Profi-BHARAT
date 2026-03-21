@@ -220,37 +220,43 @@ body {
 
     <div id="premiumContent" style="display: none;">
       <div class="resource-header">
-        <div class="resource-icon">✅</div>
-        <h2>Access Unlocked</h2>
-      </div>
-      <p>Aapka premium access active hai. Niche click karke solutions open karein.</p>
-      <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn" style="text-decoration: none; display: inline-block; text-align: center;">OPEN PDF SOLUTIONS</a>
+        <div class="resource-icon">💻</div> <h2>CodeTantra Solutions</h2> </div>
+      <p>
+        Get well-structured and verified solutions for CodeTantra programming problems. 
+        Access is permanent once unlocked via a one-time payment.
+      </p>
+      <ul class="resource-list">
+        <li>Step-by-step explanations</li>
+        <li>Beginner-friendly approach</li>
+        <li>Only in Rs.29</li>
+        <li>Instant & Lifetime Access</li>
+      </ul>
+      <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn white-btn" style="text-decoration: none; display: inline-block; text-align: center; color: #000 !important; background: #fff !important; width: fit-content;">OPEN PDF SOLUTIONS</a>
     </div>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Function jo access unlock karegi
+// Function jo refresh ke baad bhi access yaad rakhegi
 function unlockPremium() {
     document.getElementById('paymentArea').style.display = 'none';
     document.getElementById('premiumContent').style.display = 'block';
 }
 
-// Page load par check karega (Refresh ke baad yehi kaam karega)
 window.addEventListener('load', function() {
-    // 1. Pehle Local Storage check karo (Tez refresh ke liye)
+    // 1. Tez refresh ke liye Local Storage check karo
     if (localStorage.getItem('isPaidUser') === 'true') {
         unlockPremium();
     }
 
-    // 2. Fir Firebase se confirm karo (Double Security)
+    // 2. Database se permanent confirm karo
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
             if (data && data.isPaid === true) {
-                localStorage.setItem('isPaidUser', 'true'); // Save for next refresh
+                localStorage.setItem('isPaidUser', 'true');
                 unlockPremium();
             }
         });
@@ -270,16 +276,16 @@ function payNow() {
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
             
-            // Database update se pehle hi local save kar lo
+            // UI unlock aur local save
             localStorage.setItem('isPaidUser', 'true');
             unlockPremium();
 
-            // Firebase mein permanent save
+            // Firebase update
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
                 paymentID: response.razorpay_payment_id
             }).then(() => { 
-                alert("Success! PDF Unlocked permanently.");
+                alert("Success! PDF Unlocked.");
             });
         },
         "prefill": { "name": user.name, "email": user.email },
