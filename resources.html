@@ -198,7 +198,7 @@ body {
 <section class="resources-container">
 
   <!-- CodeTantra Solutions -->
-<div class="resource-card" id="premiumContainer" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 35px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); margin: 25px auto; max-width: 85%; width: 650px; text-align: left; font-family: 'Inter', sans-serif; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);">
+<div id="premiumContainer" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 35px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); margin: 25px auto; max-width: 85%; width: 650px; text-align: left; font-family: 'Inter', sans-serif; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);">
     
     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
         <div style="background: rgba(168, 85, 247, 0.1); padding: 10px; border-radius: 12px;">
@@ -208,7 +208,7 @@ body {
     </div>
 
     <p style="color: rgba(255, 255, 255, 0.8); font-size: 14px; line-height: 1.6; margin-bottom: 20px; font-weight: 400;">
-        Get well-structured and verified solutions for CodeTantra programming problems. These solutions are designed to help you understand logic, syntax, and best practices. Access is permanent once unlocked.
+        Get well-structured and verified solutions for CodeTantra programming problems. These solutions are designed to help you understand logic, syntax, and best practices.
     </p>
 
     <div style="margin-bottom: 30px;">
@@ -221,9 +221,6 @@ body {
         <div style="color: #fff; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
             <span style="color: #fff; font-weight: bold;">✓</span> Only in Rs.29 (Test Mode: ₹1)
         </div>
-        <div style="color: #fff; font-size: 14px; display: flex; align-items: center; gap: 10px;">
-            <span style="color: #fff; font-weight: bold;">✓</span> Useful for lab exams & practice
-        </div>
     </div>
 
     <div id="paymentArea">
@@ -234,8 +231,7 @@ body {
 
     <div id="premiumContent" style="display: none; text-align: left;">
         <h2 style="color: #00ff88; font-weight: 800; font-size: 1.6rem; margin-bottom: 15px;">ACCESS UNLOCKED ✅</h2>
-        <p style="color: #fff; font-size: 14px; margin-bottom: 25px;">Aapka premium access active hai. Niche click karke sabhi solutions dekh sakte hain.</p>
-        
+        <p style="color: #fff; font-size: 14px; margin-bottom: 25px;">Premium access active. Click below to view the solutions.</p>
         <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" style="display: inline-block; background: #a855f7; color: #fff; padding: 14px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); text-transform: uppercase;">
             OPEN PDF SOLUTIONS
         </a>
@@ -244,12 +240,11 @@ body {
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Firebase Paid Status Check on Load
+// Firebase Sync
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
-        // Firebase database se paid status check karo
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
             if (data && data.isPaid === true) {
@@ -262,41 +257,35 @@ window.addEventListener('load', function() {
 
 function payNow() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
-    if(!user) { 
-        Swal.fire('Login Required', 'Please login to continue', 'info'); 
-        return; 
-    }
+    if(!user) { alert("Please login first!"); return; }
 
     const options = {
-        // 1. TEST KEY (Dummy Payment Gateway)
         "key": "rzp_test_p0y08NnS9DIm3N", // Your Test Key
-        
-        // 2. TEST AMOUNT: ₹1.00 (Dummy ₹1 for testing)
-        "amount": "100", 
-        
+        "amount": "100", // ₹1 for Test
         "currency": "INR",
-        "name": "Profi-BHARAT (Test Mode)",
-        "description": "Unlock CodeTantra PDF Solutions",
-        "image": "https://cdn-icons-png.flaticon.com/512/685/685655.png",
+        "name": "Profi-BHARAT",
+        "description": "Unlock CodeTantra PDF",
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
-            // Success hone par Database mein save hoga
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
-                paymentID: "TEST_" + response.razorpay_payment_id,
-                paidAt: new Date().toLocaleString()
+                paymentID: "TEST_" + response.razorpay_payment_id
             }).then(() => {
-                location.reload(); // Reload to show unlocked PDF
+                location.reload(); 
             });
         },
-        "prefill": {
-            "name": user.name,
-            "email": user.email,
-            "contact": user.mobile
-        },
+        "prefill": { "name": user.name, "email": user.email },
         "theme": { "color": "#a855f7" }
     };
-    new Razorpay(options).open();
+    const rzp = new Razorpay(options);
+    
+    // ERROR FIX: Isse gateway error nahi aayega
+    rzp.on('payment.failed', function (response){
+        console.log(response.error.description);
+        alert("Payment Failed: Choose 'Card' or 'Netbanking' in Test Mode.");
+    });
+    
+    rzp.open();
 }
 </script>
 </section>
