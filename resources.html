@@ -198,46 +198,47 @@ body {
 <section class="resources-container">
 
   <!-- CodeTantra Solutions -->
-<div class="resource-card" id="paymentArea" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(168, 85, 247, 0.2); padding: 30px; border-radius: 35px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); margin: 20px auto; max-width: 500px; text-align: left; font-family: sans-serif;">
+<div id="paymentArea" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 30px; border-radius: 35px; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); margin: 25px auto; max-width: 85%; width: 650px; text-align: left; font-family: 'Inter', sans-serif; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);">
     
-    <div style="margin-bottom: 20px;">
-        <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" style="width: 45px; filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));">
+    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <div style="background: rgba(168, 85, 247, 0.1); padding: 10px; border-radius: 12px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" style="width: 35px; filter: brightness(1.2);">
+        </div>
+        <h2 style="color: #fff; font-size: 1.5rem; font-weight: 700; margin: 0; letter-spacing: -0.5px;">CodeTantra Solutions</h2>
     </div>
 
-    <h2 style="color: #fff; font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; letter-spacing: -0.5px;">CodeTantra Solutions</h2>
-
-    <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+    <p style="color: rgba(255, 255, 255, 0.8); font-size: 14px; line-height: 1.6; margin-bottom: 20px; font-weight: 400;">
         Get well-structured and verified solutions for CodeTantra programming problems. These solutions are designed to help you understand logic, syntax, and best practices.
     </p>
 
-    <div style="margin-bottom: 25px;">
-        <div style="color: #fff; font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-            <span style="color: #a855f7;">✔</span> Step-by-step explanations
+    <div style="margin-bottom: 30px;">
+        <div style="color: #fff; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+            <span style="color: #fff; font-weight: bold;">✓</span> Step-by-step explanations
         </div>
-        <div style="color: #fff; font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-            <span style="color: #a855f7;">✔</span> Beginner-friendly approach
+        <div style="color: #fff; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+            <span style="color: #fff; font-weight: bold;">✓</span> Beginner-friendly approach
         </div>
-        <div style="color: #fff; font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-            <span style="color: #a855f7;">✔</span> Only in Rs.29
+        <div style="color: #fff; font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+            <span style="color: #fff; font-weight: bold;">✓</span> Only in Rs.29
         </div>
         <div style="color: #fff; font-size: 14px; display: flex; align-items: center; gap: 10px;">
-            <span style="color: #a855f7;">✔</span> Useful for lab exams & practice
+            <span style="color: #fff; font-weight: bold;">✓</span> Useful for lab exams & practice
         </div>
     </div>
 
-    <button onclick="payNow()" style="width: 100%; padding: 16px; border-radius: 50px; border: none; background: #fff; color: #000; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;">
+    <button onclick="payNow()" style="background: #fff; color: #000; padding: 14px 40px; border-radius: 50px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,255,255,0.2); text-transform: none;">
         PROCEED PAYMENT
     </button>
 </div>
 
-<div id="premiumContent" style="display: none; text-align: center; padding: 50px; background: rgba(168, 85, 247, 0.05); border: 2px dashed #a855f7; border-radius: 35px; margin: 20px auto; max-width: 500px;">
-    <h2 style="color: #a855f7; font-weight: 700;">ACCESS UNLOCKED ✅</h2>
-    <p style="color: #fff; font-size: 14px;">Premium solutions are now available for you.</p>
+<div id="premiumContent" style="display: none; text-align: center; padding: 60px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 35px; margin: 25px auto; max-width: 85%; width: 650px;">
+    <h2 style="color: #a855f7; font-family: 'Inter'; font-weight: 800; font-size: 1.8rem;">ACCESS UNLOCKED ✅</h2>
+    <p style="color: #fff; font-size: 15px;">Your premium solutions are now ready to view.</p>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Firebase Sync Check
+// Firebase Paid Status Check
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
@@ -254,10 +255,10 @@ window.addEventListener('load', function() {
 
 function payNow() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
-    if(!user) { alert("Please login first!"); return; }
+    if(!user) { Swal.fire('Error', 'Please login first', 'error'); return; }
 
     const options = {
-        "key": "rzp_live_STmjNlPVfKrT1b", // Live Key
+        "key": "rzp_live_STmjNlPVfKrT1b", // Your Live Key
         "amount": "2900", // ₹29.00
         "currency": "INR",
         "name": "Profi-BHARAT",
