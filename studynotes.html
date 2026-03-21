@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notes Access | Profi-BHARAT</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #14001f, #000);
+  color: #fff;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 80px 8% 40px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+}
+
+.hero span {
+  color: #a855f7;
+  text-shadow: 0 0 20px rgba(168,85,247,0.7);
+}
+
+/* CONTAINER */
+.container {
+  padding: 20px 8% 80px;
+  display: grid;
+  gap: 30px;
+}
+
+/* SUBJECT CARD */
+.subject-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(168,85,247,0.25);
+  border-radius: 25px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+
+.subject-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 30px rgba(168,85,247,0.4);
+}
+
+.subject-title {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+/* UNITS */
+.units {
+  display: grid;
+  gap: 15px;
+}
+
+.unit {
+  background: rgba(255,255,255,0.05);
+  padding: 15px 20px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.unit span {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* BUTTON */
+.btn {
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #a855f7, #6d28d9);
+  color: white;
+  font-size: 0.85rem;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(168,85,247,0.7);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .hero h1{
+    font-size: 2rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+  <h1>Study <span>Notes Access</span></h1>
+  <p>Download unit-wise notes and PYQ's for each subject</p>
+</section>
+
+<section class="container">
+
+  <!-- SUBJECT 1 -->
+  <div class="subject-card">
+    <div class="subject-title">Mathematics - 1</div>
+    <div class="units">
+      <div class="unit">
+        <span>Unit 1: Differential Calculus</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+      <div class="unit">
+        <span>Unit 2: Integral Calculus</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+      <div class="unit">
+        <span>Unit 3: Matrices</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+     
+    </div>
+  </div>
+
+  <!-- SUBJECT 2 -->
+  <div class="subject-card">
+    <div class="subject-title">Physics</div>
+    <div class="units">
+      <div class="unit">
+        <span>Unit 1: Mechanics</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+      <div class="unit">
+        <span>Unit 2: Thermodynamics</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+      <div class="unit">
+        <span>Unit 3: Optics</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBJECT 3 -->
+  <div class="subject-card">
+    <div class="subject-title">Programming (C Language)</div>
+    <div class="units">
+      <div class="unit">
+        <span>Unit 1: Basics of C</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+      <div class="unit">
+        <span>Unit 2: Control Statements</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+      <div class="unit">
+        <span>Unit 3: Functions & Arrays</span>
+        <a href="#" class="btn">Download</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</body>
+</html>
