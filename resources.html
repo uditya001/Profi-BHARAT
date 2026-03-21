@@ -198,28 +198,38 @@ body {
 <section class="resources-container">
 
   <!-- CodeTantra Solutions -->
-<div class="resource-card" id="paymentArea" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(168, 85, 247, 0.2); padding: 25px; border-radius: 25px; backdrop-filter: blur(10px); text-align: center; margin: 20px auto; max-width: 400px;">
-    <div class="resource-icon" style="margin-bottom: 15px;">
-        <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" style="width: 45px; filter: drop-shadow(0 0 10px #a855f7);">
+<div class="resource-card" id="paymentArea" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(168, 85, 247, 0.2); padding: 25px; border-radius: 25px; backdrop-filter: blur(10px); text-align: left; margin: 20px auto; max-width: 500px;">
+    <div class="resource-header" style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+        <div class="resource-icon">
+            <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" style="width: 40px;">
+        </div>
+        <h2 style="font-family: 'Syncopate'; color: #fff; font-size: 1.1rem; margin: 0;">CodeTantra Solutions</h2>
     </div>
-    <h3 style="font-family: 'Syncopate'; color: #fff; font-size: 1rem; margin-bottom: 12px;">CodeTantra Solutions</h3>
-    <p style="color: #ccc; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">
-        Access all verified programming solutions and lab notes instantly.
+
+    <p style="color: #ccc; font-size: 13px; line-height: 1.6; margin-bottom: 15px;">
+        Get well-structured and verified solutions for CodeTantra programming problems. These solutions are designed to help you understand logic, syntax, and best practices.
     </p>
-    
-    <button onclick="payNow()" style="width: 100%; padding: 14px; border-radius: 15px; border: none; background: linear-gradient(135deg, #a855f7, #6b21a8); color: white; font-family: 'Syncopate'; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(168, 85, 247, 0.3);">
+
+    <ul class="resource-list" style="list-style: none; padding: 0; margin-bottom: 20px; color: #fff; font-size: 13px;">
+        <li style="margin-bottom: 8px;">✓ Step-by-step explanations</li>
+        <li style="margin-bottom: 8px;">✓ Beginner-friendly approach</li>
+        <li style="margin-bottom: 8px;">✓ Only in Rs.29</li>
+        <li style="margin-bottom: 8px;">✓ Useful for lab exams & practice</li>
+    </ul>
+
+    <button onclick="payNow()" class="download-btn" style="width: 100%; padding: 14px; border-radius: 30px; border: none; background: #fff; color: #000; font-family: 'Syncopate'; font-weight: 700; cursor: pointer; transition: 0.3s; text-align: center;">
         PROCEED PAYMENT
     </button>
 </div>
 
-<div id="premiumContent" style="display: none; text-align: center; padding: 30px; border: 1px solid #00ff88; border-radius: 20px; background: rgba(0, 255, 136, 0.05);">
-    <h3 style="color: #00ff88; font-family: 'Syncopate';">ACCESS GRANTED ✅</h3>
-    <p style="color: #fff; font-size: 14px;">Premium solutions are now unlocked.</p>
+<div id="premiumContent" style="display: none; text-align: center; padding: 40px; border: 1px solid #a855f7; border-radius: 25px; background: rgba(168, 85, 247, 0.05);">
+    <h2 style="color: #a855f7; font-family: 'Syncopate';">ACCESS UNLOCKED ✅</h2>
+    <p style="color: #fff;">Premium solutions are now available.</p>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Firebase se paid status check karne ke liye (Page load par)
+// Firebase check for Paid Status
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
@@ -236,20 +246,21 @@ window.addEventListener('load', function() {
 
 function payNow() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
-    if(!user) { alert("Please Login First"); return; }
+    if(!user) { alert("Please login first!"); return; }
 
     const options = {
         "key": "rzp_live_STmjNlPVfKrT1b", // Teri Live Key
         "amount": "2900", // ₹29.00
         "currency": "INR",
         "name": "Profi-BHARAT",
-        "description": "Premium Access",
-        "image": "https://cdn-icons-png.flaticon.com/512/685/685655.png",
+        "description": "Premium Access Unlock",
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
                 paymentID: response.razorpay_payment_id
+            }).then(() => {
+                alert("Payment Success! Solutions Unlocked.");
             });
         },
         "prefill": {
