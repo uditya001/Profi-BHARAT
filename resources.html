@@ -211,7 +211,7 @@ body {
       <ul class="resource-list">
         <li>Step-by-step explanations</li>
         <li>Beginner-friendly approach</li>
-        <li>Only in Rs.29 (Test Mode: ₹1)</li>
+        <li>Only in Rs.29</li>
         <li>Instant & Lifetime Access</li>
       </ul>
       <button onclick="payNow()" class="download-btn white-btn">PROCEED PAYMENT</button>
@@ -225,17 +225,16 @@ body {
       <p>Aapka premium access active hai. Niche click karke PDF solutions dekh sakte hain.</p>
       <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn">OPEN PDF SOLUTIONS</a>
     </div>
-  </div>
-
-</section>
+</div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Firebase Sync logic
+// Firebase Sync logic: Logout ke baad bhi access check karega
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
+        // Database se check karna taaki hamesha ke liye unlock rahe
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
             if (data && data.isPaid === true) {
@@ -251,23 +250,31 @@ function payNow() {
     if(!user) { alert("Please login first!"); return; }
 
     const options = {
-        "key": "rzp_test_p0y08NnS9DIm3N", // TEST KEY
-        "amount": "100", // ₹1 for Testing
+        "key": "rzp_live_STmjNlPVfKrT1b", // LIVE API KEY
+        "amount": "2900", // ₹29.00
         "currency": "INR",
         "name": "Profi-BHARAT",
-        "description": "Unlock CodeTantra PDF",
+        "description": "Unlock CodeTantra PDF Solutions",
+        "image": "https://cdn-icons-png.flaticon.com/512/685/685655.png",
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
+            // Success hone par Firebase Database mein permanent save
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
-                paymentID: "TEST_" + response.razorpay_payment_id
-            }).then(() => { location.reload(); });
+                paymentID: response.razorpay_payment_id,
+                paidDate: new Date().toLocaleString()
+            }).then(() => { 
+                location.reload(); // Success ke baad turant PDF dikhayega
+            });
         },
-        "prefill": { "name": user.name, "email": user.email },
+        "prefill": { 
+            "name": user.name, 
+            "email": user.email,
+            "contact": user.mobile 
+        },
         "theme": { "color": "#a855f7" }
     };
     const rzp = new Razorpay(options);
-    rzp.on('payment.failed', function(res){ alert("Test failed! Use 'Card' option with number 4111 1111 1111 1111."); });
     rzp.open();
 }
 </script>
