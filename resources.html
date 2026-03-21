@@ -220,7 +220,9 @@ body {
 
     <div id="premiumContent" style="display: none;">
       <div class="resource-header">
-        <div class="resource-icon">💻</div> <h2>CodeTantra Solutions</h2> </div>
+        <div class="resource-icon">💻</div>
+        <h2>CodeTantra Solutions</h2>
+      </div>
       <p>
         Get well-structured and verified solutions for CodeTantra programming problems. 
         Access is permanent once unlocked via a one-time payment.
@@ -231,33 +233,29 @@ body {
         <li>Only in Rs.29</li>
         <li>Instant & Lifetime Access</li>
       </ul>
-      <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn white-btn" style="text-decoration: none; display: inline-block; text-align: center; color: #000 !important; background: #fff !important; width: fit-content;">OPEN PDF SOLUTIONS</a>
+      <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn white-btn" style="text-decoration: none; display: inline-block; text-align: center; color: #000 !important; background: #fff !important;">OPEN PDF SOLUTIONS</a>
     </div>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Function jo refresh ke baad bhi access yaad rakhegi
-function unlockPremium() {
+// Function jo PDF unlock karti hai
+function showPaidState() {
     document.getElementById('paymentArea').style.display = 'none';
     document.getElementById('premiumContent').style.display = 'block';
 }
 
+// Page load hote hi Firebase se check karo (Logout-Login Fix)
 window.addEventListener('load', function() {
-    // 1. Tez refresh ke liye Local Storage check karo
-    if (localStorage.getItem('isPaidUser') === 'true') {
-        unlockPremium();
-    }
-
-    // 2. Database se permanent confirm karo
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
+        // Firebase Database check
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
+            // Agar database mein isPaid: true hai, tabhi PDF dikhao
             if (data && data.isPaid === true) {
-                localStorage.setItem('isPaidUser', 'true');
-                unlockPremium();
+                showPaidState();
             }
         });
     }
@@ -276,16 +274,13 @@ function payNow() {
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
             
-            // UI unlock aur local save
-            localStorage.setItem('isPaidUser', 'true');
-            unlockPremium();
-
-            // Firebase update
+            // Database mein permanent save karo
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
                 paymentID: response.razorpay_payment_id
             }).then(() => { 
-                alert("Success! PDF Unlocked.");
+                alert("Payment Successful! Access Granted.");
+                showPaidState(); // Turant button badlo
             });
         },
         "prefill": { "name": user.name, "email": user.email },
