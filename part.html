@@ -261,131 +261,52 @@ async function handleContestPayment() {
     new Razorpay(options).open();
 }
     </script>
-   <div id="contestModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10000; overflow-y:auto; backdrop-filter: blur(10px);">
-    <div id="modalContainer" style="max-width:480px; margin:40px auto; background:#111; padding:30px; border-radius:24px; border:2px solid #00ff88; position:relative; box-shadow: 0 0 50px rgba(0, 255, 136, 0.2);">
+<div id="contestModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10000; overflow-y:auto; backdrop-filter: blur(12px);">
+    <style>
+        @keyframes premiumPop {
+            0% { transform: scale(0.7) translateY(100px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .advanced-input:focus {
+            border-color: #00ff88 !important;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            background: #050505 !important;
+        }
+    </style>
+    
+    <div style="max-width:450px; margin:40px auto; background:#0a0a0a; padding:30px; border-radius:28px; border:1px solid #00ff88; position:relative; box-shadow: 0 0 60px rgba(0, 255, 136, 0.15); animation: premiumPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
         
-        <span onclick="closeModal()" style="position:absolute; top:15px; right:20px; color:#fff; cursor:pointer; font-size:28px;">&times;</span>
+        <span onclick="closeModal()" style="position:absolute; top:20px; right:25px; color:#fff; cursor:pointer; font-size:30px; opacity:0.6;">&times;</span>
         
         <div id="formSection">
-            <h2 style="color:#00ff88; text-align:center; margin-bottom:5px; font-weight:800;">Photo Shoot Entry</h2>
-            <p style="color:#888; text-align:center; font-size:12px; margin-bottom:25px;">Entry Fee: ₹19 (Max 5 Photos)</p>
+            <h2 style="color:#00ff88; text-align:center; font-weight:800; letter-spacing:1px; margin-bottom:5px;">PHOTO CONTEST</h2>
+            <p style="color:#666; text-align:center; font-size:11px; margin-bottom:25px; text-transform:uppercase;">Fill details & Pay ₹19 Entry Fee</p>
             
             <form id="contestEntryForm">
-                <input type="text" id="cName" placeholder="Full Name" required style="width:100%; padding:14px; margin-bottom:15px; border-radius:12px; border:1px solid #333; background:#000; color:#fff; outline: none;">
-                <input type="email" id="cEmail" placeholder="Email Address" required style="width:100%; padding:14px; margin-bottom:15px; border-radius:12px; border:1px solid #333; background:#000; color:#fff; outline: none;">
-                <input type="tel" id="cMobile" placeholder="WhatsApp Number" required style="width:100%; padding:14px; margin-bottom:15px; border-radius:12px; border:1px solid #333; background:#000; color:#fff; outline: none;">
+                <input type="text" id="cName" placeholder="Full Name" required class="advanced-input" style="width:100%; padding:15px; margin-bottom:15px; border-radius:14px; border:1px solid #222; background:#111; color:#fff; outline:none; transition:0.3s;">
                 
-                <label style="color:#00ff88; font-size:12px; display:block; margin-bottom:8px; font-weight:700;">Upload Your Photos (Max 5)</label>
-                <input type="file" id="cPhotos" multiple accept="image/*" required style="width:100%; color:#888; font-size:13px; margin-bottom:25px;">
+                <input type="email" id="cEmail" placeholder="Email Address" required class="advanced-input" style="width:100%; padding:15px; margin-bottom:15px; border-radius:14px; border:1px solid #222; background:#111; color:#fff; outline:none; transition:0.3s;">
                 
-                <div id="uploadStatus" style="color:#00ff88; font-size:13px; text-align:center; margin-bottom:15px; font-weight: 600;"></div>
+                <input type="tel" id="cMobile" placeholder="WhatsApp Number" required class="advanced-input" style="width:100%; padding:15px; margin-bottom:15px; border-radius:14px; border:1px solid #222; background:#111; color:#fff; outline:none; transition:0.3s;">
                 
-                <button type="button" onclick="handleContestPayment()" class="download-btn" style="width:100%; background:#00ff88; color:#000; border:none; font-weight:800; padding:15px; border-radius:15px; cursor: pointer; text-transform: uppercase;">PAY ₹19 & SUBMIT</button>
+                <div style="background:#111; border:1px dashed #333; padding:15px; border-radius:14px; margin-bottom:20px; text-align:center;">
+                    <label style="color:#00ff88; font-size:12px; font-weight:700; display:block; margin-bottom:8px;">UPLOAD PHOTOS (MAX 5)</label>
+                    <input type="file" id="cPhotos" multiple accept="image/*" required style="color:#666; font-size:12px; width:100%;">
+                </div>
+                
+                <div id="uploadStatus" style="color:#00ff88; font-size:12px; text-align:center; margin-bottom:15px; min-height:15px;"></div>
+                
+                <button type="button" onclick="handleContestPayment()" style="width:100%; background:#00ff88; color:#000; border:none; font-weight:900; padding:16px; border-radius:16px; cursor:pointer; box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2); text-transform:uppercase; letter-spacing:1px;">PAY & JOIN CONTEST</button>
             </form>
         </div>
 
         <div id="receiptSection" style="display:none; text-align:center;">
-            <div style="background:#00ff88; color:#000; width:65px; height:65px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:35px; box-shadow: 0 0 20px rgba(0,255,136,0.5);">✓</div>
-            <h2 style="color:#00ff88; margin-bottom:10px;">Registration Success!</h2>
-            
-            <div id="receiptContent" style="background:#000; padding:20px; border-radius:15px; text-align:left; color:#fff; font-size:14px; border:1px dashed #444; margin-bottom:25px; line-height: 1.8;">
-                </div>
-            
-            <button onclick="window.location.reload()" class="download-btn" style="width:100%; background:#fff; color:#000; border:none; padding:12px; border-radius:12px; font-weight:700;">DONE</button>
+            <div style="background:#00ff88; color:#000; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px; font-size:30px; box-shadow: 0 0 20px rgba(0,255,136,0.3);">✓</div>
+            <h2 style="color:#00ff88; margin-bottom:10px;">Entry Confirmed!</h2>
+            <div id="receiptContent" style="background:#000; padding:20px; border-radius:18px; text-align:left; color:#fff; border:1px dashed #333; margin-bottom:20px; font-size:13px; line-height:1.6;"></div>
+            <button onclick="window.location.reload()" style="width:100%; background:#fff; color:#000; border:none; padding:12px; border-radius:12px; font-weight:800; cursor:pointer;">DONE</button>
         </div>
     </div>
 </div>
-
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-// Function jo form open karti hai
-function openContestForm() {
-    const user = JSON.parse(localStorage.getItem('profiUser'));
-    if(!user) { alert("Bhai, pehle login kar lo!"); return; }
-    
-    document.getElementById('contestModal').style.display = 'block';
-    // Auto-fill user details (Name, Email, Phone, isPaid Status check karne wala naya section niche hai)
-    updateStatusOnLoad();
-}
-
-// Function jo form band karti hai
-function closeModal() {
-    document.getElementById('contestModal').style.display = 'none';
-}
-
-// Main payment aur entry logic
-async function handleContestPayment() {
-    const name = document.getElementById('cName').value;
-    const email = document.getElementById('cEmail').value;
-    const mobile = document.getElementById('cMobile').value;
-    const photoFiles = document.getElementById('cPhotos').files;
-
-    if(!name || !email || !mobile || photoFiles.length === 0) {
-        alert("Bhai, saari details bharna zaroori hai!"); return;
-    }
-    if(photoFiles.length > 5) { alert("Max 5 photos hi allowed hain!"); return; }
-
-    const options = {
-        "key": "rzp_live_STmjNlPVfKrT1b", // Tumhari Live Key
-        "amount": "1900", // ₹19.00
-        "currency": "INR",
-        "name": "Profi-BHARAT Contest",
-        "handler": async function (response) {
-            document.getElementById('formSection').style.opacity = "0.2";
-            document.getElementById('uploadStatus').innerText = "Uploading Photos... Keep window open.";
-            
-            let uploadedUrls = [];
-            const uKey = email.replace(/[.$#[\]]/g, "_");
-            const now = new Date().toLocaleString();
-
-            try {
-                // Firebase Storage Upload (Bhai, Storage rules check karna!)
-                for (let i = 0; i < photoFiles.length; i++) {
-                    const file = photoFiles[i];
-                    const storageRef = firebase.storage().ref(`contests/photoshoot/${uKey}/${Date.now()}_${file.name}`);
-                    await storageRef.put(file);
-                    const url = await storageRef.getDownloadURL();
-                    uploadedUrls.push(url);
-                }
-
-                // Database mein entry save karna
-                const entryData = {
-                    fullName: name,
-                    email: email,
-                    mobile: mobile,
-                    photos: uploadedUrls,
-                    paymentId: response.razorpay_payment_id,
-                    contestName: "Photo Shoot Contest",
-                    submittedAt: now
-                };
-
-                await firebase.database().ref('contest_entries/photoshoot/' + uKey).set(entryData);
-
-                // Phase 2 (Receipt) par switch karo
-                document.getElementById('formSection').style.display = "none";
-                document.getElementById('receiptSection').style.display = "block";
-                document.getElementById('receiptContent').innerHTML = `
-                    <p><b>Contest:</b> Photo Shoot</p>
-                    <p><b>Name:</b> ${name}</p>
-                    <p><b>Email:</b> ${email}</p>
-                    <p><b>Mobile:</b> ${mobile}</p>
-                    <p><b>Photos:</b> ${photoFiles.length} Uploaded</p>
-                    <p><b>Date:</b> ${now}</p>
-                    <hr style="border:0; border-top:1px solid #222; margin:10px 0;">
-                    <p style="color:#00ff88; font-size:12px;"><b>Payment ID:</b> ${response.razorpay_payment_id}</p>
-                `;
-
-            } catch (err) {
-                console.error(err);
-                alert("Upload failed! Please contact Admin with Payment ID: " + response.razorpay_payment_id);
-            }
-        },
-        "prefill": { "name": name, "email": email, "contact": mobile },
-        "theme": { "color": "#00ff88" }
-    };
-    const rzp = new Razorpay(options);
-    rzp.open();
-}
-</script>
 </body>
 </html>
