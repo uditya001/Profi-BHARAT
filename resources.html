@@ -199,6 +199,7 @@ body {
 
   <!-- CodeTantra Solutions -->
 <div class="resource-card" id="premiumContainer">
+    
     <div id="paymentArea">
       <div class="resource-header">
         <div class="resource-icon">💻</div>
@@ -214,7 +215,7 @@ body {
         <li>Only in Rs.29</li>
         <li>Instant & Lifetime Access</li>
       </ul>
-      <button onclick="payNow()" class="download-btn white-btn">PROCEED PAYMENT</button>
+      <button onclick="payNow()" class="download-btn white-btn" style="background: #fff; color: #000; border: none; font-weight: 700;">PROCEED PAYMENT</button>
     </div>
 
     <div id="premiumContent" style="display: none;">
@@ -222,22 +223,23 @@ body {
         <div class="resource-icon">✅</div>
         <h2>Access Unlocked</h2>
       </div>
-      <p>Aapka premium access active hai. Niche click karke PDF solutions dekh sakte hain.</p>
-      <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn">OPEN PDF SOLUTIONS</a>
+      <p>Aapka premium access active hai. Niche click karke solutions open karein.</p>
+      <a href="https://raw.githubusercontent.com/uditya001/Profi-BHARAT/main/profi-bharat_unlocked.pdf" target="_blank" class="download-btn" style="text-decoration: none; display: inline-block; text-align: center;">OPEN PDF SOLUTIONS</a>
     </div>
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Firebase Sync logic: Logout ke baad bhi access check karega
+// Firebase Sync: Har bar check karega ki user paid hai ya nahi
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
-        // Database se check karna taaki hamesha ke liye unlock rahe
+        // Realtime Database check
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
             if (data && data.isPaid === true) {
+                // Agar paid hai, toh payment hide karo aur solution dikhao
                 document.getElementById('paymentArea').style.display = 'none';
                 document.getElementById('premiumContent').style.display = 'block';
             }
@@ -251,20 +253,18 @@ function payNow() {
 
     const options = {
         "key": "rzp_live_STmjNlPVfKrT1b", // LIVE API KEY
-        "amount": "2900", // ₹29.00
+        "amount": "2900", // ₹29
         "currency": "INR",
         "name": "Profi-BHARAT",
         "description": "Unlock CodeTantra PDF Solutions",
-        "image": "https://cdn-icons-png.flaticon.com/512/685/685655.png",
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
-            // Success hone par Firebase Database mein permanent save
+            // Firebase update (Permanent Save)
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
-                paymentID: response.razorpay_payment_id,
-                paidDate: new Date().toLocaleString()
+                paymentID: response.razorpay_payment_id
             }).then(() => { 
-                location.reload(); // Success ke baad turant PDF dikhayega
+                location.reload(); 
             });
         },
         "prefill": { 
