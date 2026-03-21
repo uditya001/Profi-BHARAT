@@ -239,21 +239,20 @@ body {
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Function jo PDF unlock karti hai
+// Ye function card ko change karega
 function showPaidState() {
     document.getElementById('paymentArea').style.display = 'none';
     document.getElementById('premiumContent').style.display = 'block';
 }
 
-// Page load hote hi Firebase se check karo (Logout-Login Fix)
+// Page Load check (Logout/Login Fix)
 window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
-        // Firebase Database check
+        // Firebase se status check karo
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
-            // Agar database mein isPaid: true hai, tabhi PDF dikhao
             if (data && data.isPaid === true) {
                 showPaidState();
             }
@@ -274,16 +273,21 @@ function payNow() {
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
             
-            // Database mein permanent save karo
+            // 1. Pehle UI badlo taaki user ko turant dikhe
+            showPaidState();
+
+            // 2. Firebase mein permanent save karo
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
-                paymentID: response.razorpay_payment_id
+                paymentID: response.razorpay_payment_id,
+                paidDate: new Date().toLocaleString()
             }).then(() => { 
-                alert("Payment Successful! Access Granted.");
-                showPaidState(); // Turant button badlo
+                alert("Payment Successful! PDF is now unlocked.");
+            }).catch((error) => {
+                console.error("Database Error: ", error);
             });
         },
-        "prefill": { "name": user.name, "email": user.email },
+        "prefill": { "name": user.name, "email": user.email, "contact": user.mobile },
         "theme": { "color": "#a855f7" }
     };
     const rzp = new Razorpay(options);
