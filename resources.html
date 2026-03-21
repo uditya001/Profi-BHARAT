@@ -239,34 +239,39 @@ body {
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-// Function jo turant UI change karegi
 function showPaidState() {
     document.getElementById('paymentArea').style.display = 'none';
     document.getElementById('premiumContent').style.display = 'block';
 }
 
-// 1. Page Load hote hi check karo (REFRESH FIX)
-window.addEventListener('load', function() {
-    // Pehle browser ki memory se check karo (Instantly kaam karega)
-    if (localStorage.getItem('profi_paid_status') === 'true') {
-        showPaidState();
-    }
+function showUnpaidState() {
+    document.getElementById('paymentArea').style.display = 'block';
+    document.getElementById('premiumContent').style.display = 'none';
+}
 
-    // Fir Firebase se confirm karo (Background mein check karega)
+window.addEventListener('load', function() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (user) {
         const uKey = user.email.replace(/[.$#[\]]/g, "_");
+        
+        // 1. Local check (Email ke sath joda hua)
+        if (localStorage.getItem('paid_' + uKey) === 'true') {
+            showPaidState();
+        }
+
+        // 2. Firebase confirmation
         firebase.database().ref('users/' + uKey).on('value', (snap) => {
             const data = snap.val();
             if (data && data.isPaid === true) {
-                // Agar paid hai to memory update karo aur UI badlo
-                localStorage.setItem('profi_paid_status', 'true');
+                localStorage.setItem('paid_' + uKey, 'true');
                 showPaidState();
             } else {
-                // Agar kisi wajah se paid nahi hai (logout etc), to hide karo
-                localStorage.removeItem('profi_paid_status');
+                localStorage.removeItem('paid_' + uKey);
+                showUnpaidState();
             }
         });
+    } else {
+        showUnpaidState();
     }
 });
 
@@ -275,19 +280,17 @@ function payNow() {
     if(!user) { alert("Please login first!"); return; }
 
     const options = {
-        "key": "rzp_test_STmxoXXJHqZTnR", // LIVE KEY
-        "amount": "2900", // ₹29
+        "key": "rzp_test_STmxoXXJHqZTnR", 
+        "amount": "2900", 
         "currency": "INR",
         "name": "Profi-BHARAT",
         "description": "Unlock CodeTantra PDF",
         "handler": function (response) {
             const uKey = user.email.replace(/[.$#[\]]/g, "_");
             
-            // 1. Turant memory mein save karo aur UI badlo
-            localStorage.setItem('profi_paid_status', 'true');
+            localStorage.setItem('paid_' + uKey, 'true');
             showPaidState();
 
-            // 2. Firebase Database update
             firebase.database().ref('users/' + uKey).update({
                 isPaid: true,
                 paymentID: response.razorpay_payment_id,
