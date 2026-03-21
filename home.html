@@ -1001,13 +1001,30 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
+
 <script>
-// Naya URL jo aapne abhi deploy kiya
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkqngDG2jCiYZ5DNkMHCXNej__CtQ_lpzflCFT2wIUFNtosyOaIaQ8wdvpS-G0cw/exec";
+// 1. FIREBASE SETUP
+const firebaseConfig = {
+    apiKey: "AIzaSyD5yA9_Ieu05rC4qYVuokI04MZ5ggLpAms",
+    authDomain: "profibharat-system.firebaseapp.com",
+    projectId: "profibharat-system",
+    databaseURL: "https://profibharat-system-default-rtdb.firebaseio.com/", 
+    storageBucket: "profibharat-system.firebasestorage.app",
+    messagingSenderId: "737868719964",
+    appId: "1:737868719964:web:57ee8792200f6f4c418399"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
 async function openProfile() {
     const user = JSON.parse(localStorage.getItem('profiUser'));
     if (!user) { window.location.href = "index.html"; return; }
+
+    // Unique Key for Firebase
+    const uKey = user.email.replace(/[.$#[\]]/g, "_");
 
     // UI Data Fill
     document.getElementById('pName').innerText = user.name.toUpperCase();
@@ -1023,29 +1040,21 @@ async function openProfile() {
     overlay.style.display = 'flex';
     setTimeout(() => { overlay.classList.add('show-overlay'); card.classList.add('show-card'); }, 10);
 
-    // Photo Loading Fix
-    const savedImg = localStorage.getItem('profiUserImg');
-    if(savedImg) {
+    // 2. FIREBASE SE PHOTO LOAD KARO
+    db.ref('users/' + uKey + '/photo').once('value', (snap) => {
+        const savedImg = snap.val();
         const img = document.getElementById('userDisplayImg');
-        img.src = savedImg; img.style.display = 'block';
-        document.getElementById('userBigInitial').style.display = 'none';
-    }
-
-    // PASSWORD FIX: Explicitly sending password field
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            name: user.name,
-            email: user.email,
-            mobile: user.mobile,
-            gender: user.gender,
-            qualification: user.qualification,
-            password: user.password // Ab ye sheet mein pakka jayega
-        })
-    }).then(() => console.log("Data & Password Synced!"))
-      .catch(e => console.error("Sync Error"));
+        const initial = document.getElementById('userBigInitial');
+        
+        if(savedImg) {
+            img.src = savedImg; 
+            img.style.display = 'block';
+            initial.style.display = 'none';
+        } else {
+            img.style.display = 'none';
+            initial.style.display = 'block';
+        }
+    });
 }
 
 function closeProfile() {
@@ -1055,15 +1064,28 @@ function closeProfile() {
     setTimeout(() => { overlay.style.display = 'none'; }, 500);
 }
 
+// 3. IMAGE UPLOAD TO FIREBASE
 function handleImage(input) {
     if (input.files && input.files[0]) {
+        const user = JSON.parse(localStorage.getItem('profiUser'));
+        const uKey = user.email.replace(/[.$#[\]]/g, "_");
+        
         const reader = new FileReader();
         reader.onload = (e) => {
-            const url = e.target.result;
-            document.getElementById('userDisplayImg').src = url;
+            const base64Url = e.target.result;
+            
+            // UI Update
+            document.getElementById('userDisplayImg').src = base64Url;
             document.getElementById('userDisplayImg').style.display = 'block';
             document.getElementById('userBigInitial').style.display = 'none';
-            localStorage.setItem('profiUserImg', url);
+
+            // Firebase Update (Har user ki apni photo save hogi)
+            db.ref('users/' + uKey).update({
+                photo: base64Url,
+                lastUpdated: new Date().toISOString()
+            }).then(() => {
+                console.log("Photo synced with Firebase!");
+            });
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -1081,21 +1103,18 @@ function handleLogout() {
         didOpen: () => { Swal.getPopup().parentElement.style.zIndex = '10000'; }
     }).then((res) => {
         if (res.isConfirmed) {
-            // PHOTO FIX: Sirf user login data delete karna
             localStorage.removeItem('profiUser'); 
             window.location.href = "index.html"; 
         }
     });
 }
 </script>
+
 <style> 
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } } 
 .show-overlay { opacity: 1 !important; } 
 .show-card { transform: translateY(0) scale(1) !important; opacity: 1 !important; } 
 </style>
-</body>
-</html>
-
 
 
 
