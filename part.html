@@ -10,7 +10,6 @@
         :root { --bg-deep: #080810; --magenta-glow: #d946ef; --purple-accent: #a855f7; --gradient-90: linear-gradient(135deg, #d946ef 0%, #a855f7 100%); }
         body { background-color: var(--bg-deep); color: white; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
         
-        /* Design Pehle Jaisa */
         .hero-section { padding: 80px 20px 40px; text-align: center; }
         .hero-title { font-size: clamp(3rem, 10vw, 5rem); font-weight: 800; background: var(--gradient-90); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-underline { width: 120px; height: 5px; background: var(--gradient-90); margin: 15px auto; border-radius: 50px; }
@@ -27,14 +26,12 @@
         .btn-join { background: var(--gradient-90); color: white; border: none; padding: 16px 30px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; }
         .btn-soon { background: #1a1a1a; color: #555; cursor: not-allowed; border: 1px solid #333; }
 
-        /* Modal Form */
         .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10000; overflow-y:auto; backdrop-filter: blur(20px); }
         .modal-content { max-width:480px; margin:40px auto; background: #0d0d1a; padding:35px; border-radius:35px; border: 1px solid rgba(217, 70, 239, 0.3); position:relative; animation: slideUp 0.4s ease; }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .p-input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #222; background: #111; color: #fff; outline: none; box-sizing: border-box; }
         
-        /* Previews Pehle Jaisi */
         .upload-zone { background: rgba(255, 255, 255, 0.03); border: 2px dashed #444; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; }
         #previewGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
         .preview-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; }
@@ -61,7 +58,6 @@
             <p>Capture Bharat through your lens. Top 3 win cash prizes.</p>
             <button id="photoContestBtn" onclick="openModal()" class="btn-join">Join Contest</button>
         </div>
-
         <div class="contest-card" data-aos="fade-up" data-aos-delay="100"><div class="live-tag">SOON</div><div class="icon-box">💻</div><h3>Web Building</h3><button class="btn-join btn-soon">Soon</button></div>
         <div class="contest-card" data-aos="fade-up" data-aos-delay="200"><div class="live-tag">SOON</div><div class="icon-box">🎬</div><h3>Video Editing</h3><button class="btn-join btn-soon">Soon</button></div>
         <div class="contest-card" data-aos="fade-up" data-aos-delay="300"><div class="live-tag">SOON</div><div class="icon-box">🎨</div><h3>Graphic Design</h3><button class="btn-join btn-soon">Soon</button></div>
@@ -70,16 +66,12 @@
     <div id="contestModal" class="modal-overlay">
         <div class="modal-content">
             <span onclick="closeModal()" style="position:absolute; top:20px; right:25px; color:#666; cursor:pointer; font-size:30px;">&times;</span>
-            
             <div id="infoStep">
                 <h2 style="color:var(--magenta-glow); text-align:center;">Rules & Instructions</h2>
-                <div style="background:rgba(168, 85, 247, 0.1); padding:15px; border-radius:15px; border:1px solid var(--purple-accent); margin-bottom:20px; text-align:center;">
-                    <p style="margin:0; font-weight:bold;">🏆 Prize: 1st ₹100 | 2nd ₹75 | 3rd ₹50</p>
-                </div>
                 <ul style="color:#ccc; font-size:14px; line-height:1.8; margin-bottom:20px; padding-left:20px;">
-                    <li>1. Upload only original JPG/JPEG photos.</li>
+                    <li>1. Upload only JPG/JPEG format photos.</li>
                     <li>2. Maximum 5 photos are allowed.</li>
-                    <li>3. Result will be announced within 24 hours.</li>
+                    <li>3. Result announced within 24 hours.</li>
                 </ul>
                 <label style="font-size:13px; color:#888; display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom: 20px;">
                     <input type="checkbox" id="rulesCheck"> I agree to all instructions.
@@ -94,16 +86,27 @@
                 <input type="tel" id="cMobile" placeholder="Mobile Number" class="p-input">
                 <input type="text" id="cCollege" placeholder="School/College Name" class="p-input">
                 <input type="text" id="cAddress" placeholder="City / State" class="p-input">
-                
                 <div class="upload-zone">
                     <input type="file" id="fileInput" accept=".jpg,.jpeg" onchange="addPhoto(this)" style="display:none;">
                     <button type="button" onclick="document.getElementById('fileInput').click()" style="background:#222; color:#fff; border:1px solid #444; padding:10px 20px; border-radius:10px; cursor:pointer; font-size:12px;">+ Select Photo</button>
                     <div id="previewGrid"></div>
-                    <p id="fileCount" style="font-size:10px; color:#777; margin-top:10px;">0 / 5 photos added</p>
+                    <p id="fileCount" style="font-size:10px; color:#777; margin-top:10px;">0 / 5 added</p>
                 </div>
-                
                 <button type="button" id="submitBtn" onclick="handleFinalSubmit()" class="btn-join">Pay ₹19 & Join</button>
             </div>
+        </div>
+    </div>
+
+    <div id="resultModal" class="modal-overlay">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: 10px;">🏆</div>
+            <h2 style="color: var(--magenta-glow);">Registration Confirmed!</h2>
+            <p style="color: #ccc; line-height: 1.6;">Your entries have been successfully received. Our judges are reviewing the masterpieces.</p>
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin: 20px 0; border: 1px dashed var(--purple-accent);">
+                <p style="margin: 0; color: #fff; font-weight: 700;">Results will be announced after 24 Hours.</p>
+            </div>
+            <p style="font-size: 13px; color: #888;">We will notify you via your registered email.</p>
+            <button onclick="document.getElementById('resultModal').style.display='none'" class="btn-join" style="margin-top: 20px;">Got it!</button>
         </div>
     </div>
 
@@ -114,7 +117,6 @@
 
     <script>
         AOS.init({ duration: 1000 });
-
         const firebaseConfig = {
             apiKey: "AIzaSyD5yA9_Ieu05rC4qYVuokI04MZ5ggLpAms",
             authDomain: "profibharat-system.firebaseapp.com",
@@ -125,7 +127,6 @@
         const database = firebase.database();
 
         let photoArray = []; 
-
         function showAlert(msg) {
             const box = document.getElementById('alertBox');
             box.innerText = msg; box.style.display = 'block';
@@ -133,11 +134,7 @@
         }
 
         function openModal() { document.getElementById('contestModal').style.display = 'block'; }
-        function closeModal() { 
-            document.getElementById('contestModal').style.display = 'none'; 
-            document.getElementById('infoStep').style.display = 'block';
-            document.getElementById('detailsStep').style.display = 'none';
-        }
+        function closeModal() { document.getElementById('contestModal').style.display = 'none'; }
         
         function showDetails() {
             if(document.getElementById('rulesCheck').checked) {
@@ -149,36 +146,23 @@
         function addPhoto(input) {
             if (photoArray.length >= 5) { showAlert("Attention: Max 5 allowed!"); return; }
             const file = input.files[0];
-            if (!file) return;
-
-            // Photo ko text (Base64) mein badalne ka logic
             const reader = new FileReader();
-            reader.onload = (e) => {
-                photoArray.push(e.target.result); // Base64 string save ho rahi hai
-                renderPreviews();
-            };
+            reader.onload = (e) => { photoArray.push(e.target.result); renderPreviews(); };
             reader.readAsDataURL(file);
-            input.value = ""; 
         }
-
-        function removePhoto(index) { photoArray.splice(index, 1); renderPreviews(); }
 
         function renderPreviews() {
             const grid = document.getElementById('previewGrid');
             grid.innerHTML = "";
-            photoArray.forEach((src, index) => {
-                const div = document.createElement('div');
-                div.className = "preview-wrapper";
-                div.innerHTML = `<img src="${src}" class="preview-img"><button class="del-btn" onclick="removePhoto(${index})">×</button>`;
-                grid.appendChild(div);
+            photoArray.forEach((src, i) => {
+                grid.innerHTML += `<div class="preview-wrapper"><img src="${src}" class="preview-img"><button class="del-btn" onclick="photoArray.splice(${i}, 1); renderPreviews();">×</button></div>`;
             });
-            document.getElementById('fileCount').innerText = `${photoArray.length} / 5 photos added`;
+            document.getElementById('fileCount').innerText = `${photoArray.length} / 5 added`;
         }
 
         async function handleFinalSubmit() {
-            const name = document.getElementById('cName').value;
             const email = document.getElementById('cEmail').value;
-            if(!name || !email || photoArray.length === 0) { showAlert("Alert: Fill all details and photos!"); return; }
+            if(!email || photoArray.length === 0) { showAlert("Fill all details!"); return; }
 
             const options = {
                 "key": "rzp_test_STmxoXXJHqZTnR", 
@@ -186,36 +170,35 @@
                 "name": "Profi-BHARAT",
                 "handler": async function(res) {
                     const btn = document.getElementById('submitBtn');
-                    btn.disabled = true; btn.innerText = "SAVING TO DATABASE...";
+                    btn.disabled = true; btn.innerText = "SAVING...";
                     try {
                         const safeEmail = email.replace(/[.$#[\]]/g, "_");
-                        // Direct Realtime Database mein photos save ho rahi hain
                         await database.ref('contest_entries/' + safeEmail).set({
-                            name: name,
-                            email: email, 
-                            mobile: document.getElementById('cMobile').value,
+                            name: document.getElementById('cName').value,
+                            email, mobile: document.getElementById('cMobile').value,
                             college: document.getElementById('cCollege').value,
                             address: document.getElementById('cAddress').value,
-                            photos: photoArray, // Base64 photos
-                            paymentId: res.razorpay_payment_id,
+                            photos: photoArray, paymentId: res.razorpay_payment_id,
                             timestamp: new Date().toLocaleString()
                         });
-                        localStorage.setItem('photoContestJoined', 'true');
+                        localStorage.setItem('user_joined_email', email);
                         location.reload();
-                    } catch(e) { 
-                        showAlert("Database Error! Rules check karo."); 
-                        btn.disabled = false; btn.innerText = "Pay ₹19 & Join";
-                    }
+                    } catch(e) { showAlert("Error!"); btn.disabled = false; }
                 }
             };
             new Razorpay(options).open();
         }
 
-        if(localStorage.getItem('photoContestJoined') === 'true') {
+        // Logic for Persistent "See Result"
+        const joinedUser = localStorage.getItem('user_joined_email');
+        if(joinedUser) {
             const btn = document.getElementById('photoContestBtn');
             btn.innerText = "See Result";
             btn.style.background = "rgba(255, 255, 255, 0.1)";
-            btn.onclick = () => showAlert("Results announced soon!");
+            btn.style.border = "1px solid #444";
+            btn.onclick = () => {
+                document.getElementById('resultModal').style.display = 'block';
+            };
         }
     </script>
 </body>
