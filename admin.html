@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profi-Admin | Tagda Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg: #05050a; 
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --accent: #d946ef; 
+            --purple: #a855f7;
+            --danger: #ef4444;
+            --success: #10b981;
+        }
+
+        body { background: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 20px; overflow-x: hidden; }
+
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 24px; text-align: center; backdrop-filter: blur(10px); transition: 0.3s; }
+        .stat-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .stat-card i { font-size: 2rem; color: var(--accent); margin-bottom: 15px; }
+        .stat-card h3 { margin: 0; font-size: 14px; color: #888; text-transform: uppercase; }
+        .stat-card p { margin: 10px 0 0; font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #d946ef 0%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Main Container & Table */
+        .main-container { background: var(--card-bg); border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        
+        .btn { padding: 12px 24px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 14px; }
+        .btn-excel { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; padding: 10px; border-radius: 8px; }
+        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+        th { text-align: left; padding: 20px; color: var(--accent); font-size: 12px; text-transform: uppercase; border-bottom: 2px solid #111; letter-spacing: 1px; }
+        td { padding: 18px 20px; border-bottom: 1px solid #111; font-size: 14px; color: #ccc; vertical-align: middle; }
+        tr:hover td { background: rgba(255,255,255,0.01); }
+
+        /* Photo Stack & Interactive Images */
+        .photo-stack { display: flex; gap: 8px; }
+        .user-img { 
+            width: 55px; height: 55px; 
+            border-radius: 12px; 
+            object-fit: cover; 
+            border: 2px solid #1a1a1a;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        .user-img:hover { transform: scale(1.1); border-color: var(--accent); box-shadow: 0 5px 15px rgba(217, 70, 239, 0.3); }
+
+        .payment-id { font-family: monospace; color: var(--success); background: rgba(16, 185, 129, 0.1); padding: 4px 8px; border-radius: 6px; font-size: 12px; }
+
+        /* Fullscreen Lightbox (Zoom & Save) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox.active { display: flex; opacity: 1; }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            text-align: center;
+        }
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 50px rgba(217, 70, 239, 0.2);
+            cursor: zoom-in; /* Indicates zoomable */
+            transition: transform 0.3s ease;
+        }
+        
+        /* Lightbox Controls */
+        .lightbox-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .close-lightbox {
+            position: absolute;
+            top: -40px; right: 0;
+            color: #888;
+            font-size: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-lightbox:hover { color: white; transform: rotate(90deg); }
+        
+        .btn-download { background: var(--gradient-90); color: white; text-decoration: none; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #333; }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align:center; margin-bottom:40px; font-weight:800; font-size:2.8rem;">PROFI-BHARAT <span style="color:var(--accent)">ADMIN</span></h1>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-users"></i>
+            <h3>Contestants</h3>
+            <p id="totalUsers">0</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-indian-rupee-sign"></i>
+            <h3>Revenue</h3>
+            <p id="totalRevenue">₹0</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-camera"></i>
+            <h3>Total Photos</h3>
+            <p id="totalPhotos">0</p>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="header-flex">
+            <h2 style="margin:0; font-weight:700;">Recent Registrations</h2>
+            <button class="btn btn-excel" onclick="exportToExcel()"><i class="fas fa-file-excel"></i> Export Excel</button>
+        </div>
+
+        <div style="overflow-x:auto;">
+            <table id="adminTable">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Name</th>
+                        <th>College & City</th>
+                        <th>Contact</th>
+                        <th>Photos (Click to Zoom/Save)</th>
+                        <th>Payment ID</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan='7' style='text-align:center; padding:50px; color:#555;'>Loading data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+            <img id="lightboxImg" src="" class="lightbox-img" alt="Zoomed Photo">
+            <div class="lightbox-controls">
+                <a id="downloadBtn" href="" download="ProfiBharat_Photo.jpg" class="btn btn-download">
+                    <i class="fas fa-download"></i> Save Photo
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+        // Same Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyD5yA9_Ieu05rC4qYVuokI04MZ5ggLpAms",
+            authDomain: "profibharat-system.firebaseapp.com",
+            databaseURL: "https://profibharat-system-default-rtdb.firebaseio.com",
+            projectId: "profibharat-system"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Load Data
+        db.ref('contest_entries').on('value', (snapshot) => {
+            const data = snapshot.val();
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = "";
+            let userCount = 0, photoCount = 0;
+
+            if(!data) {
+                tbody.innerHTML = "<tr><td colspan='7' style='text-align:center; padding:50px; color:#555;'>No registrations found.</td></tr>";
+                return;
+            }
+
+            Object.keys(data).forEach(key => {
+                const val = data[key];
+                userCount++;
+                photoCount += val.photos ? val.photos.length : 0;
+
+                const row = `
+                    <tr>
+                        <td style="color:#666; font-size:12px;">${val.timestamp || 'N/A'}</td>
+                        <td><b style="color:white; font-size:15px;">${val.name}</b></td>
+                        <td>${val.college}<br><small style="color:#666">${val.address}</small></td>
+                        <td>${val.email}<br><small>${val.mobile}</small></td>
+                        <td>
+                            <div class="photo-stack">
+                                ${val.photos ? val.photos.map(p => `<img src="${p}" class="user-img" onclick="openLightbox('${p}')">`).join('') : 'No Photos'}
+                            </div>
+                        </td>
+                        <td><span class="payment-id">${val.paymentId}</span></td>
+                        <td>
+                            <button class="btn-danger btn" onclick="deleteEntry('${key}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+
+            // Update Stats
+            document.getElementById('totalUsers').innerText = userCount;
+            document.getElementById('totalRevenue').innerText = "₹" + (userCount * 19);
+            document.getElementById('totalPhotos').innerText = photoCount;
+        });
+
+        // Lightbox Logic (Zoom & Save)
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        function openLightbox(imgSrc) {
+            lightboxImg.src = imgSrc;
+            downloadBtn.href = imgSrc; // Set download link
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling bg
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            lightboxImg.style.transform = 'scale(1)'; // Reset zoom
+        }
+
+        // Close on background click
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // Optional: Click image to toggle extra zoom
+        let isZoomed = false;
+        lightboxImg.addEventListener('click', () => {
+            if(isZoomed) {
+                lightboxImg.style.transform = 'scale(1)';
+                lightboxImg.style.cursor = 'zoom-in';
+            } else {
+                lightboxImg.style.transform = 'scale(1.5)';
+                lightboxImg.style.cursor = 'zoom-out';
+            }
+            isZoomed = !isZoomed;
+        });
+
+        // Delete & Excel (Same)
+        function deleteEntry(id) {
+            if(confirm("Bhai, kya sach mein ye data delete karna hai? Dubara nahi milega!")) {
+                db.ref('contest_entries/' + id).remove();
+            }
+        }
+        function exportToExcel() {
+            const table = document.getElementById("adminTable");
+            const wb = XLSX.utils.table_to_book(table);
+            XLSX.writeFile(wb, "ProfiBharat_Contestants.xlsx");
+        }
+    </script>
+</body>
+</html>
