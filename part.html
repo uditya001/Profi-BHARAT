@@ -51,29 +51,49 @@
             <div class="live-tag"><div class="live-dot"></div> LIVE</div>
             <div class="icon-box">📸</div>
             <h3>Photo Shoot Contest</h3>
-            <p>Capture Bharat through your lens. Top 3 win cash prizes.</p>
-            <button id="photoContestBtn" class="btn-join">Join Contest</button>
+            <p>Capture Bharat through your lens.</p>
+            <button id="photoBtn" class="btn-join">Join Contest</button>
         </div>
-        <div class="contest-card" data-aos="fade-up" data-aos-delay="100"><div class="live-tag">SOON</div><div class="icon-box">💻</div><h3>Web Building</h3><button class="btn-join btn-soon">Soon</button></div>
-        <div class="contest-card" data-aos="fade-up" data-aos-delay="200"><div class="live-tag">SOON</div><div class="icon-box">🎬</div><h3>Video Editing</h3><button class="btn-join btn-soon">Soon</button></div>
+        <div class="contest-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="live-tag"><div class="live-dot"></div> LIVE</div>
+            <div class="icon-box">🎨</div>
+            <h3>Graphic Design</h3>
+            <p>Show your creativity in design.</p>
+            <button id="graphicBtn" class="btn-join">Join Contest</button>
+        </div>
+        <div class="contest-card" data-aos="fade-up" data-aos-delay="200"><div class="live-tag">SOON</div><div class="icon-box">💻</div><h3>Web Building</h3><button class="btn-join btn-soon">Soon</button></div>
     </div>
 
     <div id="contestModal" class="modal-overlay">
         <div class="modal-content">
             <span onclick="closeModal()" style="position:absolute; top:20px; right:25px; color:#666; cursor:pointer; font-size:30px;">&times;</span>
-            <div id="detailsStep">
+            
+            <div id="infoStep">
+                <h2 style="color:var(--magenta-glow); text-align:center;">Rules & Instructions</h2>
+                <ul style="color:#ccc; font-size:14px; line-height:1.8; margin-bottom:20px; padding-left:20px;">
+                    <li>1. Only JPG/JPEG photos are allowed.</li>
+                    <li>2. Maximum 5 entries allowed.</li>
+                    <li>3. Result will be announced after 24 hours.</li>
+                </ul>
+                <label style="font-size:13px; color:#888; display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom: 20px;">
+                    <input type="checkbox" id="rulesCheck"> I agree to all rules.
+                </label>
+                <button onclick="showDetails()" class="btn-join">Next</button>
+            </div>
+
+            <div id="detailsStep" style="display:none;">
                 <h2 style="color:#fff; text-align:center; margin-bottom:20px;">Registration</h2>
                 <input type="text" id="cName" placeholder="Full Name" class="p-input">
                 <input type="email" id="cEmail" placeholder="Email Address" class="p-input">
                 <input type="tel" id="cMobile" placeholder="Mobile Number" class="p-input">
-                <input type="text" id="cCollege" placeholder="College Name" class="p-input">
+                <input type="text" id="cCollege" placeholder="College/School Name" class="p-input">
                 <input type="text" id="cAddress" placeholder="City / State" class="p-input">
                 <div class="upload-zone">
-                    <input type="file" id="fileInput" accept="image/*" onchange="compressAndAdd(this)" style="display:none;">
-                    <button type="button" onclick="document.getElementById('fileInput').click()" style="background:#222; color:#fff; border:1px solid #444; padding:10px 20px; border-radius:10px; cursor:pointer;">+ Select Photo</button>
+                    <input type="file" id="fileInp" accept="image/*" onchange="compressPhoto(this)" style="display:none;">
+                    <button type="button" onclick="document.getElementById('fileInp').click()" style="background:#222; color:#fff; border:1px solid #444; padding:10px 20px; border-radius:10px; cursor:pointer;">+ Add Image</button>
                     <div id="previewGrid"></div>
                 </div>
-                <button type="button" id="submitBtn" onclick="handleFinalSubmit()" class="btn-join">Pay ₹19 & Join</button>
+                <button type="button" id="submitBtn" onclick="handlePay()" class="btn-join">Pay ₹19 & Join</button>
             </div>
         </div>
     </div>
@@ -82,7 +102,7 @@
         <div class="modal-content" style="text-align: center;">
             <div style="font-size: 4rem; margin-bottom: 10px;">🏆</div>
             <h2 style="color: var(--magenta-glow);">Confirmed!</h2>
-            <p style="color: #ccc;">Result will be live after 24 hours.</p>
+            <p style="color: #ccc;">Masterpiece received. Results after 24 hours.</p>
             <button onclick="document.getElementById('resultModal').style.display='none'" class="btn-join" style="margin-top: 20px;">OK</button>
         </div>
     </div>
@@ -93,9 +113,9 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
-        // --- MASTER RESET (CLEARS OLD BUGS) ---
-        const MASTER_KEY = "PB_V25_FINAL";
-        if(localStorage.getItem('sys_key') !== MASTER_KEY) { localStorage.clear(); localStorage.setItem('sys_key', MASTER_KEY); }
+        // --- 🚀 FORCED RESET V30 (CLEARS ALL BUGS) ---
+        const M_KEY = "PROFI_V30_STABLE";
+        if(localStorage.getItem('sys_check') !== M_KEY) { localStorage.clear(); localStorage.setItem('sys_check', M_KEY); }
 
         AOS.init({ duration: 1000 });
         const firebaseConfig = {
@@ -105,14 +125,28 @@
             projectId: "profibharat-system"
         };
         firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        const db = firebase.database();
 
-        let photoArray = []; 
-        function closeModal() { document.getElementById('contestModal').style.display = 'none'; }
-        function openModal() { document.getElementById('contestModal').style.display = 'block'; }
-        
-        function compressAndAdd(input) {
-            if (photoArray.length >= 5) return alert("Max 5 allowed!");
+        let photos = [];
+        let activeContest = "";
+
+        function closeModal() { document.getElementById('contestModal').style.display='none'; }
+        function openModal(type) { 
+            activeContest = type;
+            document.getElementById('contestModal').style.display='block'; 
+            document.getElementById('infoStep').style.display='block';
+            document.getElementById('detailsStep').style.display='none';
+        }
+
+        function showDetails() {
+            if(document.getElementById('rulesCheck').checked) {
+                document.getElementById('infoStep').style.display='none';
+                document.getElementById('detailsStep').style.display='block';
+            } else { alert("Please agree to rules!"); }
+        }
+
+        function compressPhoto(input) {
+            if(photos.length >= 5) return alert("Max 5 photos!");
             const file = input.files[0];
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -120,22 +154,22 @@
                 img.src = e.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
                     const MAX = 600;
                     let w = img.width, h = img.height;
                     if(w > MAX) { h *= MAX/w; w = MAX; }
                     canvas.width = w; canvas.height = h;
-                    ctx.drawImage(img, 0, 0, w, h);
-                    photoArray.push(canvas.toDataURL('image/jpeg', 0.6));
-                    document.getElementById('previewGrid').innerHTML += `<img src="${photoArray[photoArray.length-1]}" class="preview-img">`;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    const compressed = canvas.toDataURL('image/jpeg', 0.6);
+                    photos.push(compressed);
+                    document.getElementById('previewGrid').innerHTML += `<img src="${compressed}" class="preview-img">`;
                 };
             };
             reader.readAsDataURL(file);
         }
 
-        async function handleFinalSubmit() {
+        async function handlePay() {
             const email = document.getElementById('cEmail').value;
-            if(!email || photoArray.length === 0) return alert("Fill all details!");
+            if(!email || photos.length === 0) return alert("Fill all details!");
 
             const options = {
                 "key": "rzp_test_STmxoXXJHqZTnR", 
@@ -143,32 +177,43 @@
                 "name": "Profi-BHARAT",
                 "handler": async function(res) {
                     document.getElementById('submitBtn').innerText = "Uploading...";
-                    // ✅ PUSH logic to keep all user data
-                    await database.ref('contest_entries').push({
+                    // ✅ PUSH Logic (Saves everyone's data)
+                    await db.ref('contest_entries').push({
+                        contest: activeContest,
                         name: document.getElementById('cName').value,
                         email: email, mobile: document.getElementById('cMobile').value,
                         college: document.getElementById('cCollege').value,
                         address: document.getElementById('cAddress').value,
-                        photos: photoArray, paymentId: res.razorpay_payment_id,
-                        timestamp: new Date().toLocaleString()
+                        photos: photos, 
+                        payId: res.razorpay_payment_id,
+                        time: new Date().toLocaleString()
                     });
-                    localStorage.setItem('user_paid', 'YES');
+                    localStorage.setItem('joined_' + activeContest, 'YES');
                     location.reload();
                 }
             };
             new Razorpay(options).open();
         }
 
-        const paid = localStorage.getItem('user_paid');
-        const btn = document.getElementById('photoContestBtn');
-        if(paid === 'YES') {
-            btn.innerText = "See Result";
-            btn.style.background = "rgba(255,255,255,0.1)";
-            btn.onclick = () => document.getElementById('resultModal').style.display = 'block';
-        } else {
-            btn.innerText = "Join Contest";
-            btn.onclick = openModal;
+        function setStatus() {
+            // Photo Contest Button
+            if(localStorage.getItem('joined_Photo') === 'YES') {
+                const b = document.getElementById('photoBtn');
+                b.innerText = "See Result"; b.style.background = "rgba(255,255,255,0.1)";
+                b.onclick = () => document.getElementById('resultModal').style.display='block';
+            } else {
+                document.getElementById('photoBtn').onclick = () => openModal('Photo');
+            }
+            // Graphic Contest Button
+            if(localStorage.getItem('joined_Graphic') === 'YES') {
+                const b = document.getElementById('graphicBtn');
+                b.innerText = "See Result"; b.style.background = "rgba(255,255,255,0.1)";
+                b.onclick = () => document.getElementById('resultModal').style.display='block';
+            } else {
+                document.getElementById('graphicBtn').onclick = () => openModal('Graphic');
+            }
         }
+        setStatus();
     </script>
 </body>
 </html>
