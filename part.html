@@ -68,13 +68,12 @@
                 </label>
                 <button onclick="showDetails()" class="btn-join">Next</button>
             </div>
-
             <div id="detailsStep" style="display:none;">
                 <h2 style="color:#fff; text-align:center; margin-bottom:20px;">Registration</h2>
                 <input type="text" id="cName" placeholder="Full Name" class="p-input">
                 <input type="email" id="cEmail" placeholder="Email Address" class="p-input">
                 <input type="tel" id="cMobile" placeholder="Mobile Number" class="p-input">
-                <input type="text" id="cCollege" placeholder="School/College Name" class="p-input">
+                <input type="text" id="cCollege" placeholder="College Name" class="p-input">
                 <input type="text" id="cAddress" placeholder="City / State" class="p-input">
                 <div class="upload-zone">
                     <input type="file" id="fileInput" accept=".jpg,.jpeg" onchange="addPhoto(this)" style="display:none;">
@@ -89,7 +88,7 @@
     <div id="resultModal" class="modal-overlay">
         <div class="modal-content" style="text-align: center;">
             <div style="font-size: 4rem; margin-bottom: 10px;">🏆</div>
-            <h2 style="color: var(--magenta-glow);">Registered Successfully!</h2>
+            <h2 style="color: var(--magenta-glow);">Confirmed!</h2>
             <p style="color: #ccc; line-height: 1.6;">Results will be announced after 24 hours.</p>
             <button onclick="document.getElementById('resultModal').style.display='none'" class="btn-join" style="margin-top: 20px;">OK</button>
         </div>
@@ -101,12 +100,11 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
-        // --- EMERGENCY RESET LOGIC ---
-        // Ise dalte hi purana galat storage saaf ho jayega
-        const CURRENT_VERSION = "2.0"; 
-        if(localStorage.getItem('app_version') !== CURRENT_VERSION) {
-            localStorage.clear(); // Purani memory clean
-            localStorage.setItem('app_version', CURRENT_VERSION);
+        // --- 🚀 FORCED RESET LOGIC (Isse Sabka Fix Hoga) ---
+        const MASTER_KEY = "PROFI_BHARAT_V5_FINAL";
+        if(localStorage.getItem('sys_check') !== MASTER_KEY) {
+            localStorage.clear();
+            localStorage.setItem('sys_check', MASTER_KEY);
         }
 
         AOS.init({ duration: 1000 });
@@ -164,17 +162,20 @@
                     btn.disabled = true; btn.innerText = "SAVING...";
                     try {
                         const safeEmail = email.replace(/[.$#[\]]/g, "_");
-                        await database.ref('contest_entries/' + safeEmail).set({
+                        const updates = {};
+                        updates['/contest_entries/' + safeEmail] = {
                             name: document.getElementById('cName').value,
                             email, mobile: document.getElementById('cMobile').value,
                             college: document.getElementById('cCollege').value,
                             address: document.getElementById('cAddress').value,
                             photos: photoArray, paymentId: res.razorpay_payment_id,
                             timestamp: new Date().toLocaleString()
-                        });
+                        };
                         
-                        // Payment ke baad email save hoga
-                        localStorage.setItem('user_email_verified', email);
+                        // .update() use kar rahe hain taaki naya data purane ko na mitaye
+                        await database.ref().update(updates);
+                        
+                        localStorage.setItem('payment_done_for', email);
                         location.reload();
                     } catch(e) { showAlert("Error!"); btn.disabled = false; }
                 }
@@ -182,26 +183,19 @@
             new Razorpay(options).open();
         }
 
-        // --- FINAL CHECK LOGIC ---
         function checkStatus() {
-            const verifiedEmail = localStorage.getItem('user_email_verified');
+            const hasPaid = localStorage.getItem('payment_done_for');
             const btn = document.getElementById('photoContestBtn');
-            
-            // Ab tabhi dikhega jab email browser mein maujood ho
-            if(verifiedEmail) {
+            if(hasPaid) {
                 btn.innerText = "See Result";
                 btn.style.background = "rgba(255, 255, 255, 0.1)";
                 btn.style.border = "1px solid #444";
-                btn.onclick = () => {
-                    document.getElementById('resultModal').style.display = 'block';
-                };
+                btn.onclick = () => { document.getElementById('resultModal').style.display = 'block'; };
             } else {
-                // Default: Naye user ko Join Contest hi dikhega
                 btn.innerText = "Join Contest";
                 btn.onclick = openModal;
             }
         }
-        
         checkStatus();
     </script>
 </body>
