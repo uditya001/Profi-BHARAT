@@ -161,7 +161,7 @@
         }
 
         async function handleFinalSubmit() {
-            const email = document.getElementById('cEmail').value;
+            const email = document.getElementById('cEmail').value.trim();
             if(!email || photoArray.length === 0) { showAlert("Fill all details!"); return; }
 
             const options = {
@@ -181,7 +181,11 @@
                             photos: photoArray, paymentId: res.razorpay_payment_id,
                             timestamp: new Date().toLocaleString()
                         });
-                        localStorage.setItem('user_joined_email', email);
+                        
+                        // FIX: Sirf payment karne wale user ke liye email save hoga browser mein
+                        localStorage.setItem('hasJoined_' + email, 'true');
+                        localStorage.setItem('currentUserEmail', email);
+                        
                         location.reload();
                     } catch(e) { showAlert("Error!"); btn.disabled = false; }
                 }
@@ -189,17 +193,22 @@
             new Razorpay(options).open();
         }
 
-        // Logic for Persistent "See Result"
-        const joinedUser = localStorage.getItem('user_joined_email');
-        if(joinedUser) {
-            const btn = document.getElementById('photoContestBtn');
-            btn.innerText = "See Result";
-            btn.style.background = "rgba(255, 255, 255, 0.1)";
-            btn.style.border = "1px solid #444";
-            btn.onclick = () => {
-                document.getElementById('resultModal').style.display = 'block';
-            };
+        // Logic for Persistent "See Result" (CLEAN FIX)
+        function checkStatus() {
+            const lastEmail = localStorage.getItem('currentUserEmail');
+            if(lastEmail && localStorage.getItem('hasJoined_' + lastEmail) === 'true') {
+                const btn = document.getElementById('photoContestBtn');
+                btn.innerText = "See Result";
+                btn.style.background = "rgba(255, 255, 255, 0.1)";
+                btn.style.border = "1px solid #444";
+                btn.onclick = () => {
+                    document.getElementById('resultModal').style.display = 'block';
+                };
+            }
         }
+        
+        // Browser refresh pe status check karega
+        checkStatus();
     </script>
 </body>
 </html>
