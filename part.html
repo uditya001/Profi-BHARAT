@@ -46,7 +46,7 @@
             <div class="icon-box">📸</div>
             <h3>Photo Shoot Contest</h3>
             <p>Capture Bharat through your lens. Top 3 win cash prizes.</p>
-            <button id="photoContestBtn" class="btn-join">Loading...</button>
+            <button id="photoContestBtn" class="btn-join">Join Contest</button>
         </div>
         <div class="contest-card" data-aos="fade-up" data-aos-delay="100"><div class="live-tag">SOON</div><div class="icon-box">💻</div><h3>Web Building</h3><button class="btn-join btn-soon">Soon</button></div>
         <div class="contest-card" data-aos="fade-up" data-aos-delay="200"><div class="live-tag">SOON</div><div class="icon-box">🎬</div><h3>Video Editing</h3><button class="btn-join btn-soon">Soon</button></div>
@@ -76,7 +76,7 @@
                 <input type="text" id="cCollege" placeholder="College Name" class="p-input">
                 <input type="text" id="cAddress" placeholder="City / State" class="p-input">
                 <div class="upload-zone">
-                    <input type="file" id="fileInput" accept=".jpg,.jpeg" onchange="addPhoto(this)" style="display:none;">
+                    <input type="file" id="fileInput" accept=".jpg,.jpeg" onchange="processAndAddPhoto(this)" style="display:none;">
                     <button type="button" onclick="document.getElementById('fileInput').click()" style="background:#222; color:#fff; border:1px solid #444; padding:10px 20px; border-radius:10px; cursor:pointer; font-size:12px;">+ Select Photo</button>
                     <div id="previewGrid"></div>
                 </div>
@@ -100,11 +100,11 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
-        // --- 1. SESSION RESET LOGIC ---
-        const MASTER_VERSION = "PROFI_V10_FINAL";
-        if(localStorage.getItem('app_ver') !== MASTER_VERSION) {
+        // --- MASTER RESET V11 ---
+        const M_KEY = "PROFI_V11_FAST";
+        if(localStorage.getItem('sys_v') !== M_KEY) {
             localStorage.clear();
-            localStorage.setItem('app_ver', MASTER_VERSION);
+            localStorage.setItem('sys_v', M_KEY);
         }
 
         AOS.init({ duration: 1000 });
@@ -133,12 +133,39 @@
             } else { showAlert("Agree to rules first!"); }
         }
 
-        function addPhoto(input) {
+        // --- FAST COMPRESSION LOGIC ---
+        function processAndAddPhoto(input) {
             if (photoArray.length >= 5) { showAlert("Max 5 allowed!"); return; }
             const file = input.files[0];
+            if(!file) return;
+
             const reader = new FileReader();
-            reader.onload = (e) => { photoArray.push(e.target.result); renderPreviews(); };
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_WIDTH = 800; 
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Photo size 90% kam kar dega quality maintain karte hue
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                    photoArray.push(compressedBase64);
+                    renderPreviews();
+                };
+            };
             reader.readAsDataURL(file);
+            input.value = ""; 
         }
 
         function renderPreviews() {
@@ -159,10 +186,9 @@
                 "name": "Profi-BHARAT",
                 "handler": async function(res) {
                     const btn = document.getElementById('submitBtn');
-                    btn.disabled = true; btn.innerText = "UPLOADING...";
+                    btn.disabled = true; btn.innerText = "UPLOADING FAST...";
                     try {
-                        const safeEmail = email.replace(/[.$#[\]]/g, "_");
-                        // Push logic for Admin Panel (Always creates new entry, never deletes old)
+                        // Push logic for Admin (Multiple contestants support)
                         await database.ref('contest_entries').push({
                             name: document.getElementById('cName').value,
                             email, mobile: document.getElementById('cMobile').value,
@@ -172,29 +198,27 @@
                             timestamp: new Date().toLocaleString()
                         });
                         
-                        // Mark local join for current user only
-                        localStorage.setItem('hasJoinedNow', 'YES');
+                        localStorage.setItem('p_status', 'SUCCESS');
                         location.reload();
-                    } catch(e) { showAlert("Error Saving Data!"); btn.disabled = false; }
+                    } catch(e) { showAlert("Database Error!"); btn.disabled = false; }
                 }
             };
             new Razorpay(options).open();
         }
 
-        // --- FINAL CHECK LOGIC ---
-        function applyButtonStatus() {
-            const status = localStorage.getItem('hasJoinedNow');
-            const mainBtn = document.getElementById('photoContestBtn');
-            if(status === 'YES') {
-                mainBtn.innerText = "See Result";
-                mainBtn.style.background = "rgba(255, 255, 255, 0.1)";
-                mainBtn.onclick = () => { document.getElementById('resultModal').style.display = 'block'; };
+        function checkUserStatus() {
+            const paid = localStorage.getItem('p_status');
+            const btn = document.getElementById('photoContestBtn');
+            if(paid === 'SUCCESS') {
+                btn.innerText = "See Result";
+                btn.style.background = "rgba(255, 255, 255, 0.1)";
+                btn.onclick = () => { document.getElementById('resultModal').style.display = 'block'; };
             } else {
-                mainBtn.innerText = "Join Contest";
-                mainBtn.onclick = openModal;
+                btn.innerText = "Join Contest";
+                btn.onclick = openModal;
             }
         }
-        applyButtonStatus();
+        checkUserStatus();
     </script>
 </body>
 </html>
