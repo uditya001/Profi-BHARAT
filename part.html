@@ -10,12 +10,11 @@
         :root { --bg-deep: #080810; --magenta-glow: #d946ef; --purple-accent: #a855f7; --gradient-90: linear-gradient(135deg, #d946ef 0%, #a855f7 100%); }
         body { background-color: var(--bg-deep); color: white; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
         
-        /* Hero Section */
+        /* Design Pehle Jaisa */
         .hero-section { padding: 80px 20px 40px; text-align: center; }
         .hero-title { font-size: clamp(3rem, 10vw, 5rem); font-weight: 800; background: var(--gradient-90); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero-underline { width: 120px; height: 5px; background: var(--gradient-90); margin: 15px auto; border-radius: 50px; }
 
-        /* Contest Grid */
         .contest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 0 20px 100px; max-width: 1200px; margin: 0 auto; }
         .contest-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 35px; padding: 45px 25px; position: relative; text-align: center; transition: 0.4s; backdrop-filter: blur(20px); }
         .contest-card:hover { transform: translateY(-10px); border-color: var(--magenta-glow); box-shadow: 0 20px 40px rgba(217, 70, 239, 0.2); }
@@ -28,13 +27,14 @@
         .btn-join { background: var(--gradient-90); color: white; border: none; padding: 16px 30px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; }
         .btn-soon { background: #1a1a1a; color: #555; cursor: not-allowed; border: 1px solid #333; }
 
-        /* Modal */
+        /* Modal Form */
         .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10000; overflow-y:auto; backdrop-filter: blur(20px); }
         .modal-content { max-width:480px; margin:40px auto; background: #0d0d1a; padding:35px; border-radius:35px; border: 1px solid rgba(217, 70, 239, 0.3); position:relative; animation: slideUp 0.4s ease; }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .p-input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #222; background: #111; color: #fff; outline: none; box-sizing: border-box; }
         
+        /* Previews Pehle Jaisi */
         .upload-zone { background: rgba(255, 255, 255, 0.03); border: 2px dashed #444; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; }
         #previewGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
         .preview-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; }
@@ -77,9 +77,9 @@
                     <p style="margin:0; font-weight:bold;">🏆 Prize: 1st ₹100 | 2nd ₹75 | 3rd ₹50</p>
                 </div>
                 <ul style="color:#ccc; font-size:14px; line-height:1.8; margin-bottom:20px; padding-left:20px;">
-                    <li>1. Upload only JPG/JPEG format photos.</li>
+                    <li>1. Upload only original JPG/JPEG photos.</li>
                     <li>2. Maximum 5 photos are allowed.</li>
-                    <li>3. Result announced within 24 hours.</li>
+                    <li>3. Result will be announced within 24 hours.</li>
                 </ul>
                 <label style="font-size:13px; color:#888; display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom: 20px;">
                     <input type="checkbox" id="rulesCheck"> I agree to all instructions.
@@ -109,7 +109,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
@@ -120,12 +119,10 @@
             apiKey: "AIzaSyD5yA9_Ieu05rC4qYVuokI04MZ5ggLpAms",
             authDomain: "profibharat-system.firebaseapp.com",
             databaseURL: "https://profibharat-system-default-rtdb.firebaseio.com",
-            projectId: "profibharat-system",
-            storageBucket: "profibharat-system.firebasestorage.app"
+            projectId: "profibharat-system"
         };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        const storage = firebase.storage();
 
         let photoArray = []; 
 
@@ -153,8 +150,14 @@
             if (photoArray.length >= 5) { showAlert("Attention: Max 5 allowed!"); return; }
             const file = input.files[0];
             if (!file) return;
-            photoArray.push(file); 
-            renderPreviews();
+
+            // Photo ko text (Base64) mein badalne ka logic
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                photoArray.push(e.target.result); // Base64 string save ho rahi hai
+                renderPreviews();
+            };
+            reader.readAsDataURL(file);
             input.value = ""; 
         }
 
@@ -163,22 +166,19 @@
         function renderPreviews() {
             const grid = document.getElementById('previewGrid');
             grid.innerHTML = "";
-            photoArray.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const div = document.createElement('div');
-                    div.className = "preview-wrapper";
-                    div.innerHTML = `<img src="${e.target.result}" class="preview-img"><button class="del-btn" onclick="removePhoto(${index})">×</button>`;
-                    grid.appendChild(div);
-                };
-                reader.readAsDataURL(file);
+            photoArray.forEach((src, index) => {
+                const div = document.createElement('div');
+                div.className = "preview-wrapper";
+                div.innerHTML = `<img src="${src}" class="preview-img"><button class="del-btn" onclick="removePhoto(${index})">×</button>`;
+                grid.appendChild(div);
             });
-            document.getElementById('fileCount').innerText = `${photoArray.length} / 5 added`;
+            document.getElementById('fileCount').innerText = `${photoArray.length} / 5 photos added`;
         }
 
         async function handleFinalSubmit() {
+            const name = document.getElementById('cName').value;
             const email = document.getElementById('cEmail').value;
-            if(!email || photoArray.length === 0) { showAlert("Alert: Fill details and photos!"); return; }
+            if(!name || !email || photoArray.length === 0) { showAlert("Alert: Fill all details and photos!"); return; }
 
             const options = {
                 "key": "rzp_test_STmxoXXJHqZTnR", 
@@ -186,32 +186,31 @@
                 "name": "Profi-BHARAT",
                 "handler": async function(res) {
                     const btn = document.getElementById('submitBtn');
-                    btn.disabled = true; btn.innerText = "SAVING DATA...";
+                    btn.disabled = true; btn.innerText = "SAVING TO DATABASE...";
                     try {
-                        let urls = [];
-                        for(let file of photoArray) {
-                            const ref = storage.ref(`photos/${email}/${Date.now()}_${file.name}`);
-                            await ref.put(file);
-                            urls.push(await ref.getDownloadURL());
-                        }
                         const safeEmail = email.replace(/[.$#[\]]/g, "_");
+                        // Direct Realtime Database mein photos save ho rahi hain
                         await database.ref('contest_entries/' + safeEmail).set({
-                            name: document.getElementById('cName').value,
-                            email, mobile: document.getElementById('cMobile').value,
+                            name: name,
+                            email: email, 
+                            mobile: document.getElementById('cMobile').value,
                             college: document.getElementById('cCollege').value,
                             address: document.getElementById('cAddress').value,
-                            photoUrls: urls, paymentId: res.razorpay_payment_id,
+                            photos: photoArray, // Base64 photos
+                            paymentId: res.razorpay_payment_id,
                             timestamp: new Date().toLocaleString()
                         });
                         localStorage.setItem('photoContestJoined', 'true');
                         location.reload();
-                    } catch(e) { showAlert("Error! Storage set nahi hai."); btn.disabled = false; }
+                    } catch(e) { 
+                        showAlert("Database Error! Rules check karo."); 
+                        btn.disabled = false; btn.innerText = "Pay ₹19 & Join";
+                    }
                 }
             };
             new Razorpay(options).open();
         }
 
-        // See Result Persistent Logic
         if(localStorage.getItem('photoContestJoined') === 'true') {
             const btn = document.getElementById('photoContestBtn');
             btn.innerText = "See Result";
