@@ -7,28 +7,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --bg-deep: #080810; --magenta-glow: #d946ef; --purple-accent: #a855f7; --gradient-90: linear-gradient(135deg, #d946ef 0%, #a855f7 100%); }
-        body { background-color: var(--bg-deep); color: white; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
+        :root { --bg: #080810; --accent: #d946ef; --purple: #a855f7; --gradient: linear-gradient(135deg, #d946ef 0%, #a855f7 100%); }
+        body { background-color: var(--bg); color: white; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; overflow-x: hidden; }
         .hero-section { padding: 80px 20px 40px; text-align: center; }
-        .hero-title { font-size: clamp(3rem, 10vw, 5rem); font-weight: 800; background: var(--gradient-90); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-underline { width: 120px; height: 5px; background: var(--gradient-90); margin: 15px auto; border-radius: 50px; }
-        .contest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 0 20px 100px; max-width: 1200px; margin: 0 auto; }
-        .contest-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(168, 85, 247, 0.15); border-radius: 35px; padding: 45px 25px; position: relative; text-align: center; transition: 0.4s; backdrop-filter: blur(20px); }
-        .icon-box { width: 80px; height: 80px; background: var(--gradient-90); border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; margin: 0 auto 25px; }
-        .live-tag { position: absolute; top: 25px; right: 25px; border: 1px solid var(--purple-accent); padding: 5px 15px; border-radius: 50px; font-size: 0.75rem; font-weight: 800; background: rgba(0,0,0,0.6); display: flex; align-items: center; gap: 8px; }
-        .live-dot { width: 8px; height: 8px; background: #ff4757; border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 50% { opacity: 0.2; } }
-        .btn-join { background: var(--gradient-90); color: white; border: none; padding: 16px 30px; border-radius: 100px; font-weight: 800; cursor: pointer; text-transform: uppercase; width: 100%; transition: 0.3s; }
-        .btn-soon { background: #1a1a1a; color: #555; cursor: not-allowed; border: 1px solid #333; }
-        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:10000; overflow-y:auto; backdrop-filter: blur(20px); }
-        .modal-content { max-width:480px; margin:40px auto; background: #0d0d1a; padding:35px; border-radius:35px; border: 1px solid rgba(217, 70, 239, 0.3); position:relative; }
-        .p-input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #222; background: #111; color: #fff; outline: none; box-sizing: border-box; }
-        .upload-zone { background: rgba(255, 255, 255, 0.03); border: 2px dashed #444; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; }
-        #previewGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
-        .preview-wrapper { position: relative; width: 100%; aspect-ratio: 1/1; }
-        .preview-img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; border: 1px solid var(--purple-accent); }
-        .del-btn { position: absolute; top: -5px; right: -5px; background: #ff4757; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .custom-alert { position: fixed; top: 20px; right: 20px; background: var(--gradient-90); color: white; padding: 15px 25px; border-radius: 12px; z-index: 20000; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .contest-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .contest-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 30px; padding: 40px 20px; text-align: center; position: relative; transition: 0.3s; backdrop-filter: blur(10px); }
+        .live-tag { position: absolute; top: 20px; right: 20px; border: 1px solid var(--purple); padding: 4px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; background: rgba(0,0,0,0.5); }
+        .icon-box { width: 70px; height: 70px; background: var(--gradient); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px; }
+        .btn-join { background: var(--gradient); color: white; border: none; padding: 15px 30px; border-radius: 100px; font-weight: 800; cursor: pointer; width: 100%; transition: 0.3s; text-transform: uppercase; }
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:10000; overflow-y:auto; backdrop-filter: blur(15px); }
+        .modal-content { max-width:450px; margin:50px auto; background: #0d0d1a; padding:30px; border-radius:30px; border: 1px solid rgba(217, 70, 239, 0.3); position:relative; }
+        .p-input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #222; background: #111; color: #fff; box-sizing: border-box; outline: none; }
+        .upload-zone { background: rgba(255, 255, 255, 0.03); border: 2px dashed #333; padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 15px; }
+        #previewGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+        .preview-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; border: 1px solid var(--purple); }
+        .custom-alert { position: fixed; top: 20px; right: 20px; background: var(--gradient); color: white; padding: 15px 25px; border-radius: 12px; z-index: 20000; display: none; }
     </style>
 </head>
 <body>
@@ -37,60 +31,46 @@
 
     <header class="hero-section" data-aos="zoom-in">
         <h1 class="hero-title">Active Contests</h1>
-        <div class="hero-underline"></div>
+        <div style="width: 100px; height: 4px; background: var(--gradient); margin: 10px auto; border-radius: 10px;"></div>
     </header>
 
     <div class="contest-grid">
         <div class="contest-card" data-aos="fade-up">
-            <div class="live-tag"><div class="live-dot"></div> LIVE</div>
+            <div class="live-tag">LIVE</div>
             <div class="icon-box">📸</div>
-            <h3>Photo Shoot Contest</h3>
-            <p>Capture Bharat through your lens. Top 3 win cash prizes.</p>
-            <button id="photoContestBtn" class="btn-join">Join Contest</button>
+            <h3>Photo Shoot</h3>
+            <p style="color:#888; font-size: 0.9rem;">Upload 5 photos and win ₹500.</p>
+            <button id="photoBtn" class="btn-join">Checking...</button>
         </div>
-        <div class="contest-card" data-aos="fade-up" data-aos-delay="100"><div class="live-tag">SOON</div><div class="icon-box">💻</div><h3>Web Building</h3><button class="btn-join btn-soon">Soon</button></div>
-        <div class="contest-card" data-aos="fade-up" data-aos-delay="200"><div class="live-tag">SOON</div><div class="icon-box">🎬</div><h3>Video Editing</h3><button class="btn-join btn-soon">Soon</button></div>
-        <div class="contest-card" data-aos="fade-up" data-aos-delay="300"><div class="live-tag">SOON</div><div class="icon-box">🎨</div><h3>Graphic Design</h3><button class="btn-join btn-soon">Soon</button></div>
+        <div class="contest-card" data-aos="fade-up" style="opacity:0.5;"><div class="icon-box">💻</div><h3>Web Build</h3><button class="btn-join" style="background:#222; cursor:not-allowed;">Soon</button></div>
     </div>
 
     <div id="contestModal" class="modal-overlay">
         <div class="modal-content">
-            <span onclick="closeModal()" style="position:absolute; top:20px; right:25px; color:#666; cursor:pointer; font-size:30px;">&times;</span>
-            <div id="infoStep">
-                <h2 style="color:var(--magenta-glow); text-align:center;">Rules</h2>
-                <ul style="color:#ccc; font-size:14px; line-height:1.8; margin-bottom:20px; padding-left:20px;">
-                    <li>1. Upload only JPG/JPEG format photos.</li>
-                    <li>2. Maximum 5 photos are allowed.</li>
-                    <li>3. Result announced within 24 hours.</li>
-                </ul>
-                <label style="font-size:13px; color:#888; display:flex; align-items:center; gap:10px; cursor:pointer; margin-bottom: 20px;">
-                    <input type="checkbox" id="rulesCheck"> I agree to all instructions.
-                </label>
-                <button onclick="showDetails()" class="btn-join">Next</button>
-            </div>
-            <div id="detailsStep" style="display:none;">
-                <h2 style="color:#fff; text-align:center; margin-bottom:20px;">Registration</h2>
-                <input type="text" id="cName" placeholder="Full Name" class="p-input">
-                <input type="email" id="cEmail" placeholder="Email Address" class="p-input">
-                <input type="tel" id="cMobile" placeholder="Mobile Number" class="p-input">
-                <input type="text" id="cCollege" placeholder="College Name" class="p-input">
-                <input type="text" id="cAddress" placeholder="City / State" class="p-input">
+            <span onclick="closeModal()" style="position:absolute; top:15px; right:20px; cursor:pointer; font-size:25px;">&times;</span>
+            <div id="regForm">
+                <h2 style="text-align:center; color:var(--accent);">Join Contest</h2>
+                <input type="text" id="name" placeholder="Name" class="p-input">
+                <input type="email" id="email" placeholder="Email" class="p-input">
+                <input type="tel" id="mobile" placeholder="Mobile" class="p-input">
+                <input type="text" id="college" placeholder="College/School" class="p-input">
+                <input type="text" id="address" placeholder="City" class="p-input">
                 <div class="upload-zone">
-                    <input type="file" id="fileInput" accept=".jpg,.jpeg" onchange="processAndAddPhoto(this)" style="display:none;">
-                    <button type="button" onclick="document.getElementById('fileInput').click()" style="background:#222; color:#fff; border:1px solid #444; padding:10px 20px; border-radius:10px; cursor:pointer; font-size:12px;">+ Select Photo</button>
+                    <input type="file" id="fileInp" accept="image/*" onchange="compressPhoto(this)" style="display:none;">
+                    <button type="button" onclick="document.getElementById('fileInp').click()" style="background:#222; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">+ Add Photo</button>
                     <div id="previewGrid"></div>
                 </div>
-                <button type="button" id="submitBtn" onclick="handleFinalSubmit()" class="btn-join">Pay ₹19 & Join</button>
+                <button id="payBtn" onclick="startPay()" class="btn-join">Pay ₹19 & Join</button>
             </div>
         </div>
     </div>
 
-    <div id="resultModal" class="modal-overlay">
-        <div class="modal-content" style="text-align: center;">
-            <div style="font-size: 4rem; margin-bottom: 10px;">🏆</div>
-            <h2 style="color: var(--magenta-glow);">Confirmed!</h2>
-            <p style="color: #ccc; line-height: 1.6;">Results will be announced after 24 hours.</p>
-            <button onclick="document.getElementById('resultModal').style.display='none'" class="btn-join" style="margin-top: 20px;">OK</button>
+    <div id="resModal" class="modal-overlay">
+        <div class="modal-content" style="text-align:center;">
+            <div style="font-size:3rem;">🏅</div>
+            <h2>Entry Received!</h2>
+            <p style="color:#888;">Result will be live after 24 hours.</p>
+            <button onclick="document.getElementById('resModal').style.display='none'" class="btn-join">Got it</button>
         </div>
     </div>
 
@@ -100,14 +80,14 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
-        // --- MASTER RESET V11 ---
-        const M_KEY = "PROFI_V11_FAST";
-        if(localStorage.getItem('sys_v') !== M_KEY) {
+        // --- THE ATOMIC RESET (Clears old junk) ---
+        const CURRENT_APP_ID = "PROFI_V20_STABLE"; 
+        if(localStorage.getItem('app_id') !== CURRENT_APP_ID) {
             localStorage.clear();
-            localStorage.setItem('sys_v', M_KEY);
+            localStorage.setItem('app_id', CURRENT_APP_ID);
         }
 
-        AOS.init({ duration: 1000 });
+        AOS.init();
         const firebaseConfig = {
             apiKey: "AIzaSyD5yA9_Ieu05rC4qYVuokI04MZ5ggLpAms",
             authDomain: "profibharat-system.firebaseapp.com",
@@ -115,110 +95,78 @@
             projectId: "profibharat-system"
         };
         firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        const db = firebase.database();
 
-        let photoArray = []; 
-        function showAlert(msg) {
-            const box = document.getElementById('alertBox');
-            box.innerText = msg; box.style.display = 'block';
-            setTimeout(() => { box.style.display = 'none'; }, 3000);
-        }
-
-        function openModal() { document.getElementById('contestModal').style.display = 'block'; }
-        function closeModal() { document.getElementById('contestModal').style.display = 'none'; }
-        function showDetails() {
-            if(document.getElementById('rulesCheck').checked) {
-                document.getElementById('infoStep').style.display = 'none';
-                document.getElementById('detailsStep').style.display = 'block';
-            } else { showAlert("Agree to rules first!"); }
-        }
-
-        // --- FAST COMPRESSION LOGIC ---
-        function processAndAddPhoto(input) {
-            if (photoArray.length >= 5) { showAlert("Max 5 allowed!"); return; }
+        let photos = [];
+        function closeModal() { document.getElementById('contestModal').style.display='none'; }
+        function openModal() { document.getElementById('contestModal').style.display='block'; }
+        
+        // --- FAST COMPRESSION ---
+        function compressPhoto(input) {
+            if(photos.length >= 5) return alert("Max 5 photos!");
             const file = input.files[0];
-            if(!file) return;
-
             const reader = new FileReader();
             reader.onload = (e) => {
                 const img = new Image();
                 img.src = e.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const MAX_WIDTH = 800; 
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    // Photo size 90% kam kar dega quality maintain karte hue
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-                    photoArray.push(compressedBase64);
-                    renderPreviews();
-                };
-            };
+                    const MAX = 600;
+                    let w = img.width, h = img.height;
+                    if(w > MAX) { h *= MAX/w; w = MAX; }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    photos.push(canvas.toDataURL('image/jpeg', 0.6));
+                    render();
+                }
+            }
             reader.readAsDataURL(file);
-            input.value = ""; 
         }
 
-        function renderPreviews() {
-            const grid = document.getElementById('previewGrid');
-            grid.innerHTML = "";
-            photoArray.forEach((src, i) => {
-                grid.innerHTML += `<div class="preview-wrapper"><img src="${src}" class="preview-img"><button class="del-btn" onclick="photoArray.splice(${i}, 1); renderPreviews();">×</button></div>`;
-            });
+        function render() {
+            const g = document.getElementById('previewGrid');
+            g.innerHTML = photos.map(p => `<img src="${p}" class="preview-img">`).join('');
         }
 
-        async function handleFinalSubmit() {
-            const email = document.getElementById('cEmail').value.trim();
-            if(!email || photoArray.length === 0) { showAlert("Fill all details!"); return; }
+        async function startPay() {
+            const e = document.getElementById('email').value;
+            if(!e || photos.length === 0) return alert("Details bhariye!");
 
-            const options = {
-                "key": "rzp_test_STmxoXXJHqZTnR", 
-                "amount": "1900", 
+            const opt = {
+                "key": "rzp_test_STmxoXXJHqZTnR",
+                "amount": "1900",
                 "name": "Profi-BHARAT",
                 "handler": async function(res) {
-                    const btn = document.getElementById('submitBtn');
-                    btn.disabled = true; btn.innerText = "UPLOADING FAST...";
-                    try {
-                        // Push logic for Admin (Multiple contestants support)
-                        await database.ref('contest_entries').push({
-                            name: document.getElementById('cName').value,
-                            email, mobile: document.getElementById('cMobile').value,
-                            college: document.getElementById('cCollege').value,
-                            address: document.getElementById('cAddress').value,
-                            photos: photoArray, paymentId: res.razorpay_payment_id,
-                            timestamp: new Date().toLocaleString()
-                        });
-                        
-                        localStorage.setItem('p_status', 'SUCCESS');
-                        location.reload();
-                    } catch(e) { showAlert("Database Error!"); btn.disabled = false; }
+                    document.getElementById('payBtn').innerText = "Uploading...";
+                    // Use PUSH to keep all data safe
+                    await db.ref('contest_entries').push({
+                        name: document.getElementById('name').value,
+                        email: e,
+                        mobile: document.getElementById('mobile').value,
+                        photos: photos,
+                        payId: res.razorpay_payment_id,
+                        time: new Date().toLocaleString()
+                    });
+                    localStorage.setItem('PB_STATUS', 'PAID');
+                    location.reload();
                 }
             };
-            new Razorpay(options).open();
+            new Razorpay(opt).open();
         }
 
-        function checkUserStatus() {
-            const paid = localStorage.getItem('p_status');
-            const btn = document.getElementById('photoContestBtn');
-            if(paid === 'SUCCESS') {
+        // --- BUTTON STATUS LOGIC ---
+        function init() {
+            const btn = document.getElementById('photoBtn');
+            if(localStorage.getItem('PB_STATUS') === 'PAID') {
                 btn.innerText = "See Result";
-                btn.style.background = "rgba(255, 255, 255, 0.1)";
-                btn.onclick = () => { document.getElementById('resultModal').style.display = 'block'; };
+                btn.style.background = "rgba(255,255,255,0.1)";
+                btn.onclick = () => document.getElementById('resModal').style.display='block';
             } else {
                 btn.innerText = "Join Contest";
                 btn.onclick = openModal;
             }
         }
-        checkUserStatus();
+        init();
     </script>
 </body>
 </html>
