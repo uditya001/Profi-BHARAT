@@ -46,7 +46,7 @@
             <div class="icon-box">📸</div>
             <h3>Photo Shoot Contest</h3>
             <p>Capture Bharat through your lens. Top 3 win cash prizes.</p>
-            <button id="photoContestBtn" onclick="openModal()" class="btn-join">Join Contest</button>
+            <button id="photoContestBtn" class="btn-join">Loading...</button>
         </div>
         <div class="contest-card" data-aos="fade-up" data-aos-delay="100"><div class="live-tag">SOON</div><div class="icon-box">💻</div><h3>Web Building</h3><button class="btn-join btn-soon">Soon</button></div>
         <div class="contest-card" data-aos="fade-up" data-aos-delay="200"><div class="live-tag">SOON</div><div class="icon-box">🎬</div><h3>Video Editing</h3><button class="btn-join btn-soon">Soon</button></div>
@@ -100,11 +100,11 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
-        // --- 🚀 FORCED RESET LOGIC (Isse Sabka Fix Hoga) ---
-        const MASTER_KEY = "PROFI_BHARAT_V5_FINAL";
-        if(localStorage.getItem('sys_check') !== MASTER_KEY) {
+        // --- 1. SESSION RESET LOGIC ---
+        const MASTER_VERSION = "PROFI_V10_FINAL";
+        if(localStorage.getItem('app_ver') !== MASTER_VERSION) {
             localStorage.clear();
-            localStorage.setItem('sys_check', MASTER_KEY);
+            localStorage.setItem('app_ver', MASTER_VERSION);
         }
 
         AOS.init({ duration: 1000 });
@@ -159,44 +159,42 @@
                 "name": "Profi-BHARAT",
                 "handler": async function(res) {
                     const btn = document.getElementById('submitBtn');
-                    btn.disabled = true; btn.innerText = "SAVING...";
+                    btn.disabled = true; btn.innerText = "UPLOADING...";
                     try {
                         const safeEmail = email.replace(/[.$#[\]]/g, "_");
-                        const updates = {};
-                        updates['/contest_entries/' + safeEmail] = {
+                        // Push logic for Admin Panel (Always creates new entry, never deletes old)
+                        await database.ref('contest_entries').push({
                             name: document.getElementById('cName').value,
                             email, mobile: document.getElementById('cMobile').value,
                             college: document.getElementById('cCollege').value,
                             address: document.getElementById('cAddress').value,
                             photos: photoArray, paymentId: res.razorpay_payment_id,
                             timestamp: new Date().toLocaleString()
-                        };
+                        });
                         
-                        // .update() use kar rahe hain taaki naya data purane ko na mitaye
-                        await database.ref().update(updates);
-                        
-                        localStorage.setItem('payment_done_for', email);
+                        // Mark local join for current user only
+                        localStorage.setItem('hasJoinedNow', 'YES');
                         location.reload();
-                    } catch(e) { showAlert("Error!"); btn.disabled = false; }
+                    } catch(e) { showAlert("Error Saving Data!"); btn.disabled = false; }
                 }
             };
             new Razorpay(options).open();
         }
 
-        function checkStatus() {
-            const hasPaid = localStorage.getItem('payment_done_for');
-            const btn = document.getElementById('photoContestBtn');
-            if(hasPaid) {
-                btn.innerText = "See Result";
-                btn.style.background = "rgba(255, 255, 255, 0.1)";
-                btn.style.border = "1px solid #444";
-                btn.onclick = () => { document.getElementById('resultModal').style.display = 'block'; };
+        // --- FINAL CHECK LOGIC ---
+        function applyButtonStatus() {
+            const status = localStorage.getItem('hasJoinedNow');
+            const mainBtn = document.getElementById('photoContestBtn');
+            if(status === 'YES') {
+                mainBtn.innerText = "See Result";
+                mainBtn.style.background = "rgba(255, 255, 255, 0.1)";
+                mainBtn.onclick = () => { document.getElementById('resultModal').style.display = 'block'; };
             } else {
-                btn.innerText = "Join Contest";
-                btn.onclick = openModal;
+                mainBtn.innerText = "Join Contest";
+                mainBtn.onclick = openModal;
             }
         }
-        checkStatus();
+        applyButtonStatus();
     </script>
 </body>
 </html>
