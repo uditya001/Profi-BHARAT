@@ -43,129 +43,188 @@
     </p>
   </div>
 
-<section class="profi-simple-grid">
-    <div class="bg-glow"></div>
-    
-    <h2 class="minimal-title">Creative Challenges</h2>
-    
-    <div class="grid-layout">
-        <div class="grid-item">
-            <div class="icon">💻</div>
-            <h3>Web Building</h3>
-            <p>Building the digital Bharat.</p>
-        </div>
+<section class="explore-profi">
+  <div class="bg-glow-effect"></div> <h2 class="explore-title">
+    Creative <span>Challenges</span>
+  </h2>
 
-        <div class="grid-item">
-            <div class="icon">🎨</div>
-            <h3>Graphic Design</h3>
-            <p>Visualizing new ideas.</p>
-        </div>
+  <p class="explore-sub">
+    Build the digital Bharat with your creativity and skills. 🇮🇳
+  </p>
 
-        <div class="grid-item">
-            <div class="icon">📸</div>
-            <h3>Photo Shoot</h3>
-            <p>Capturing every perspective.</p>
-        </div>
+  <div class="explore-grid">
 
-        <div class="grid-item">
-            <div class="icon">🎬</div>
-            <h3>Reel Editing</h3>
-            <p>Storytelling in motion.</p>
-        </div>
+    <div class="explore-card">
+      <div class="icon">💻</div>
+      <h3>Web Building</h3>
+      <p>
+        Building the digital Bharat by creating modern, 
+        responsive, and powerful web applications.
+      </p>
+      <span class="explore-info">Learn. Build. Grow.</span>
     </div>
+
+    <div class="explore-card">
+      <div class="icon">🎨</div>
+      <h3>Graphic Design</h3>
+      <p>
+        Visualizing new ideas through creative layouts, 
+        stunning colors, and modern digital art.
+      </p>
+      <span class="explore-info">Design. Create. Inspire.</span>
+    </div>
+
+    <div class="explore-card">
+      <div class="icon">📸</div>
+      <h3>Photo Shoot</h3>
+      <p>
+        Capturing every perspective and telling stories 
+        through the lens of professional photography.
+      </p>
+      <span class="explore-info">Capture. Frame. Focus.</span>
+    </div>
+
+    <div class="explore-card">
+      <div class="icon">🎬</div>
+      <h3>Reel Editing</h3>
+      <p>
+        Storytelling in motion by creating engaging 
+        short-form content and cinematic edits.
+      </p>
+      <span class="explore-info">Edit. Sync. Share.</span>
+    </div>
+
+  </div>
 </section>
 
 <style>
-    /* Section Main Style */
-    .profi-simple-grid {
-        background-color: #0a0a0a; /* Dark background */
-        padding: 100px 20px;
-        position: relative;
-        overflow: hidden;
-        text-align: center;
-        font-family: 'Inter', -apple-system, sans-serif;
-    }
+/* ===== CREATIVE CHALLENGES STYLING ===== */
 
-    /* Glow Effect (Niche ki taraf) */
-    .bg-glow {
-        position: absolute;
-        bottom: -150px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 600px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
-        z-index: 1;
-        pointer-events: none;
-    }
+.explore-profi {
+  background: radial-gradient(circle at top, #0a0e14, #05070a);
+  padding: 100px 8%;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
 
-    .minimal-title {
-        color: #ffffff;
-        font-size: 2.5rem;
-        font-weight: 300;
-        letter-spacing: 1px;
-        margin-bottom: 60px;
-        position: relative;
-        z-index: 2;
-    }
+/* Background Blue Glow */
+.bg-glow-effect {
+  position: absolute;
+  bottom: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 150, 255, 0.12) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
 
-    /* Simple Grid Layout (No Floating) */
-    .grid-layout {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 25px;
-        max-width: 1200px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 2;
-    }
+.explore-title {
+  font-size: 2.6rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 2;
+}
 
-    /* Card Styling - Glassmorphism Style */
-    .grid-item {
-        background: rgba(255, 255, 255, 0.03); /* Subtle white transparency */
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 40px 30px;
-        border-radius: 24px;
-        backdrop-filter: blur(10px);
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
+.explore-title span {
+  color: #0096ff; /* Neon Blue color from image */
+  text-shadow: 0 0 20px rgba(0, 150, 255, 0.5);
+}
 
-    /* Halka sa hover effect (Simple aur Elegant) */
-    .grid-item:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(0, 212, 255, 0.4); /* Blue highlight on hover */
-        transform: translateY(-8px);
-    }
+.explore-sub {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-bottom: 70px;
+  letter-spacing: 0.6px;
+  position: relative;
+  z-index: 2;
+}
 
-    .icon {
-        font-size: 3rem;
-        margin-bottom: 20px;
-        display: inline-block;
-    }
+/* GRID */
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 30px;
+  position: relative;
+  z-index: 2;
+}
 
-    .grid-item h3 {
-        color: #ffffff;
-        font-size: 1.4rem;
-        margin-bottom: 12px;
-        font-weight: 600;
-    }
+/* CARD - Glassmorphism Style */
+.explore-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 150, 255, 0.15); /* Blue subtle border */
+  border-radius: 26px;
+  padding: 40px 30px;
+  text-align: left;
+  position: relative;
+  backdrop-filter: blur(12px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: fadeUp 0.9s ease forwards;
+}
 
-    .grid-item p {
-        color: #888888;
-        font-size: 0.95rem;
-        line-height: 1.6;
-    }
+.explore-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 10px 40px rgba(0, 150, 255, 0.2);
+  border-color: #0096ff;
+  background: rgba(0, 150, 255, 0.05);
+}
 
-    /* Mobile adjustments */
-    @media (max-width: 768px) {
-        .grid-layout {
-            grid-template-columns: 1fr; /* Single column for small screens */
-            max-width: 400px;
-        }
-        .minimal-title {
-            font-size: 1.8rem;
-        }
-    }
+/* ICON */
+.explore-card .icon {
+  font-size: 2.8rem;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 12px rgba(0, 150, 255, 0.5));
+  display: inline-block;
+}
+
+/* TEXT */
+.explore-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.explore-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #888; /* Greyish bio text */
+  margin-bottom: 20px;
+}
+
+/* INFO TAG (Replacing links) */
+.explore-info {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0096ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+/* ANIMATION */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(45px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .explore-title { font-size: 2rem; }
+  .explore-card { text-align: center; }
+  .explore-grid { gap: 20px; }
+}
 </style>
 
   <!-- ===== EXPLORE PROFI-BHARAT SECTION ===== -->
