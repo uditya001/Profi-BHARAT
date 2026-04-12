@@ -43,32 +43,32 @@
     </p>
   </div>
 
-<section class="creative-grid-section">
-    <div class="glow-spot"></div>
+<section class="profi-simple-grid">
+    <div class="bg-glow"></div>
     
     <h2 class="minimal-title">Creative Challenges</h2>
     
-    <div class="grid-container">
-        <div class="grid-card">
-            <div class="card-icon">💻</div>
+    <div class="grid-layout">
+        <div class="grid-item">
+            <div class="icon">💻</div>
             <h3>Web Building</h3>
             <p>Building the digital Bharat.</p>
         </div>
 
-        <div class="grid-card">
-            <div class="card-icon">🎨</div>
+        <div class="grid-item">
+            <div class="icon">🎨</div>
             <h3>Graphic Design</h3>
             <p>Visualizing new ideas.</p>
         </div>
 
-        <div class="grid-card">
-            <div class="card-icon">📸</div>
+        <div class="grid-item">
+            <div class="icon">📸</div>
             <h3>Photo Shoot</h3>
             <p>Capturing every perspective.</p>
         </div>
 
-        <div class="grid-card">
-            <div class="card-icon">🎬</div>
+        <div class="grid-item">
+            <div class="icon">🎬</div>
             <h3>Reel Editing</h3>
             <p>Storytelling in motion.</p>
         </div>
@@ -76,94 +76,94 @@
 </section>
 
 <style>
-    /* 1. Base Section - Wahi Dark Background */
-    .creative-grid-section {
-        padding: 80px 20px;
-        background: #000; /* Pure Black ya dark background */
+    /* Section Main Style */
+    .profi-simple-grid {
+        background-color: #0a0a0a; /* Dark background */
+        padding: 100px 20px;
         position: relative;
         overflow: hidden;
         text-align: center;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Inter', -apple-system, sans-serif;
     }
 
-    /* 2. Glow Spot - Ise thoda niche aur subtle rakha hai */
-    .glow-spot {
+    /* Glow Effect (Niche ki taraf) */
+    .bg-glow {
         position: absolute;
-        bottom: -10%; 
+        bottom: -150px;
         left: 50%;
         transform: translateX(-50%);
-        width: 500px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(0, 200, 255, 0.2) 0%, transparent 70%);
-        pointer-events: none;
+        width: 600px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
         z-index: 1;
+        pointer-events: none;
     }
 
     .minimal-title {
-        color: white;
+        color: #ffffff;
         font-size: 2.5rem;
-        margin-bottom: 50px;
         font-weight: 300;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
+        margin-bottom: 60px;
         position: relative;
         z-index: 2;
     }
 
-    /* 3. Grid Container - No Floating, Just Simple Grid */
-    .grid-container {
+    /* Simple Grid Layout (No Floating) */
+    .grid-layout {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
         max-width: 1200px;
         margin: 0 auto;
         position: relative;
         z-index: 2;
     }
 
-    /* 4. Grid Card - Glassmorphism Style (Pahle jaisa) */
-    .grid-card {
-        background: rgba(255, 255, 255, 0.03); /* Minimal transparent white */
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 40px 25px;
-        border-radius: 20px;
+    /* Card Styling - Glassmorphism Style */
+    .grid-item {
+        background: rgba(255, 255, 255, 0.03); /* Subtle white transparency */
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 40px 30px;
+        border-radius: 24px;
         backdrop-filter: blur(10px);
-        transition: transform 0.3s ease, background 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
 
-    /* Halka sa hover effect bina floating ke */
-    .grid-card:hover {
-        background: rgba(255, 255, 255, 0.07);
-        border-color: rgba(0, 200, 255, 0.5); /* Blue glow on border */
-        transform: translateY(-5px);
+    /* Halka sa hover effect (Simple aur Elegant) */
+    .grid-item:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(0, 212, 255, 0.4); /* Blue highlight on hover */
+        transform: translateY(-8px);
     }
 
-    .card-icon {
-        font-size: 2.5rem;
+    .icon {
+        font-size: 3rem;
         margin-bottom: 20px;
+        display: inline-block;
     }
 
-    .grid-card h3 {
-        color: #fff;
+    .grid-item h3 {
+        color: #ffffff;
         font-size: 1.4rem;
         margin-bottom: 12px;
         font-weight: 600;
     }
 
-    .grid-card p {
-        color: #aaa;
+    .grid-item p {
+        color: #888888;
         font-size: 0.95rem;
         line-height: 1.6;
     }
 
-    /* Mobile view settings */
+    /* Mobile adjustments */
     @media (max-width: 768px) {
-        .grid-container {
-            grid-template-columns: 1fr 1fr; /* Do-do cards sath mein */
+        .grid-layout {
+            grid-template-columns: 1fr; /* Single column for small screens */
+            max-width: 400px;
         }
-    }
-    @media (max-width: 480px) {
-        .grid-container {
-            grid-template-columns: 1fr; /* Mobile par single card */
+        .minimal-title {
+            font-size: 1.8rem;
         }
     }
 </style>
