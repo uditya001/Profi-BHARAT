@@ -43,48 +43,120 @@
     </p>
   </div>
 
-</header>
- <section class="profi-minimal-slider">
+<section class="creative-grid-section">
     <div class="glow-spot"></div>
-    <h2 class="minimal-title">Creative Challenges</h2>
+    <h2 class="section-title">Creative Challenges</h2>
     
-    <div class="scene">
-        <div class="carousel">
-            <div class="carousel__cell">
-                <div class="card-content">
-                    <div class="card-icon">💻</div>
-                    <h3>Web Building</h3>
-                    <p>Building the digital Bharat.</p>
-                </div>
-            </div>
+    <div class="grid-container">
+        <div class="simple-card">
+            <div class="card-icon">💻</div>
+            <h3>Web Building</h3>
+            <p>Building the digital Bharat.</p>
+        </div>
 
-            <div class="carousel__cell">
-                <div class="card-content">
-                    <div class="card-icon">🎨</div>
-                    <h3>Graphic Design</h3>
-                    <p>Visualizing new ideas.</p>
-                </div>
-            </div>
+        <div class="simple-card">
+            <div class="card-icon">🎨</div>
+            <h3>Graphic Design</h3>
+            <p>Visualizing new ideas.</p>
+        </div>
 
-            <div class="carousel__cell">
-                <div class="card-content">
-                    <div class="card-icon">📸</div>
-                    <h3>Photo Shoot</h3>
-                    <p>Capturing every perspective.</p>
-                </div>
-            </div>
+        <div class="simple-card">
+            <div class="card-icon">📸</div>
+            <h3>Photo Shoot</h3>
+            <p>Capturing every perspective.</p>
+        </div>
 
-            <div class="carousel__cell">
-                <div class="card-content">
-                    <div class="card-icon">🎬</div>
-                    <h3>Reel Editing</h3>
-                    <p>Storytelling in motion.</p>
-                </div>
-            </div>
+        <div class="simple-card">
+            <div class="card-icon">🎬</div>
+            <h3>Reel Editing</h3>
+            <p>Storytelling in motion.</p>
         </div>
     </div>
 </section>
 
+<style>
+    /* Section Styling */
+    .creative-grid-section {
+        padding: 60px 20px;
+        text-align: center;
+        background: #0f0f0f; /* Dark background */
+        color: #ffffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    /* Grid Layout */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Simple Card Styling */
+    .simple-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 40px 20px;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    /* Hover Effect: Simple Lift */
+    .simple-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-10px);
+        border-color: #3498db; /* Blue accent */
+    }
+
+    .card-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .simple-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        color: #3498db;
+    }
+
+    .simple-card p {
+        font-size: 1rem;
+        color: #ccc;
+        line-height: 1.5;
+    }
+
+    /* Subtle Glow Background */
+    .glow-spot {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(52, 152, 219, 0.15) 0%, transparent 70%);
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    /* Responsive adjustment */
+    @media (max-width: 768px) {
+        .section-title { font-size: 2rem; }
+    }
+</style>
 
 <!------------------------------------------------------------------------------------------------------------------>
   <!-- ===== MINI GAME SECTION (Catch the Skill) ===== -->
