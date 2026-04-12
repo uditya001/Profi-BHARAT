@@ -45,28 +45,29 @@
 
 <section class="creative-grid-section">
     <div class="glow-spot"></div>
-    <h2 class="section-title">Creative Challenges</h2>
+    
+    <h2 class="minimal-title">Creative Challenges</h2>
     
     <div class="grid-container">
-        <div class="simple-card">
+        <div class="grid-card">
             <div class="card-icon">💻</div>
             <h3>Web Building</h3>
             <p>Building the digital Bharat.</p>
         </div>
 
-        <div class="simple-card">
+        <div class="grid-card">
             <div class="card-icon">🎨</div>
             <h3>Graphic Design</h3>
             <p>Visualizing new ideas.</p>
         </div>
 
-        <div class="simple-card">
+        <div class="grid-card">
             <div class="card-icon">📸</div>
             <h3>Photo Shoot</h3>
             <p>Capturing every perspective.</p>
         </div>
 
-        <div class="simple-card">
+        <div class="grid-card">
             <div class="card-icon">🎬</div>
             <h3>Reel Editing</h3>
             <p>Storytelling in motion.</p>
@@ -75,86 +76,95 @@
 </section>
 
 <style>
-    /* Section Styling */
+    /* 1. Base Section - Wahi Dark Background */
     .creative-grid-section {
-        padding: 60px 20px;
-        text-align: center;
-        background: #0f0f0f; /* Dark background */
-        color: #ffffff;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 80px 20px;
+        background: #000; /* Pure Black ya dark background */
         position: relative;
         overflow: hidden;
+        text-align: center;
+        font-family: 'Poppins', sans-serif;
     }
 
-    .section-title {
+    /* 2. Glow Spot - Ise thoda niche aur subtle rakha hai */
+    .glow-spot {
+        position: absolute;
+        bottom: -10%; 
+        left: 50%;
+        transform: translateX(-50%);
+        width: 500px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(0, 200, 255, 0.2) 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .minimal-title {
+        color: white;
         font-size: 2.5rem;
-        margin-bottom: 40px;
-        font-weight: 700;
-        letter-spacing: 1px;
+        margin-bottom: 50px;
+        font-weight: 300;
+        letter-spacing: 2px;
+        position: relative;
+        z-index: 2;
     }
 
-    /* Grid Layout */
+    /* 3. Grid Container - No Floating, Just Simple Grid */
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 25px;
-        max-width: 1100px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
         margin: 0 auto;
         position: relative;
         z-index: 2;
     }
 
-    /* Simple Card Styling */
-    .simple-card {
-        background: rgba(255, 255, 255, 0.05);
+    /* 4. Grid Card - Glassmorphism Style (Pahle jaisa) */
+    .grid-card {
+        background: rgba(255, 255, 255, 0.03); /* Minimal transparent white */
         border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 40px 20px;
-        border-radius: 15px;
-        transition: all 0.3s ease;
-        cursor: pointer;
+        padding: 40px 25px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, background 0.3s ease;
     }
 
-    /* Hover Effect: Simple Lift */
-    .simple-card:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateY(-10px);
-        border-color: #3498db; /* Blue accent */
+    /* Halka sa hover effect bina floating ke */
+    .grid-card:hover {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: rgba(0, 200, 255, 0.5); /* Blue glow on border */
+        transform: translateY(-5px);
     }
 
     .card-icon {
-        font-size: 3rem;
-        margin-bottom: 15px;
-        display: block;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
     }
 
-    .simple-card h3 {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
-        color: #3498db;
+    .grid-card h3 {
+        color: #fff;
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+        font-weight: 600;
     }
 
-    .simple-card p {
-        font-size: 1rem;
-        color: #ccc;
-        line-height: 1.5;
+    .grid-card p {
+        color: #aaa;
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
 
-    /* Subtle Glow Background */
-    .glow-spot {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(52, 152, 219, 0.15) 0%, transparent 70%);
-        z-index: 1;
-        pointer-events: none;
-    }
-
-    /* Responsive adjustment */
+    /* Mobile view settings */
     @media (max-width: 768px) {
-        .section-title { font-size: 2rem; }
+        .grid-container {
+            grid-template-columns: 1fr 1fr; /* Do-do cards sath mein */
+        }
+    }
+    @media (max-width: 480px) {
+        .grid-container {
+            grid-template-columns: 1fr; /* Mobile par single card */
+        }
     }
 </style>
 
