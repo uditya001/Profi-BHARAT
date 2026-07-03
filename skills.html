@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ProfiBHARAT | Skills</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Poppins',sans-serif;
+  color:#fff;
+  background:linear-gradient(-45deg,#0f0111,#1e0226,#2d0442,#110114);
+  background-size:400% 400%;
+  animation:moveGradient 15s ease infinite;
+}
+
+@keyframes moveGradient{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* NAVBAR */
+nav{
+  display:flex;
+  justify-content:space-between;
+  padding:15px 40px;
+  position:sticky;
+  top:0;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(10px);
+}
+nav h1{color:#d88eff;}
+nav a{color:#fff;text-decoration:none;}
+
+/* SECTION */
+section{
+  padding:80px 20px;
+  text-align:center;
+}
+
+h2{
+  font-size:2.5rem;
+  margin-bottom:30px;
+  color:#d88eff;
+  text-shadow:0 0 20px #a400e6;
+}
+
+/* ================= COURSE ================= */
+.glass{
+  max-width:900px;
+  margin:auto;
+  padding:30px;
+  border-radius:25px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(15px);
+  border:1px solid rgba(191,0,255,0.3);
+}
+
+.video-box{
+  border-radius:20px;
+  overflow:hidden;
+  border:3px solid #a400e6;
+  transition:.3s;
+}
+.video-box:hover{
+  transform:scale(1.02);
+  border-color:#ff00ff;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:12px 25px;
+  background:linear-gradient(135deg,#7f00ff,#e100ff);
+  border-radius:25px;
+  text-decoration:none;
+  color:#fff;
+}
+
+/* ================= SKILLS ================= */
+.skills{
+  background:radial-gradient(circle at top,#2a0038,#000 60%);
+}
+
+.skills-tabs{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin-bottom:50px;
+  flex-wrap:wrap;
+}
+
+.skill-tab{
+  padding:10px 24px;
+  border-radius:14px;
+  cursor:pointer;
+  border:1px solid rgba(186,120,255,.6);
+  background:rgba(255,255,255,.05);
+}
+
+.skill-tab.active{
+  background:linear-gradient(135deg,#3b0066,#a855f7);
+}
+
+.skill-content{display:none;}
+.skill-content.active{display:block;}
+
+.skills-cards{
+  max-width:1000px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:30px;
+}
+
+.skill-card{
+  background:#111;
+  border-radius:20px;
+  padding:25px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.skill-card:hover{
+  transform:translateY(-10px);
+  box-shadow:0 0 25px #a400e6;
+}
+
+.play-icon{
+  width:55px;
+  height:55px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#7f00ff,#e100ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  h2{font-size:1.8rem;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <h1>ProfiBHARAT</h1>
+</nav>
+
+<!-- COURSE SECTION -->
+<section id="course">
+  <h2>HTML COURSE</h2>
+
+  <div class="glass">
+    <p style="margin-bottom:20px;">Learn HTML from beginner to advanced.</p>
+
+    <div class="video-box">
+      <iframe width="100%" height="400"
+      src="https://www.youtube.com/embed/k2DSi1zGEc8"></iframe>
+    </div>
+
+    <a href="https://youtu.be/k2DSi1zGEc8" target="_blank" class="btn">
+      🚀 Start Learning
+    </a>
+  </div>
+</section>
+
+<!-- SKILLS SECTION -->
+<section class="skills">
+  <h2>SKILLS</h2>
+
+  <div class="skills-tabs">
+    <button class="skill-tab active" onclick="openSkill('tech',this)">TECHNICAL</button>
+    <button class="skill-tab" onclick="openSkill('comm',this)">COMMUNICATION</button>
+  </div>
+
+  <!-- TECH -->
+  <div id="tech" class="skill-content active">
+    <div class="skills-cards">
+      <div class="skill-card" onclick="openVideo('Web Development','https://www.youtube.com/embed/k2DSi1zGEc8')">
+        <div class="play-icon">▶</div>
+        <h3>WEB DEVELOPMENT</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMM -->
+  <div id="comm" class="skill-content">
+    <div class="skills-cards">
+      <div class="skill-card" onclick="openVideo('Pitching','https://www.youtube.com/embed/k2DSi1zGEc8')">
+        <div class="play-icon">▶</div>
+        <h3>IDEA PITCHING</h3>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script>
+function openSkill(id,el){
+  document.querySelectorAll('.skill-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.skill-content').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+function openVideo(title,url){
+  Swal.fire({
+    title:title,
+    html:`<iframe width="100%" height="400" src="${url}" frameborder="0" allowfullscreen></iframe>`,
+    background:'#000',
+    width:'800px',
+    showCloseButton:true,
+    showConfirmButton:false
+  });
+}
+</script>
+
+</body>
+</html>
+
